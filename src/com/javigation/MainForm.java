@@ -24,8 +24,9 @@ public class MainForm extends JFrame {
         double lat = 39.863599;
         double lon = 32.749791;
 
-        System.out.println(GoogleMapProvider.getURL(lat,lon,19));
-
+        System.out.println(GoogleMapProvider.getURL(GoogleMapProvider.MapType.SATELLITE,lat,lon,18));
+        System.out.println(GoogleMapProvider.getURL(GoogleMapProvider.MapType.HYBRID,lat,lon,18));
+        System.out.println(GoogleMapProvider.getURL(GoogleMapProvider.MapType.TERRAIN,lat,lon,18));
     }
 
 }

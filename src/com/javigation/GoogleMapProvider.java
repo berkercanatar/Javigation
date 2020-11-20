@@ -1,9 +1,23 @@
 package com.javigation;
 
+import java.util.*;
+
 public class GoogleMapProvider {
 
     private static final String SEC_GOOGLE_WORLD = "Galileo";
     private static final int TILE_SIZE = 256;
+
+    public static enum MapType {
+        SATELLITE,
+        HYBRID,
+        TERRAIN
+    }
+
+    private static final Map<MapType, HashMap<String, String>> MapTypeSettings = new EnumMap<MapType, HashMap<String, String>>(MapType.class) {{
+        put(MapType.SATELLITE, new HashMap<String, String>() {{ put("server", "khm"); put("request", "kh"); put("version", "879"); put("arg", "v");}});
+        put(MapType.HYBRID, new HashMap<String, String>() {{ put("server", "mt"); put("request", "vt"); put("version", "y"); put("arg", "lyrs");}});
+        put(MapType.TERRAIN, new HashMap<String, String>() {{ put("server", "mt"); put("request", "vt"); put("version", "t@354,r@354000000"); put("arg", "lyrs");}});
+    }};
 
     private static int getServerNum(int x, int y, int max) {
         return ( x + 2 * y ) % max;
@@ -28,18 +42,19 @@ public class GoogleMapProvider {
         return worldCoordinates;
     }
 
-    public static String getURL(double lat, double lon, int zoom) {
+    public static String getURL(MapType mapType, double lat, double lon, int zoom) {
         double[] worldCoordinates = GoogleMapProvider.LatLngToWorldCoordinates(lat,lon);
         int x = (int)( (worldCoordinates[0] * Math.pow(2, zoom)) / 256.0 );
         int y = (int)( (worldCoordinates[1] * Math.pow(2, zoom)) / 256.0 );
-        String server = "mt";
-        String request = "vt";
+        String server = MapTypeSettings.get(mapType).get("server");
+        String request = MapTypeSettings.get(mapType).get("request");
+        String version = MapTypeSettings.get(mapType).get("version");
+        String arg = MapTypeSettings.get(mapType).get("arg");
         int serverNum = getServerNum(x, y, 4);
-        String versionGoogleHybrid = "y";
         String language = "en-US";
         String[] secs = getSecGoogleWords(x, y);
 
-        return "http://" + server + serverNum + ".google.com/" + request + "/lyrs=" + versionGoogleHybrid + "&hl=" + language +
+        return "http://" + server + serverNum + ".google.com/" + request + "/" + arg + "=" + version + "&hl=" + language +
                 "&x=" + x + secs[0] + "&y=" + y + "&z=" + zoom + "&s=" + secs[1];
 
 
