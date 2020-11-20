@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Javigation.iml" filepath="$PROJECT_DIR$/Javigation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jxmapviewer2/jxmapviewer21.iml" filepath="$PROJECT_DIR$/jxmapviewer2/jxmapviewer21.iml" />
     </modules>
   </component>
 </project>
