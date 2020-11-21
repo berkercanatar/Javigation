@@ -20,6 +20,11 @@ public abstract class MapClickListener extends MouseAdapter {
 
     private final JXMapViewer viewer;
 
+    public enum MouseButton {
+        RIGHT,
+        LEFT
+    }
+
     /**
      * Creates a mouse listener for the jxmapviewer which returns the
      * GeoPosition of the the point where the mouse was clicked.
@@ -39,14 +44,16 @@ public abstract class MapClickListener extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent evt) {
         final boolean left = SwingUtilities.isLeftMouseButton(evt);
+        final boolean right = SwingUtilities.isRightMouseButton(evt);
         final boolean singleClick = (evt.getClickCount() == 1);
 
-        if ((left && singleClick)) {
+        if (((left^right) && singleClick)) {
+            MouseButton button = right?MouseButton.RIGHT:MouseButton.LEFT;
             Rectangle bounds = viewer.getViewportBounds();
             int x = bounds.x + evt.getX();
             int y = bounds.y + evt.getY();
             Point pixelCoordinates = new Point(x, y);
-            mapClicked(viewer.getTileFactory().pixelToGeo(pixelCoordinates, viewer.getZoom()));
+            mapClicked(button,viewer.getTileFactory().pixelToGeo(pixelCoordinates, viewer.getZoom()));
         }
     }
 
@@ -56,5 +63,5 @@ public abstract class MapClickListener extends MouseAdapter {
      * 
      * @param location The {@link GeoPosition} of the click event
      */
-    public abstract void mapClicked(GeoPosition location);
+    public abstract void mapClicked(MouseButton mouseButton,GeoPosition location);
 }
