@@ -40,7 +40,7 @@ public class GoogleMapsTileFactoryInfo extends TileFactoryInfo
 
     public GoogleMapsTileFactoryInfo(MapType mapType)
     {
-        super("Google Maps - " + mapType.toString(),2,22,23,TILE_SIZE,true, true, "", "x", "y", "z");
+        super("Google Maps - " + mapType.toString(),1,20,23,TILE_SIZE,true, true, "", "x", "y", "z");
         this.mapType = mapType;
     }
 
