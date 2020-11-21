@@ -25,7 +25,7 @@ public class OSMTileFactoryInfo extends TileFactoryInfo
     public OSMTileFactoryInfo(String name, String baseURL)
     {
         super(name,
-                0, MAX_ZOOM, MAX_ZOOM,
+                0, 15, MAX_ZOOM,
                 256, true, true,                     // tile size is 256 and x/y orientation is normal
                 baseURL,
                 "x", "y", "z");                        // 5/15/10.png
