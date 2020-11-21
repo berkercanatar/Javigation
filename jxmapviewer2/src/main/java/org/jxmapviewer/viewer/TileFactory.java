@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.jxmapviewer.cache.LocalCache;
 import org.jxmapviewer.viewer.util.GeoUtil;
@@ -23,6 +24,8 @@ import org.jxmapviewer.viewer.util.GeoUtil;
  */
 public abstract class TileFactory
 {
+    public TileCache cache;
+    public Map<String, Tile> tileMap;
     private TileFactoryInfo info;
     private List<TileListener> tileListeners = new ArrayList<TileListener>();
 

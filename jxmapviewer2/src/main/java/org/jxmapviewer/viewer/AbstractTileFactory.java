@@ -53,12 +53,12 @@ public abstract class AbstractTileFactory extends TileFactory
 
     // TODO the tile map should be static ALWAYS, regardless of the number
     // of GoogleTileFactories because each tile is, really, a singleton.
-    private Map<String, Tile> tileMap = new HashMap<String, Tile>();
+    public Map<String, Tile> tileMap = new HashMap<String, Tile>();
 
-    private TileCache cache = new TileCache();
+    public TileCache cache = new TileCache();
 
     /**
-     * Creates a new instance of DefaultTileFactory using the spcified TileFactoryInfo
+     * Creates a new instance of DefaultTileFactory using the specified TileFactoryInfo
      * @param info a TileFactoryInfo to configure this TileFactory
      */
     public AbstractTileFactory(TileFactoryInfo info)
@@ -368,6 +368,7 @@ public abstract class AbstractTileFactory extends TileFactory
                 try
                 {
                     URI uri = getURI(tile);
+                    tile.setURI(uri);
                     BufferedImage img = cache.get(uri);
                     if (img == null)
                     {

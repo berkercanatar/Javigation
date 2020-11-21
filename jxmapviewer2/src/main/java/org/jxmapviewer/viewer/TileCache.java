@@ -30,10 +30,10 @@ public class TileCache
 {
     private static final Log log = LogFactory.getLog(TileCache.class);
     
-    private Map<URI, BufferedImage> imgmap = new HashMap<URI, BufferedImage>();
+    public Map<URI, BufferedImage> imgmap = new HashMap<URI, BufferedImage>();
     private LinkedList<URI> imgmapAccessQueue = new LinkedList<URI>();
     private int imagesize = 0;
-    private Map<URI, byte[]> bytemap = new HashMap<URI, byte[]>();
+    public Map<URI, byte[]> bytemap = new HashMap<URI, byte[]>();
     private LinkedList<URI> bytemapAccessQueue = new LinkedList<URI>();
     private int bytesize = 0;
 
@@ -58,9 +58,11 @@ public class TileCache
             while (bytesize > 1000 * 1000 * 50)
             {
                 URI olduri = bytemapAccessQueue.removeFirst();
-                byte[] oldbimg = bytemap.remove(olduri);
-                bytesize -= oldbimg.length;
-                log("removed 1 img from byte cache");
+                if(bytemap.containsKey((olduri))){
+                    byte[] oldbimg = bytemap.remove(olduri);
+                    bytesize -= oldbimg.length;
+                    log("removed 1 img from byte cache");
+                }
             }
 
             bytemap.put(uri, bimg);
@@ -112,7 +114,9 @@ public class TileCache
     public void needMoreMemory()
     {
         imgmap.clear();
-        log("HACK! need more memory: freeing up memory");
+        bytemap.clear();
+        bytesize = 0;
+        log("Freeing up memory");
     }
 
     private void addToImageCache(final URI uri, final BufferedImage img)

@@ -11,6 +11,7 @@ package org.jxmapviewer.viewer;
 
 import java.awt.image.BufferedImage;
 import java.lang.ref.SoftReference;
+import java.net.URI;
 
 import org.jxmapviewer.beans.AbstractBean;
 
@@ -29,6 +30,8 @@ public class Tile extends AbstractBean
     {
         High, Low
     }
+
+    private URI _uri;
 
     private Priority priority = Priority.High;
 
@@ -239,5 +242,8 @@ public class Tile extends AbstractBean
     {
         return y;
     }
+
+    public void setURI(URI uri) { _uri = uri; }
+    public URI getURI() { return _uri; }
 
 }

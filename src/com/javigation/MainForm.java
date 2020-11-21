@@ -1,20 +1,21 @@
 package com.javigation;
 
 import org.jxmapviewer.*;
+import org.jxmapviewer.input.MapClickListener;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactory;
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jxmapviewer.viewer.*;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
+import javax.swing.plaf.synth.Region;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -31,9 +32,9 @@ public class MainForm extends JFrame {
     public MainForm() {
         super("Javigation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
         pack();
-
+        setSize(1200,800);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -41,40 +42,47 @@ public class MainForm extends JFrame {
         }
         add(panelMain);
 
-        final List<TileFactory> factories = new ArrayList<TileFactory>();
-
-        TileFactoryInfo ghInfo = new GoogleMapsTileFactoryInfo(GoogleMapsTileFactoryInfo.MapType.HYBRID);
-        TileFactoryInfo gsInfo = new GoogleMapsTileFactoryInfo(GoogleMapsTileFactoryInfo.MapType.SATELLITE);
-        TileFactoryInfo gtInfo = new GoogleMapsTileFactoryInfo(GoogleMapsTileFactoryInfo.MapType.TERRAIN);
-        TileFactoryInfo veInfo = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.HYBRID);
-        TileFactoryInfo osmInfo = new OSMTileFactoryInfo();
-
-        factories.add(new DefaultTileFactory(ghInfo));
-        factories.add(new DefaultTileFactory(gsInfo));
-        factories.add(new DefaultTileFactory(gtInfo));
-        factories.add(new DefaultTileFactory(veInfo));
-        factories.add(new DefaultTileFactory(osmInfo));
+        final List<DefaultTileFactory> factories = new ArrayList<DefaultTileFactory>();
+        factories.add(new DefaultTileFactory(new GoogleMapsTileFactoryInfo(GoogleMapsTileFactoryInfo.MapType.HYBRID)));
+        factories.add(new DefaultTileFactory(new GoogleMapsTileFactoryInfo(GoogleMapsTileFactoryInfo.MapType.SATELLITE)));
+        factories.add(new DefaultTileFactory(new GoogleMapsTileFactoryInfo(GoogleMapsTileFactoryInfo.MapType.TERRAIN)));
+        factories.add(new DefaultTileFactory(new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.HYBRID)));
+        factories.add(new DefaultTileFactory(new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.SATELLITE)));
+        factories.add(new DefaultTileFactory(new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP)));
+        factories.add(new DefaultTileFactory(new OSMTileFactoryInfo()));
 
         final JXMapViewer mapViewer = new JXMapViewer();
-        final JLabel labelAttr = new JLabel();
-        mapViewer.setLayout(new BorderLayout());
-        mapViewer.add(labelAttr, BorderLayout.SOUTH);
 
-        TileFactory firstFactory = factories.get(0);
-        mapViewer.setTileFactory(firstFactory);
-        labelAttr.setText("TEST");
-
+        mapViewer.setTileFactory(factories.get(0));
         GeoPosition odeon = new GeoPosition(39.874259, 32.752582);
-
         mapViewer.setZoom(5);
         mapViewer.setAddressLocation(odeon);
 
-        MouseInputListener mia= new PanMouseInputListener(mapViewer);
-        mapViewer.addMouseListener(mia);
+        MouseInputListener mia = new PanMouseInputListener(mapViewer);
         mapViewer.addMouseListener(mia);
         mapViewer.addMouseMotionListener(mia);
-
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
+
+        mapViewer.addMouseListener(new MapClickListener(mapViewer) {
+            @Override
+            public void mapClicked(MouseButton mouseButton, GeoPosition location) {
+                switch (mouseButton){
+                    case LEFT:
+                        System.out.print("LEFT:");
+                        ((DefaultTileFactory)mapViewer.getTileFactory()).tileMap.clear();
+                        System.gc();
+                        Runtime.getRuntime().gc();
+                        break;
+                    case RIGHT:
+                        System.out.print("RIGHT:");
+                        ((DefaultTileFactory)mapViewer.getTileFactory()).cache.needMoreMemory();
+                        System.gc();
+                        Runtime.getRuntime().gc();
+                        break;
+                }
+                System.out.println(location.getLatitude()+","+location.getLongitude());
+            }
+        });
 
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Select a TileFactory ");
@@ -91,13 +99,17 @@ public class MainForm extends JFrame {
             @Override
             public void itemStateChanged(ItemEvent e)
             {
-                TileFactory factory = factories.get(combo.getSelectedIndex());
+                DefaultTileFactory factory = factories.get(combo.getSelectedIndex());
                 TileFactoryInfo info = factory.getInfo();
                 GeoPosition loc = mapViewer.getAddressLocation();
-                mapViewer.setZoom(info.getMinimumZoomLevel());
+                mapViewer.setZoom(Math.min(Math.max(mapViewer.getZoom(),info.getMinimumZoomLevel()),info.getMaximumZoomLevel()));
                 mapViewer.setTileFactory(factory);
                 mapViewer.setAddressLocation(loc);
-                labelAttr.setText(info.getAttribution() + " - " + info.getLicense());
+                for(int i = 0; i < factories.size(); i++) {
+                    if(i!=combo.getSelectedIndex()){
+                        DefaultTileFactory otherFactory = factories.get(i);
+                    }
+                }
             }
         });
 
@@ -107,12 +119,16 @@ public class MainForm extends JFrame {
 
         final JLabel labelThreadCount = new JLabel("Threads: ");
 
-        // Display the viewer in a JFrame
-
         setLayout(new BorderLayout());
         add(panel, BorderLayout.NORTH);
         add(mapViewer);
         add(labelThreadCount, BorderLayout.SOUTH);
+
+
+        TileCleaner tileCleaner = new TileCleaner(mapViewer, factories);
+        Thread tileCleanerThread = new Thread(tileCleaner);
+        tileCleanerThread.start();
+
 
 
         Timer t = new Timer(500, new ActionListener()
@@ -121,22 +137,19 @@ public class MainForm extends JFrame {
             public void actionPerformed(ActionEvent e)
             {
                 Set<Thread> threads = Thread.getAllStackTraces().keySet();
+                labelThreadCount.setText("" + ((DefaultTileFactory)mapViewer.getTileFactory()).tileMap.size());
+                //((DefaultTileFactory)mapViewer.getTileFactory()).cache.needMoreMemory();
+                //((DefaultTileFactory)mapViewer.getTileFactory()).tileMap.clear();
                 labelThreadCount.setText("Threads: " + threads.size());
+                //labelThreadCount.setText("Threads: " + factories.get(0).tileMap.size() + " - " + factories.get(0).cache.imgmap.size() + " - " + factories.get(0).cache.bytemap.size());
+                //labelThreadCount.setText("Threads: " + mapViewer.getCenterPosition().getLatitude() + "," + mapViewer.getCenterPosition().getLongitude());
             }
         });
 
+
         t.start();
 
-
-
         setVisible(true);
-
-        double lat = 39.863599;
-        double lon = 32.749791;
-
-        System.out.println(GoogleMapProvider.getURL(GoogleMapProvider.MapType.SATELLITE,lat,lon,18));
-        System.out.println(GoogleMapProvider.getURL(GoogleMapProvider.MapType.HYBRID,lat,lon,18));
-        System.out.println(GoogleMapProvider.getURL(GoogleMapProvider.MapType.TERRAIN,lat,lon,18));
     }
 
 }
