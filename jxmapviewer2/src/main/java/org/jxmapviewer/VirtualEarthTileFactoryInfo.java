@@ -14,17 +14,17 @@ public class VirtualEarthTileFactoryInfo extends TileFactoryInfo
     /**
      * Use road map
      */
-    public final static MVEMode MAP = new MVEMode("map", "map", "r", ".png");
+    public final static MVEMode MAP = new MVEMode("map", "MAP", "r", ".png");
 
     /**
      * Use satellite map
      */
-    public final static MVEMode SATELLITE = new MVEMode("satellite", "satellite", "a", ".jpeg");
+    public final static MVEMode SATELLITE = new MVEMode("satellite", "SATELLITE", "a", ".jpeg");
 
     /**
      * Use hybrid map
      */
-    public final static MVEMode HYBRID = new MVEMode("hybrid", "hybrid", "h", ".jpeg");
+    public final static MVEMode HYBRID = new MVEMode("hybrid", "HYBRID", "h", ".jpeg");
 
     /**
      * The map mode
@@ -47,7 +47,7 @@ public class VirtualEarthTileFactoryInfo extends TileFactoryInfo
 
     private final static int TOP_ZOOM_LEVEL = 21;
 
-    private final static int MAX_ZOOM_LEVEL = 20;
+    private final static int MAX_ZOOM_LEVEL = 18;
 
     private final static int MIN_ZOOM_LEVEL = 2;
 
@@ -60,7 +60,7 @@ public class VirtualEarthTileFactoryInfo extends TileFactoryInfo
      */
     public VirtualEarthTileFactoryInfo(MVEMode mode)
     {
-        super("Virtual Earth", MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, TOP_ZOOM_LEVEL, TILE_SIZE, false, false, "", "", "", "");
+        super("Bing - " + mode.label, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, TOP_ZOOM_LEVEL, TILE_SIZE, false, false, "", "", "", "");
 
         this.mode = mode;
     }
