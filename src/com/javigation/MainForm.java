@@ -1,5 +1,8 @@
 package com.javigation;
 
+import io.mavsdk.action.Action;
+import io.mavsdk.mission.Mission;
+import io.mavsdk.offboard.Offboard;
 import org.jxmapviewer.*;
 import org.jxmapviewer.input.MapClickListener;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -8,17 +11,18 @@ import org.jxmapviewer.viewer.*;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
-import javax.swing.plaf.synth.Region;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Completable;
 
 public class MainForm extends JFrame {
 
@@ -63,6 +67,10 @@ public class MainForm extends JFrame {
         mapViewer.addMouseMotionListener(mia);
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
 
+        DroneController drone = new DroneController();
+        drone.Arm().subscribe();
+
+
         mapViewer.addMouseListener(new MapClickListener(mapViewer) {
             @Override
             public void mapClicked(MouseButton mouseButton, GeoPosition location) {
@@ -72,12 +80,14 @@ public class MainForm extends JFrame {
                         ((DefaultTileFactory)mapViewer.getTileFactory()).tileMap.clear();
                         System.gc();
                         Runtime.getRuntime().gc();
+                        drone.TakeOff().subscribe();
                         break;
                     case RIGHT:
                         System.out.print("RIGHT:");
                         ((DefaultTileFactory)mapViewer.getTileFactory()).cache.needMoreMemory();
                         System.gc();
                         Runtime.getRuntime().gc();
+                        drone.Land().subscribe();
                         break;
                 }
                 System.out.println(location.getLatitude()+","+location.getLongitude());
@@ -143,6 +153,7 @@ public class MainForm extends JFrame {
                 labelThreadCount.setText("Threads: " + threads.size());
                 //labelThreadCount.setText("Threads: " + factories.get(0).tileMap.size() + " - " + factories.get(0).cache.imgmap.size() + " - " + factories.get(0).cache.bytemap.size());
                 //labelThreadCount.setText("Threads: " + mapViewer.getCenterPosition().getLatitude() + "," + mapViewer.getCenterPosition().getLongitude());
+
             }
         });
 
