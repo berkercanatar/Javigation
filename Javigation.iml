@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="jxmapviewer21" />
+    <orderEntry type="library" exported="" name="io.mavsdk:mavsdk:0.5.1" level="project" />
   </component>
 </module>

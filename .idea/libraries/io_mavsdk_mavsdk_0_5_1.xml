@@ -1,0 +1,30 @@
+<component name="libraryTable">
+  <library name="io.mavsdk:mavsdk:0.5.1" type="repository">
+    <properties maven-id="io.mavsdk:mavsdk:0.5.1" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/mavsdk-0.5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/protobuf-lite-3.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/rxjava-2.1.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/reactive-streams-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/grpc-okhttp-1.19.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/grpc-core-1.19.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/grpc-context-1.19.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gson-2.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/error_prone_annotations-2.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jsr305-3.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/animal-sniffer-annotations-1.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencensus-api-0.19.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencensus-contrib-grpc-metrics-0.19.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/okhttp-2.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/okio-1.13.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/grpc-protobuf-lite-1.19.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-26.0-android.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/checker-compat-qual-2.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/j2objc-annotations-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/grpc-stub-1.19.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.25.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
