@@ -16,9 +16,6 @@ public class GoogleMapsTileFactoryInfo extends TileFactoryInfo
 {
     private static final int max = 20;
 
-    /**
-     * Currently only 256x256 works - see https://github.com/msteiger/jxmapviewer2/issues/62
-     */
     private static final int TILE_SIZE = 256;
 
     private static final String SEC_GOOGLE_WORLD = "Galileo";
@@ -60,7 +57,6 @@ public class GoogleMapsTileFactoryInfo extends TileFactoryInfo
     public String getTileUrl(int x, int y, int zoom)
     {
         //System.out.println("testing for validity: X " + x + " Y = " + y);
-
         zoom = getTotalMapZoom() - zoom;
 
         String server = MapTypeSettings.get(mapType).get("server");
