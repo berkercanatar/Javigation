@@ -2,6 +2,7 @@ mavsdk_server_win32.exe -p 4790 udp://:14540
 
 
 --START SITL
+cd PX4-Autopilot
 make px4_sitl jmavsim -j7
 
 
