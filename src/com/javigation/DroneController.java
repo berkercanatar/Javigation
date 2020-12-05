@@ -1,10 +1,9 @@
 package com.javigation;
 
 import io.mavsdk.System;
-import io.mavsdk.action.Action;
 import io.mavsdk.telemetry.Telemetry;
 import io.reactivex.Completable;
-import io.reactivex.observers.DisposableCompletableObserver;
+import org.jxmapviewer.viewer.GeoPosition;
 
 public class DroneController {
 
@@ -34,6 +33,12 @@ public class DroneController {
     public Completable Land() {
         return drone.getAction().land();
     }
+
+    public GeoPosition GetGeoPosition() {
+        Telemetry.Position dronePos = drone.getTelemetry().getPosition().blockingFirst();
+        return new GeoPosition(dronePos.getLatitudeDeg(), dronePos.getLongitudeDeg());
+    }
+
 
 
 
