@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="org.freedesktop.gstreamer:gst1-java-core:1.3.0" type="repository">
+    <properties maven-id="org.freedesktop.gstreamer:gst1-java-core:1.3.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/gst1-java-core-1.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-5.6.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
