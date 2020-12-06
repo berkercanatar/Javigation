@@ -1,5 +1,10 @@
 package com.javigation;
 
+import org.freedesktop.gstreamer.Bin;
+import org.freedesktop.gstreamer.Gst;
+import org.freedesktop.gstreamer.Pipeline;
+import org.freedesktop.gstreamer.elements.AppSink;
+import org.freedesktop.gstreamer.swing.GstVideoComponent;
 import org.jxmapviewer.GoogleMapsTileFactoryInfo;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
@@ -13,6 +18,7 @@ import org.jxmapviewer.viewer.*;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
@@ -48,7 +54,8 @@ public class GUIManager {
 
         tabControl = new TabController();
         gui.add(tabControl, BorderLayout.CENTER);
-        tabControl.tabGuiSettings.add(mapViewer);
+        tabControl.tabFlightPlan.add(mapViewer);
+
 
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Select a map type: ");
@@ -109,10 +116,51 @@ public class GUIManager {
         t.start();
 
         gui.pack();
+
+        setupGStreamer();
         gui.setSize(1200,800);
         gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
         gui.setVisible(true);
 
+    }
+
+    public static GstVideoComponent vc;
+    private static Pipeline pipe;
+    public static JPanel jpanel1;
+
+    public static void setupGStreamer() {
+        System.setProperty("jna.library.path", "D:\\gstreamer\\1.0\\mingw_x86_64\\bin\\;D:\\gstreamer\\1.0\\mingw_x86_64\\lib\\gstreamer-1.0\\");
+        //System.setProperty("jna.debug_load", "true");
+        Gst.init("CameraTest");
+
+        vc = new GstVideoComponent();
+        Bin bin = Gst.parseBinFromDescription(
+                "videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",
+                true);
+        pipe = new Pipeline();
+        pipe.addMany(bin, vc.getElement());
+        Pipeline.linkMany(bin, vc.getElement());
+
+        jpanel1 = new JPanel(new BorderLayout());
+        jpanel1.add(vc, BorderLayout.CENTER);
+
+        int thickness = 3;
+        int height = 234;
+        int inset = 30;
+        jpanel1.setPreferredSize(new Dimension(height*16/9 + thickness*2, height+thickness*2));
+        jpanel1.setBorder(new LineBorder(Color.RED, thickness));
+
+        mapViewer.setLayout(new GridBagLayout());
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.anchor = GridBagConstraints.SOUTHEAST;
+        gc.weightx = 1.0;
+        gc.weighty = 1.0;
+        gc.insets = new Insets(inset, inset, inset, inset);
+        mapViewer.add(jpanel1, gc);
+
+        //mapViewer.revalidate();
+
+        pipe.play();
     }
 
     public static void setupMap() {
@@ -174,5 +222,6 @@ public class GUIManager {
         CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(routePainter, waypointPainter, dronePainter);
         mapViewer.setOverlayPainter(painter);
     }
+
 
 }

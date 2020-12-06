@@ -18,16 +18,18 @@ public class TabController extends JPanel {
     private JPanel tabBarTabsPanel = new JPanel(new GridBagLayout());//new FlowLayout(FlowLayout.LEADING, 5, 0));
     private JPanel tabBarStatusPanel = new JPanel(new BorderLayout());
 
-    private static final Color TAB_SELECTED_COLOR = Color.green;
+    private static final Color TAB_SELECTED_COLOR = new Color(37, 101, 74);
     private static final Color TAB_UNSELECTED_COLOR = new Color(21, 53, 68);
     private static final Color TAB_TITLE_COLOR = Color.WHITE;
+    private static final Color TAB_BAR_COLOR = new Color(46, 91, 114);
 
     private Map<JPanel, JLabel> panelToHeader = new LinkedHashMap<JPanel, JLabel>() {
     };
 
     public JPanel tabGuiSettings = new JPanel(new BorderLayout());
-    public JPanel tabDroneSettings = new JPanel(new BorderLayout());
     public JPanel tabFlightPlan = new JPanel(new BorderLayout());
+    public JPanel tabCameraView = new JPanel(new BorderLayout());
+    public JPanel tabDroneSettings = new JPanel(new BorderLayout());
 
     public TabController() {
         setLayout(new BorderLayout());
@@ -44,8 +46,9 @@ public class TabController extends JPanel {
         }); //Disable native tabbar drawing
 
         panelToHeader.put(tabGuiSettings, new JLabel("Javigation", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/javigation.png")), JLabel.LEFT));
-        panelToHeader.put(tabDroneSettings, new JLabel("Drone Settings", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/javigation.png")), JLabel.LEFT));
-        panelToHeader.put(tabFlightPlan, new JLabel("Flight Plan", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/javigation.png")), JLabel.LEFT));
+        panelToHeader.put(tabFlightPlan, new JLabel("Flight Plan", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/flightplan.png")), JLabel.LEFT));
+        panelToHeader.put(tabCameraView, new JLabel("Camera View", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/camera.png")), JLabel.LEFT));
+        panelToHeader.put(tabDroneSettings, new JLabel("Drone Settings", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/dronesettings.png")), JLabel.LEFT));
 
         Border border = new RoundedBorder(Color.BLACK,1,16);
         GridBagConstraints gridBagConst = new GridBagConstraints();
@@ -64,6 +67,15 @@ public class TabController extends JPanel {
             {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+
+                    if ( pnl == tabCameraView ) {
+                        GUIManager.vc.getParent().remove(GUIManager.vc);
+                        tabCameraView.add(GUIManager.vc);
+                    } else if ( pnl == tabFlightPlan ) {
+                        GUIManager.vc.getParent().remove(GUIManager.vc);
+                        GUIManager.jpanel1.add(GUIManager.vc, BorderLayout.CENTER);
+                    }
+
                     tabControl.setSelectedComponent(pnl);
                     resetTabColors();
                     lbl.setBackground(TAB_SELECTED_COLOR);
@@ -87,10 +99,12 @@ public class TabController extends JPanel {
         tabGuiSettings.setBackground(Color.black);
         tabDroneSettings.setBackground(Color.red);
 
+
+        tabControl.setSelectedComponent(tabFlightPlan);
         resetTabColors();
         panelToHeader.get(tabControl.getSelectedComponent()).setBackground(TAB_SELECTED_COLOR);
 
-        tabBarTabsPanel.setBackground(new Color(46, 91, 114));
+        tabBarTabsPanel.setBackground(TAB_BAR_COLOR);
 
     }
 
