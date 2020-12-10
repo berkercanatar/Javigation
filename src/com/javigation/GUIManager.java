@@ -3,7 +3,6 @@ package com.javigation;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
 import org.freedesktop.gstreamer.Pipeline;
-import org.freedesktop.gstreamer.elements.AppSink;
 import org.freedesktop.gstreamer.swing.GstVideoComponent;
 import org.jxmapviewer.GoogleMapsTileFactoryInfo;
 import org.jxmapviewer.JXMapViewer;
@@ -17,10 +16,8 @@ import org.jxmapviewer.viewer.*;
 
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.MouseInputListener;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +48,8 @@ public class GUIManager {
         }
 
         setupMap();
+        setupMapControlPanel();
+
 
         tabControl = new TabController();
         gui.add(tabControl, BorderLayout.CENTER);
@@ -124,9 +123,13 @@ public class GUIManager {
 
     }
 
+    private static void setupMapControlPanel() {
+
+    }
+
     public static GstVideoComponent vc;
     private static Pipeline pipe;
-    public static JPanel jpanel1;
+    public static JPanel gstPanel;
 
     public static void setupGStreamer() {
         System.setProperty("jna.library.path", "D:\\gstreamer\\1.0\\mingw_x86_64\\bin\\;D:\\gstreamer\\1.0\\mingw_x86_64\\lib\\gstreamer-1.0\\");
@@ -135,20 +138,20 @@ public class GUIManager {
 
         vc = new GstVideoComponent();
         Bin bin = Gst.parseBinFromDescription(
-                "videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",
+                "udpsrc port=5600 ! application/x-rtp, encoding-name=H264, payload=96 ! rtph264depay ! h264parse ! avdec_h264",//"videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",
                 true);
         pipe = new Pipeline();
         pipe.addMany(bin, vc.getElement());
         Pipeline.linkMany(bin, vc.getElement());
 
-        jpanel1 = new JPanel(new BorderLayout());
-        jpanel1.add(vc, BorderLayout.CENTER);
+        gstPanel = new JPanel(new BorderLayout());
+        gstPanel.add(vc, BorderLayout.CENTER);
 
         int thickness = 3;
         int height = 234;
         int inset = 30;
-        jpanel1.setPreferredSize(new Dimension(height*16/9 + thickness*2, height+thickness*2));
-        jpanel1.setBorder(new LineBorder(Color.RED, thickness));
+        gstPanel.setPreferredSize(new Dimension(height*16/9 + thickness*2, height+thickness*2));
+        gstPanel.setBorder(new LineBorder(Color.RED, thickness));
 
         mapViewer.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
@@ -156,7 +159,7 @@ public class GUIManager {
         gc.weightx = 1.0;
         gc.weighty = 1.0;
         gc.insets = new Insets(inset, inset, inset, inset);
-        mapViewer.add(jpanel1, gc);
+        mapViewer.add(gstPanel, gc);
 
         //mapViewer.revalidate();
 

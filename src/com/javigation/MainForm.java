@@ -21,6 +21,8 @@ public class MainForm extends JFrame {
     public MainForm() {
         super("Javigation");
         GUIManager.setupGUI(this);
+
+        DroneConnection.Get(14540);
     }
 
 }
