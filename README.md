@@ -2,9 +2,9 @@
 [Computer Engineering Department, Bilkent University](http://w3.cs.bilkent.edu.tr/en/).  
 The information and code in this repository are submitted in partial fulfillment of the CS102 Semester Design Project. Except where explicitly stated, the work is that of the group members listed below (who are expected to follow ethical academic & professional practice).
 ****
- g1D ~~ Javigation ~~
+## g1D ~~ Javigation ~~
 ****
- ~ Drone Lovers ~
+### ~ Drone Lovers ~
 
 ## Project Description
 _Javigation is the ground control software that controls drones which communicate through MAVLink communication protocol. This program is planned to provide easier usage especially for industrial drones._
