@@ -34,13 +34,17 @@ public class GUIManager {
     private static TabController tabControl;
     private static JPanel panelMain = new JPanel();
 
+    public static final Color COLOR_BLUE = new Color(46, 91, 114);
+    public static final Color COLOR_PURPLE = new Color(75, 45, 109);
+    public static final Color COLOR_TRANSPARENT = new Color(0,0,0,0);
+
 
     public static void setupGUI(JFrame gui) {
         gui.setIconImage(new ImageIcon(GUIManager.class.getClassLoader().getResource("images/javigation.png")).getImage());
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gui.setLayout(new BorderLayout());
-        gui.getContentPane().setBackground( new Color(46, 91, 114) );
+        gui.getContentPane().setBackground(COLOR_BLUE);
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -48,6 +52,8 @@ public class GUIManager {
         }
 
         setupMap();
+
+        setupGStreamer();
         setupMapControlPanel();
 
 
@@ -116,7 +122,6 @@ public class GUIManager {
 
         gui.pack();
 
-        setupGStreamer();
         gui.setSize(1200,800);
         gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
         gui.setVisible(true);
@@ -125,6 +130,17 @@ public class GUIManager {
 
     private static void setupMapControlPanel() {
 
+        DroneControlPanel pnl = new DroneControlPanel();
+
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.anchor = GridBagConstraints.EAST;
+        gc.weightx = 1.0;
+        gc.weighty = 1.0;
+        gc.gridx = 1;
+        gc.gridy = 0;
+        int inset = 30;
+        gc.insets = new Insets(-350, inset, inset, inset);
+        mapViewer.add(pnl, gc);
     }
 
     public static GstVideoComponent vc;
@@ -138,7 +154,7 @@ public class GUIManager {
 
         vc = new GstVideoComponent();
         Bin bin = Gst.parseBinFromDescription(
-                "udpsrc port=5600 ! application/x-rtp, encoding-name=H264, payload=96 ! rtph264depay ! h264parse ! avdec_h264",//"videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",
+                "videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",
                 true);
         pipe = new Pipeline();
         pipe.addMany(bin, vc.getElement());
@@ -158,6 +174,8 @@ public class GUIManager {
         gc.anchor = GridBagConstraints.SOUTHEAST;
         gc.weightx = 1.0;
         gc.weighty = 1.0;
+        gc.gridx = 1;
+        gc.gridy = 0;
         gc.insets = new Insets(inset, inset, inset, inset);
         mapViewer.add(gstPanel, gc);
 
