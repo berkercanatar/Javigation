@@ -1,2 +1,0 @@
-# Turgut Alp Edis
-
