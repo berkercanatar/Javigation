@@ -1,4 +1,6 @@
-package com.javigation;
+package com.javigation.GUI;
+
+import com.javigation.DroneConnection;
 
 import javax.swing.*;
 

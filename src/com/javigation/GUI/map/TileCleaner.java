@@ -1,4 +1,4 @@
-package com.javigation;
+package com.javigation.GUI.map;
 
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.DefaultTileFactory;

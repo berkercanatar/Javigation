@@ -1,4 +1,4 @@
-package com.javigation;
+package com.javigation.GUI.map;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
 
+import com.javigation.DroneController;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.painter.AbstractPainter;
 import org.jxmapviewer.viewer.DefaultWaypointRenderer;

@@ -1,4 +1,4 @@
-package com.javigation;
+package com.javigation.GUI;
 
 //INSPIRED FROM : https://stackoverflow.com/questions/15025092/border-with-rounded-corners-transparency
 
@@ -7,7 +7,7 @@ import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.border.AbstractBorder;
 
-class RoundedBorder extends AbstractBorder {
+public class RoundedBorder extends AbstractBorder {
 
     private Color color;
     private int thickness = 4;
@@ -21,7 +21,7 @@ class RoundedBorder extends AbstractBorder {
     Color colorBg;
 
 
-    RoundedBorder(
+    public RoundedBorder(
             Color color, int thickness, int radii) {
         this.thickness = thickness;
         this.radii = radii;
@@ -38,7 +38,7 @@ class RoundedBorder extends AbstractBorder {
         insets = new Insets(pad, pad, bottomPad, pad);
     }
 
-    RoundedBorder(Color color, int thickness, int radii, Color colorBg) {
+    public RoundedBorder(Color color, int thickness, int radii, Color colorBg) {
         this(color, thickness, radii);
         this.colorBg = colorBg;
         this.customBg = true;

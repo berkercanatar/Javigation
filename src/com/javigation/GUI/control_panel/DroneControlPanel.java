@@ -1,7 +1,9 @@
-package com.javigation;
+package com.javigation.GUI.control_panel;
+
+import com.javigation.GUI.GUIManager;
+import com.javigation.GUI.RoundedBorder;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class DroneControlPanel extends JPanel {

@@ -1,4 +1,4 @@
-package com.javigation;
+package com.javigation.GUI;
 
 import javax.swing.*;
 

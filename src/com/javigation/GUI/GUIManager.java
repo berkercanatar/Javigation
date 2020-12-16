@@ -1,5 +1,9 @@
-package com.javigation;
+package com.javigation.GUI;
 
+import com.javigation.GUI.control_panel.DroneControlPanel;
+import com.javigation.GUI.map.DronePainter;
+import com.javigation.GUI.map.RoutePainter;
+import com.javigation.GUI.map.TileCleaner;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
 import org.freedesktop.gstreamer.Pipeline;
@@ -148,7 +152,7 @@ public class GUIManager {
     public static JPanel gstPanel;
 
     public static void setupGStreamer() {
-        System.setProperty("jna.library.path", "D:\\gstreamer\\1.0\\mingw_x86_64\\bin\\;D:\\gstreamer\\1.0\\mingw_x86_64\\lib\\gstreamer-1.0\\");
+        System.setProperty("jna.library.path", "C:\\gstreamer\\1.0\\mingw_x86_64\\bin\\;C:\\gstreamer\\1.0\\mingw_x86_64\\lib\\gstreamer-1.0\\");
         //System.setProperty("jna.debug_load", "true");
         Gst.init("CameraTest");
 
