@@ -17,7 +17,7 @@ _Javigation is the ground control software that controls drones which communicat
 + **Implementation:** not started!
 + **Reflections:** not yet!
 
-[Group Meetings Log](group/meetingslog.md)
+[Group Meetings Log](project/meetingslog.md)
 #### Group Members
 - [member1](project/member1_log.md)
 - [Hakan Gülcü](project/member2_log.md)
