@@ -4,9 +4,11 @@ import com.javigation.GUI.control_panel.DroneControlPanel;
 import com.javigation.GUI.map.DronePainter;
 import com.javigation.GUI.map.RoutePainter;
 import com.javigation.GUI.map.TileCleaner;
+import com.javigation.Statics;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
 import org.freedesktop.gstreamer.Pipeline;
+import org.freedesktop.gstreamer.Registry;
 import org.freedesktop.gstreamer.swing.GstVideoComponent;
 import org.jxmapviewer.GoogleMapsTileFactoryInfo;
 import org.jxmapviewer.JXMapViewer;
@@ -27,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 
@@ -152,9 +155,7 @@ public class GUIManager {
     public static JPanel gstPanel;
 
     public static void setupGStreamer() {
-        System.setProperty("jna.library.path", "C:\\gstreamer\\1.0\\mingw_x86_64\\bin\\;C:\\gstreamer\\1.0\\mingw_x86_64\\lib\\gstreamer-1.0\\");
-        //System.setProperty("jna.debug_load", "true");
-        Gst.init("CameraTest");
+        Gst.init("Javigation");
 
         vc = new GstVideoComponent();
         Bin bin = Gst.parseBinFromDescription(
