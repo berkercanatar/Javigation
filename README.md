@@ -23,7 +23,7 @@ _Javigation is the ground control software that controls drones which communicat
 - [Hakan Gülcü](project/member2_log.md)
 - [Turgut Alp Edis](project/member3_log.md)
 - [Mehmet Kaan Örnek](project/member4_log.md)
-- [member5](project/member5_log.md)
+- [member5](project/FurkanBağcı_log.md)
 
 ****
 **Instructor:** _Ozcan Ozturk_   **TA:**  _Utku Gulgec_
