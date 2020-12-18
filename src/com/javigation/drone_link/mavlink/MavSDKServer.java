@@ -1,4 +1,4 @@
-package com.javigation;
+package com.javigation.drone_link.mavlink;
 
 import com.sun.jna.Platform;
 

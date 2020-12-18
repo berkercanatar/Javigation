@@ -1,4 +1,4 @@
-package com.javigation;
+package com.javigation.drone_link.video;
 
 import javax.swing.*;
 import java.io.BufferedInputStream;
