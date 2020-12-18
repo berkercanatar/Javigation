@@ -3,6 +3,8 @@ package com.javigation.GUI.control_panel;
 import com.javigation.GUI.GUIManager;
 import com.javigation.GUI.RoundedBorder;
 import com.javigation.Utils;
+import com.javigation.flight.Command;
+import com.javigation.flight.CommandChain;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +23,7 @@ public class DroneControlPanel extends JPanel {
     }
 
     private void generateButtons() {
-        for ( DroneControlPanelButton.ButtonType buttonType : DroneControlPanelButton.ButtonType.values() ) {
+        for ( Command.CommandType buttonType : Command.CommandType.values() ) {
            add(new DroneControlPanelButton(this, buttonType));
         }
 

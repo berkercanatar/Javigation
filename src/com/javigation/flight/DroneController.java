@@ -1,4 +1,4 @@
-package com.javigation;
+package com.javigation.flight;
 
 import io.mavsdk.System;
 import io.mavsdk.telemetry.Telemetry;
@@ -39,6 +39,11 @@ public class DroneController {
         return new GeoPosition(dronePos.getLatitudeDeg(), dronePos.getLongitudeDeg());
     }
 
+    public void performCommandChain(CommandChain chain) {
+        for ( Command cmd : chain.CommandList ) {
+
+        }
+    }
 
 
 
