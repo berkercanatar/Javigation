@@ -11,6 +11,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -30,7 +31,9 @@ public class DroneControlPanelButton extends JButton {
         if ( buttonIcons == null ) {
             buttonIcons = new HashMap< Command.CommandType, ImageIcon >();
             for ( Command.CommandType type : Command.CommandType.values() ) {
-                buttonIcons.put( type , new ImageIcon( DroneControlPanelButton.class.getClassLoader().getResource("images/controlPanel/" + type.name().toLowerCase(Locale.ENGLISH) + ".png")));
+                URL iconPath = DroneControlPanelButton.class.getClassLoader().getResource("images/controlPanel/" + type.name().toLowerCase(Locale.ENGLISH) + ".png");
+                if (iconPath != null)
+                    buttonIcons.put( type , new ImageIcon( iconPath ));
             }
         }
         setBackground(GUIManager.COLOR_TRANSPARENT);

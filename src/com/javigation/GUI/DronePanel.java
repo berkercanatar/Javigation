@@ -1,6 +1,6 @@
 package com.javigation.GUI;
 
-import com.javigation.DroneConnection;
+import com.javigation.drone_link.mavlink.DroneConnection;
 
 import javax.swing.*;
 import java.awt.*;
