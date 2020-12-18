@@ -12,7 +12,7 @@ public class CommandChain {
     }
 
     public void Perform() {
-        controller.performCommandChain(this);
+        controller.performCommandChain(this, null);
     }
 
     public static CommandChain Create(DroneController controller) {

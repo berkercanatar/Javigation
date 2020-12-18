@@ -1,13 +1,17 @@
 package com.javigation.flight;
 
+import com.javigation.drone_link.mavlink.DroneConnection;
 import io.mavsdk.System;
 import io.mavsdk.telemetry.Telemetry;
 import io.reactivex.Completable;
 import org.jxmapviewer.viewer.GeoPosition;
 
+import java.lang.reflect.Method;
+
 public class DroneController {
 
     public System drone;
+    private DroneConnection connection;
 
     public DroneController() {
         drone = new System("127.0.0.1", 4790);
@@ -39,7 +43,9 @@ public class DroneController {
         return new GeoPosition(dronePos.getLatitudeDeg(), dronePos.getLongitudeDeg());
     }
 
-    public void performCommandChain(CommandChain chain) {
+    public void performCommandChain(CommandChain chain, Method doOnComplete) {
+
+        Completable commandStack;
         for ( Command cmd : chain.CommandList ) {
 
         }

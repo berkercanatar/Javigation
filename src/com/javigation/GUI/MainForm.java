@@ -1,7 +1,7 @@
 package com.javigation.GUI;
 
-import com.javigation.DroneConnection;
-import com.javigation.GStreamerDownloader;
+import com.javigation.drone_link.mavlink.DroneConnection;
+import com.javigation.drone_link.video.GStreamerDownloader;
 import com.javigation.Statics;
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Kernel32;
@@ -37,7 +37,17 @@ public class MainForm extends JFrame {
     }
 
     private static void CheckLocalFolder() {
-        JAVIGATION_FOLDER = Paths.get( System.getenv("APPDATA") , "Javigation");
+        String appDataPath = "";
+        if (Platform.isWindows())
+            appDataPath = System.getenv("APPDATA");
+        else if (Platform.isLinux())
+            appDataPath = System.getProperty("user.home");
+        else if (Platform.isMac())
+            appDataPath = System.getProperty("user.home") + "/Library/Application Support";
+        else
+            appDataPath = System.getProperty("user.dir");
+
+        JAVIGATION_FOLDER = Paths.get( appDataPath , "Javigation");
         if (!Files.isDirectory(JAVIGATION_FOLDER)) {
             try {
                 Files.createDirectory(JAVIGATION_FOLDER);
