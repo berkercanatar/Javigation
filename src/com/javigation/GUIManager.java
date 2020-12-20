@@ -1,5 +1,6 @@
 package com.javigation;
 
+import com.javigation.GUI.settings.SettingPanel;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
 import org.freedesktop.gstreamer.Pipeline;
@@ -32,6 +33,7 @@ public class GUIManager {
     private static List<DefaultTileFactory> mapFactories;
     private static WaypointPainter<Waypoint> waypointPainter;
     private static TabController tabControl;
+    private static SettingPanel settingPanel;
     private static JPanel panelMain = new JPanel();
 
     public static final Color COLOR_BLUE = new Color(46, 91, 114);
@@ -56,10 +58,12 @@ public class GUIManager {
         setupGStreamer();
         setupMapControlPanel();
 
+        settingPanel = new SettingPanel();
 
         tabControl = new TabController();
         gui.add(tabControl, BorderLayout.CENTER);
         tabControl.tabFlightPlan.add(mapViewer);
+        tabControl.tabGuiSettings.add(settingPanel);
 
 
         JPanel panel = new JPanel();
