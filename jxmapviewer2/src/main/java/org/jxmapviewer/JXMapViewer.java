@@ -115,12 +115,15 @@ public class JXMapViewer extends JPanel implements DesignMode
      * explicit setting of position via {@link setCenter}.
      */
     private boolean panningEnabled = true;
+    public long lastPaintTime;
 
     /**
      * Create a new JXMapViewer. By default it will use the EmptyTileFactory
      */
     public JXMapViewer()
     {
+        lastPaintTime = System.currentTimeMillis();
+
         factory = new EmptyTileFactory();
         // setTileFactory(new GoogleTileFactory());
 
@@ -147,6 +150,8 @@ public class JXMapViewer extends JPanel implements DesignMode
     @Override
     protected void paintComponent(Graphics g)
     {
+        lastPaintTime = System.currentTimeMillis();
+
         super.paintComponent(g);
 
         doPaintComponent(g);
