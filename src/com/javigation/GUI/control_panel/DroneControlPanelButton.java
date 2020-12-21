@@ -3,8 +3,10 @@ package com.javigation.GUI.control_panel;
 import com.javigation.GUI.GUIManager;
 import com.javigation.GUI.RoundedBorder;
 import com.javigation.Utils;
+import com.javigation.drone_link.mavlink.DroneConnection;
 import com.javigation.flight.Command;
 import com.javigation.flight.CommandChain;
+import jdk.jshell.execution.Util;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -12,9 +14,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class DroneControlPanelButton extends JButton {
 
@@ -36,6 +40,7 @@ public class DroneControlPanelButton extends JButton {
                     buttonIcons.put( type , new ImageIcon( iconPath ));
             }
         }
+        DroneConnection.Get();
         setBackground(GUIManager.COLOR_TRANSPARENT);
         setBorder(new RoundedBorder(Color.BLACK, 3, 0, Utils.colorWithAlpha(GUIManager.COLOR_BLUE, 1f)));
         setIcon( buttonIcons.get(buttonType));
@@ -47,14 +52,28 @@ public class DroneControlPanelButton extends JButton {
         
     }
 
+    private long last = 0;
+
     private void createListener() {
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (buttonType) {
                     case TAKEOFF:
+                        DroneConnection.Get().drone.getTelemetry().getPosition().sample(2, TimeUnit.SECONDS).subscribe(isArmed -> {
+                            //System.out.println("subscribe");
+                            long now = Calendar.getInstance().getTimeInMillis();
+                            System.out.println(now - last);
+                            last = now;
+                            //(isArmed ? DroneConnection.Get().controller.TakeOff() : DroneConnection.Get().controller.Arm().andThen(DroneConnection.Get().controller.TakeOff())).subscribe();
+                        });
+                        break;
                     case LAND:
+                        DroneConnection.Get().controller.Land().subscribe();
+                        break;
                     case ASCEND:
+                        GUIManager.dronePainter.addDrone(DroneConnection.Get().controller);
+                        break;
                     case DESCEND:
                     case RTL:
                     case MISSION_PAUSE:

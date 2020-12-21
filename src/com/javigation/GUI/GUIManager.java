@@ -35,11 +35,12 @@ import java.util.List;
 
 public class GUIManager {
 
-    private static JXMapViewer mapViewer;
+    public static JXMapViewer mapViewer;
     private static List<DefaultTileFactory> mapFactories;
     private static WaypointPainter<Waypoint> waypointPainter;
     private static TabController tabControl;
     private static JPanel panelMain = new JPanel();
+    public static DronePainter dronePainter;
 
     public static final Color COLOR_BLUE = new Color(46, 91, 114);
     public static final Color COLOR_PURPLE = new Color(75, 45, 109);
@@ -211,8 +212,6 @@ public class GUIManager {
         mapViewer.addMouseMotionListener(mia);
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
 
-
-
         TileCleaner tileCleaner = new TileCleaner(mapViewer, mapFactories);
         Thread tileCleanerThread = new Thread(tileCleaner);
         tileCleanerThread.start();
@@ -243,10 +242,26 @@ public class GUIManager {
         waypointPainter = new WaypointPainter<Waypoint>();
         waypointPainter.setWaypoints(waypoints);
 
-        DronePainter dronePainter = new DronePainter();
+        dronePainter = new DronePainter();
 
         CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(routePainter, waypointPainter, dronePainter);
         mapViewer.setOverlayPainter(painter);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int repaint_interval_ms = 1000 / Statics.MAP_FPS;
+                while (true) {
+                    if ( System.currentTimeMillis() - mapViewer.lastPaintTime > (repaint_interval_ms - 10) )
+                        mapViewer.repaint();
+                    try {
+                        Thread.sleep(repaint_interval_ms);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
 

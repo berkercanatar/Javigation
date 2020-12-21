@@ -80,7 +80,7 @@ public class DronePainter extends AbstractPainter<JXMapViewer>
 
     public void paintDrone(Graphics2D g, JXMapViewer map, DroneController drone, BufferedImage droneIcon)
     {
-        Point2D point = map.getTileFactory().geoToPixel(drone.GetGeoPosition(), map.getZoom());
+        Point2D point = map.getTileFactory().geoToPixel(drone.Telemetry.GeoPosition(), map.getZoom());
         int x = (int)point.getX() -droneIcon.getWidth() / 2;
         int y = (int)point.getY() -droneIcon.getHeight() / 2;
 
