@@ -1,6 +1,8 @@
 package com.javigation.flight;
 
+import com.javigation.GUI.GUIManager;
 import com.javigation.drone_link.mavlink.DroneConnection;
+import com.javigation.drone_link.mavlink.DroneTelemetry;
 import io.mavsdk.System;
 import io.mavsdk.telemetry.Telemetry;
 import io.reactivex.Completable;
@@ -12,9 +14,22 @@ public class DroneController {
 
     public System drone;
     private DroneConnection connection;
+    public DroneTelemetry Telemetry;
 
-    public DroneController() {
-        drone = new System("127.0.0.1", 4790);
+    public DroneController(DroneConnection connection) {
+        this.connection = connection;
+        connection.controller = this;
+        drone = new System("127.0.0.1", connection.MavSDKPort);
+        GUIManager.dronePainter.addDrone(this);
+    }
+
+    public void SubscribeForTelemetry() {
+        drone.getTelemetry().getPosition().subscribe( position -> {
+            synchronized (Telemetry) {
+                Telemetry.Position = position;
+                //GUIManager.mapViewer.repaint();
+            }
+        });
     }
 
     public Completable Arm(){
