@@ -1,6 +1,7 @@
 package com.javigation.drone_link.mavlink;
 
 import com.javigation.Utils;
+import com.javigation.flight.DroneController;
 import io.mavsdk.System;
 import java.util.ArrayList;
 
@@ -10,6 +11,7 @@ public class DroneConnection implements MavSDKServerReadyListener {
 
     public MavSDKServer server;
     public System drone;
+    public DroneController controller;
     public int MavlinkPort;
     public int MavSDKPort;
     public int VideoPort;
@@ -29,6 +31,10 @@ public class DroneConnection implements MavSDKServerReadyListener {
         MavSDKPort = localMavSDKPort;
         VideoPort = videoPort;
         server = new MavSDKServer(this, incomingMavlinkPort, localMavSDKPort);
+    }
+
+    public static DroneConnection Get() {
+        return Get(MAVLINK_BASE_PORT);
     }
 
     public static DroneConnection Get(int mavlinkPort) {
@@ -58,6 +64,9 @@ public class DroneConnection implements MavSDKServerReadyListener {
         if (connection.isDroneConnected)
             return;
         connection.isDroneConnected = true;
+        connection.controller = new DroneController(connection);
+        connection.controller.Telemetry = new DroneTelemetry(connection);
+        connection.controller.SubscribeForTelemetry();
 
         java.lang.System.out.println("CONNECTED " + connection.MavlinkPort);
     }
