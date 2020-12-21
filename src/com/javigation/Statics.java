@@ -12,4 +12,6 @@ public final class Statics {
 
     public static Path GSTREAMER_ROOT;
 
+    public static final int MAP_FPS = 10;
+
 }
