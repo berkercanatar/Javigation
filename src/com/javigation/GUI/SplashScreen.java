@@ -1,11 +1,14 @@
 package com.javigation.GUI;
 
+
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class SplashScreen {
     JFrame frame;
-    JLabel image = new JLabel();
+    URL iconPath = this.getClass().getClassLoader().getResource("images/splashScreen/splashScreen.png");
+    JLabel image = new JLabel( new ImageIcon(iconPath));
     JProgressBar progressBar = new JProgressBar();
 
     public SplashScreen(){
