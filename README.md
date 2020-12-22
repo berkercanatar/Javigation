@@ -12,18 +12,19 @@ _Javigation is the ground control software that controls drones which communicat
 ## Project Status
 + **Group/project Selection:** completed (2/10/2020)
 + **Requirements:** completed (25/10/2020)
-+ **UI Design:** completed (24/11/20)
++ **UI Design:** completed (24/11/2020)
 + **Detailed Design:** in progress
-+ **Implementation:** not started!
++ **Implementation:** tested using simulation (pass) (22/12/2020)
 + **Reflections:** not yet!
++ **TODO:** test with real drones
 
 [Group Meetings Log](project/meetingslog.md)
 #### Group Members
-- [member1](project/berkercanatar_log.md)
+- [Berker Canatar](project/berkercanatar_log.md)
 - [Hakan Gülcü](project/member2_log.md)
 - [Turgut Alp Edis](project/member3_log.md)
 - [Mehmet Kaan Örnek](project/member4_log.md)
-- [member5](project/FurkanBağcı_log.md)
+- [Furkan Bağcı](project/FurkanBağcı_log.md)
 
 ****
 **Instructor:** _Ozcan Ozturk_   **TA:**  _Utku Gulgec_
