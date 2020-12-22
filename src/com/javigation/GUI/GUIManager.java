@@ -36,8 +36,13 @@ public class GUIManager {
     private static List<DefaultTileFactory> mapFactories;
     private static WaypointPainter<Waypoint> waypointPainter;
     private static TabController tabControl;
-    private static JPanel panelMain = new JPanel();
+    private static DroneControlPanel pnl;
+    public static JPanel pnl1;
+    private static JPanel panelMain, pnl2, pnl3;
     public static DronePainter dronePainter;
+    public static boolean isPanelChanged;
+    public static CardLayout cardLayout;
+    private static GridBagConstraints gcDronePanel;
 
     public static final Color COLOR_BLUE = new Color(46, 91, 114);
     public static final Color COLOR_PURPLE = new Color(75, 45, 109);
@@ -56,15 +61,16 @@ public class GUIManager {
             e.printStackTrace();
         }
 
+        createMainPanel();
         setupMap();
 
         setupGStreamer();
         setupMapControlPanel();
-
+        createReversedPanel();
 
         tabControl = new TabController();
         gui.add(tabControl, BorderLayout.CENTER);
-        tabControl.tabFlightPlan.add(mapViewer);
+        tabControl.tabFlightPlan.add(panelMain);
 
 
         JPanel panel = new JPanel();
@@ -133,9 +139,59 @@ public class GUIManager {
 
     }
 
+    private static void createMainPanel() {
+        panelMain = new JPanel();
+        cardLayout = new CardLayout();
+        panelMain.setLayout( cardLayout );
+    }
+
+    private static void createReversedPanel() {
+
+        pnl1 = new JPanel();
+        pnl2 = new JPanel();
+        pnl3 = new JPanel();
+        pnl3.setBackground( COLOR_BLUE );
+        pnl3.setLayout( new BorderLayout() );
+        pnl2.setLayout( new GridLayout(2,1));
+        pnl1.setLayout( new BorderLayout() );
+        pnl1.setBackground( Color.BLUE );
+        pnl1.add(pnl2, BorderLayout.EAST);
+        panelMain.add("b", pnl1);
+
+        pnl3.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                mapViewer.add(pnl,gcDronePanel);
+                panelMain.add(mapViewer);
+                cardLayout.next(panelMain);
+                pnl3.remove(mapViewer);
+                pnl2.remove(pnl);
+                pnl1.remove(vc);
+                gstPanel.add(vc, BorderLayout.CENTER);
+                isPanelChanged = false;
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) { }
+
+            @Override
+            public void mouseReleased(MouseEvent e) { }
+
+            @Override
+            public void mouseEntered(MouseEvent e) { }
+
+            @Override
+            public void mouseExited(MouseEvent e) { }
+        });
+
+    }
+
+
+
     private static void setupMapControlPanel() {
 
-        DroneControlPanel pnl = new DroneControlPanel();
+        pnl = new DroneControlPanel();
         pnl.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -152,15 +208,19 @@ public class GUIManager {
             @Override
             public void mouseExited(MouseEvent e) {}
         });
-        GridBagConstraints gc = new GridBagConstraints();
-        gc.anchor = GridBagConstraints.EAST;
-        gc.weightx = 1.0;
-        gc.weighty = 1.0;
-        gc.gridx = 1;
-        gc.gridy = 0;
+        adjustConstraints();
+        mapViewer.add(pnl, gcDronePanel);
+    }
+
+    private static void adjustConstraints() {
         int inset = 30;
-        gc.insets = new Insets(-350, inset, inset, inset);
-        mapViewer.add(pnl, gc);
+        gcDronePanel = new GridBagConstraints();
+        gcDronePanel.anchor = GridBagConstraints.EAST;
+        gcDronePanel.weightx = 1.0;
+        gcDronePanel.weighty = 1.0;
+        gcDronePanel.gridx = 1;
+        gcDronePanel.gridy = 0;
+        gcDronePanel.insets = new Insets(-350, inset, inset, inset);
     }
 
     public static GstVideoComponent vc;
@@ -184,7 +244,19 @@ public class GUIManager {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("Clicked cam");
+                JPanel pnl4 = new JPanel();
+                pnl4.setBackground( Color.red );
+                mapViewer.remove(pnl);
+                panelMain.remove(mapViewer);
+                pnl1.add(vc, BorderLayout.CENTER);
+                pnl3.add(mapViewer, BorderLayout.CENTER);
+                pnl2.add(pnl);
+                pnl2.add(pnl3);
+                cardLayout.next(panelMain);
 
+                gstPanel.remove(vc);
+
+                isPanelChanged = true;
             }
 
             @Override
@@ -206,7 +278,7 @@ public class GUIManager {
         gstPanel.setPreferredSize(new Dimension(height*16/9 + thickness*2, height+thickness*2));
         gstPanel.setBorder(new LineBorder(Color.RED, thickness));
 
-        mapViewer.setLayout(new GridBagLayout());
+
         GridBagConstraints gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.SOUTHEAST;
         gc.weightx = 1.0;
@@ -293,7 +365,8 @@ public class GUIManager {
                 }
             }
         }).start();
+        mapViewer.setLayout( new GridBagLayout() );
+        panelMain.add( "a", mapViewer );
     }
-
 
 }
