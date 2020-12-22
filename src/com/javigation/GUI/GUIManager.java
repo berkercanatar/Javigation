@@ -43,8 +43,6 @@ public class GUIManager {
     public static final Color COLOR_PURPLE = new Color(75, 45, 109);
     public static final Color COLOR_TRANSPARENT = new Color(0,0,0,0);
 
-    public static Containers containers;
-
 
     public static void setupGUI(JFrame gui) {
         gui.setIconImage(new ImageIcon(GUIManager.class.getClassLoader().getResource("images/javigation.png")).getImage());
@@ -58,20 +56,16 @@ public class GUIManager {
             e.printStackTrace();
         }
 
-
-        tabControl = new TabController();
-        gui.add(tabControl, BorderLayout.CENTER);
-
         setupMap();
+
         setupGStreamer();
         setupMapControlPanel();
 
-        containers = new Containers(mapViewer, vc);
 
-        //tabControl.tabFlightPlan.add(mapViewer);
+        tabControl = new TabController();
+        gui.add(tabControl, BorderLayout.CENTER);
+        tabControl.tabFlightPlan.add(mapViewer);
 
-
-        tabControl.tabFlightPlan.add(containers.MainContainer);
 
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Select a map type: ");
@@ -142,14 +136,28 @@ public class GUIManager {
     private static void setupMapControlPanel() {
 
         DroneControlPanel pnl = new DroneControlPanel();
+        pnl.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {}
 
-        mapViewer.setLayout(new GridBagLayout());
+            @Override
+            public void mousePressed(MouseEvent e) {}
+
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+
+            @Override
+            public void mouseExited(MouseEvent e) {}
+        });
         GridBagConstraints gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.EAST;
         gc.weightx = 1.0;
         gc.weighty = 1.0;
         gc.gridx = 1;
-        gc.gridy = 1;
+        gc.gridy = 0;
         int inset = 30;
         gc.insets = new Insets(-350, inset, inset, inset);
         mapViewer.add(pnl, gc);
@@ -170,36 +178,47 @@ public class GUIManager {
         pipe.addMany(bin, vc.getElement());
         Pipeline.linkMany(bin, vc.getElement());
 
+        gstPanel = new JPanel(new BorderLayout());
+        gstPanel.add(vc, BorderLayout.CENTER);
+        gstPanel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Clicked cam");
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) { }
+
+            @Override
+            public void mouseReleased(MouseEvent e) { }
+
+            @Override
+            public void mouseEntered(MouseEvent e) { }
+
+            @Override
+            public void mouseExited(MouseEvent e) { }
+        });
+
+        int thickness = 3;
+        int height = 234;
+        int inset = 30;
+        gstPanel.setPreferredSize(new Dimension(height*16/9 + thickness*2, height+thickness*2));
+        gstPanel.setBorder(new LineBorder(Color.RED, thickness));
+
+        mapViewer.setLayout(new GridBagLayout());
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.anchor = GridBagConstraints.SOUTHEAST;
+        gc.weightx = 1.0;
+        gc.weighty = 1.0;
+        gc.gridx = 1;
+        gc.gridy = 0;
+        gc.insets = new Insets(inset, inset, inset, inset);
+        mapViewer.add(gstPanel, gc);
+
+        //mapViewer.revalidate();
 
         pipe.play();
-
-//        gstPanel = new JPanel(new BorderLayout());
-//        gstPanel.add(vc, BorderLayout.CENTER);
-//
-//        int thickness = 3;
-//        int height = 234;
-//        int inset = 30;
-//        gstPanel.setPreferredSize(new Dimension(height*16/9 + thickness*2, height+thickness*2));
-//        gstPanel.setBorder(new LineBorder(Color.RED, thickness));
-//
-//        mapViewer.setLayout(new GridBagLayout());
-//        GridBagConstraints gc = new GridBagConstraints();
-//        gc.anchor = GridBagConstraints.SOUTHEAST;
-//        gc.weightx = 1.0;
-//        gc.weighty = 1.0;
-//        gc.gridx = 1;
-//        gc.gridy = 0;
-//        gc.insets = new Insets(inset, inset, inset, inset);
-//        mapViewer.add(gstPanel, gc);
-//
-//        gstPanel.setLayout(new OverlayLayout(gstPanel));
-//        //mapViewer.revalidate();
-
-    }
-
-    public static void toggleOverMapTools(boolean show) {
-        for (Component c : mapViewer.getComponents())
-            c.setVisible(show);
     }
 
     public static void setupMap() {
