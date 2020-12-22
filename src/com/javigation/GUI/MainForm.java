@@ -1,5 +1,6 @@
 package com.javigation.GUI;
 
+import com.javigation.Utils;
 import com.javigation.drone_link.mavlink.DroneConnection;
 import com.javigation.drone_link.video.GStreamerDownloader;
 import com.javigation.Statics;
@@ -24,7 +25,12 @@ public class MainForm extends JFrame {
 
 
     public static void main(String[] args) {
-        new SplashScreen();
+
+        boolean isDebugging = Utils.runningFromIntelliJ();
+
+        if (!isDebugging) //Skip splash screen when debugging
+            new SplashScreen();
+
         CheckLocalFolder();
         if (Platform.isWindows())
             CheckGStreamer();

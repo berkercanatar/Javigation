@@ -33,5 +33,11 @@ public final class Utils {
     public static float Map( float value, float sourceFrom, float sourceTo, float targetFrom, float targetTo) {
         return ((value - sourceFrom) / (sourceTo - sourceFrom) * (targetTo - targetFrom) + targetFrom);
     }
+
+    public static boolean runningFromIntelliJ()
+    {
+        String classPath = System.getProperty("java.class.path");
+        return classPath.contains("idea_rt.jar");
+    }
     
 }
