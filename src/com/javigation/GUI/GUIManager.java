@@ -143,12 +143,13 @@ public class GUIManager {
 
         DroneControlPanel pnl = new DroneControlPanel();
 
+        mapViewer.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.EAST;
         gc.weightx = 1.0;
         gc.weighty = 1.0;
         gc.gridx = 1;
-        gc.gridy = 0;
+        gc.gridy = 1;
         int inset = 30;
         gc.insets = new Insets(-350, inset, inset, inset);
         mapViewer.add(pnl, gc);
