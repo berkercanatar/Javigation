@@ -72,8 +72,9 @@ public class TabController extends JPanel {
                         GUIManager.vc.getParent().remove(GUIManager.vc);
                         tabCameraView.add(GUIManager.vc);
                     } else if ( pnl == tabFlightPlan ) {
-                        GUIManager.vc.getParent().remove(GUIManager.vc);
-                        GUIManager.gstPanel.add(GUIManager.vc, BorderLayout.CENTER);
+                        //GUIManager.vc.getParent().remove(GUIManager.vc);
+                        //GUIManager.gstPanel.add(GUIManager.vc, BorderLayout.CENTER);
+                        GUIManager.containers.refreshCameraContainer();
                     }
 
                     tabControl.setSelectedComponent(pnl);
