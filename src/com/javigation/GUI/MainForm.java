@@ -24,6 +24,7 @@ public class MainForm extends JFrame {
 
 
     public static void main(String[] args) {
+        new SplashScreen();
         CheckLocalFolder();
         if (Platform.isWindows())
             CheckGStreamer();
