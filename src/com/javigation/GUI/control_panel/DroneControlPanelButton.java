@@ -29,6 +29,7 @@ public class DroneControlPanelButton extends JButton {
 
     public DroneControlPanelButton(DroneControlPanel droneControlPanel, Command.CommandType buttonType) {
         setFocusPainted(false);
+        setRolloverEnabled(false);
         this.droneControlPanel = droneControlPanel;
         this.buttonType = buttonType;
         setIgnoreRepaint(true);

@@ -68,7 +68,7 @@ public class DronePainter extends AbstractPainter<JXMapViewer>
         for (Map.Entry<DroneController, Integer> drone : drones.entrySet())
         {
             try {
-                if (drone.getKey().connection.isDroneConnected)
+                if (drone.getKey() != null && drone.getKey().connection.isDroneConnected)
                     paintDrone(g, map, drone.getKey(), droneIcons.get(drone.getValue()));
             } catch (Exception ex) {
                 ex.printStackTrace();
