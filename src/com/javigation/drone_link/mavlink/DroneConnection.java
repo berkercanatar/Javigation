@@ -20,7 +20,7 @@ public class DroneConnection implements MavSDKServerReadyListener {
     private static final int MAVSDK_SERVER_BASE_PORT = 4790;
     private static final int VIDEO_BASE_PORT = 5600;
 
-    private boolean isDroneConnected = false;
+    public boolean isDroneConnected = false;
 
     private DroneConnection(int incomingMavlinkPort) {
         this(incomingMavlinkPort, MAVSDK_SERVER_BASE_PORT + (incomingMavlinkPort - MAVLINK_BASE_PORT), VIDEO_BASE_PORT + (incomingMavlinkPort - MAVLINK_BASE_PORT));

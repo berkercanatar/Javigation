@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 public class DroneController {
 
     public System drone;
-    private DroneConnection connection;
+    public DroneConnection connection;
     public DroneTelemetry Telemetry;
 
     public DroneController(DroneConnection connection) {
