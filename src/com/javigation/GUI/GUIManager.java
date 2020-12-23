@@ -151,7 +151,7 @@ public class GUIManager {
         gc.gridx = 1;
         gc.gridy = 1;
         int inset = 30;
-        gc.insets = new Insets(-350, inset, inset, inset);
+        gc.insets = new Insets(50, inset, inset, inset);
         mapViewer.add(pnl, gc);
     }
 

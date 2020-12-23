@@ -46,7 +46,13 @@ public class DroneControlPanelButton extends JButton {
         setIcon( buttonIcons.get(buttonType));
         setHorizontalTextPosition(JLabel.CENTER);
         setVerticalTextPosition(JLabel.BOTTOM);
+
+        setFont(new Font("TimesRoman", Font.BOLD, 7));
+
         setText(buttonType.name());
+
+        setPreferredSize( new Dimension( buttonIcons.get(buttonType).getIconWidth(), (buttonIcons.get(buttonType).getIconHeight())+20 ));
+
 
         createListener();
         
