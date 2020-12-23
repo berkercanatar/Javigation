@@ -1,5 +1,6 @@
 package com.javigation.GUI;
 
+import com.javigation.Statics;
 import org.freedesktop.gstreamer.swing.GstVideoComponent;
 import org.jxmapviewer.JXMapViewer;
 
@@ -68,7 +69,7 @@ public class Containers {
         previewOverlay.setAlignmentX(1);
         previewOverlay.setAlignmentY(1);
         previewOverlay.setOpaque(false);
-        previewOverlay.setBackground(new Color(200, 200, 0,120));
+        previewOverlay.setBackground(GUIManager.COLOR_TRANSPARENT);
         PreviewContainer.add(previewOverlay, JLayeredPane.POPUP_LAYER);
 
 
