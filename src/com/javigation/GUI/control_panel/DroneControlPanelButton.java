@@ -28,9 +28,13 @@ public class DroneControlPanelButton extends JButton {
     private static Map<Command.CommandType, ImageIcon> buttonIcons;
 
     public DroneControlPanelButton(DroneControlPanel droneControlPanel, Command.CommandType buttonType) {
-
+        setFocusPainted(false);
         this.droneControlPanel = droneControlPanel;
         this.buttonType = buttonType;
+        setIgnoreRepaint(true);
+        setOpaque(false);
+        setContentAreaFilled(false);
+
 
         if ( buttonIcons == null ) {
             buttonIcons = new HashMap< Command.CommandType, ImageIcon >();
@@ -41,17 +45,13 @@ public class DroneControlPanelButton extends JButton {
             }
         }
         DroneConnection.Get();
-        setBackground(GUIManager.COLOR_TRANSPARENT);
-        setBorder(new RoundedBorder(Color.BLACK, 3, 0, Utils.colorWithAlpha(GUIManager.COLOR_BLUE, 1f)));
+
+        setPreferredSize( new Dimension( buttonIcons.get(buttonType).getIconWidth() + 10, buttonIcons.get(buttonType).getIconHeight() + 10));
+        setMinimumSize( getPreferredSize() );
+        setMaximumSize( getPreferredSize() );
+
+        setBorder(new RoundedBorder(Color.BLACK, 2, 10, Utils.colorWithAlpha(Color.BLACK, 0.80f)));
         setIcon( buttonIcons.get(buttonType));
-        setHorizontalTextPosition(JLabel.CENTER);
-        setVerticalTextPosition(JLabel.BOTTOM);
-
-        setFont(new Font("TimesRoman", Font.BOLD, 7));
-
-        setText(buttonType.name());
-
-        setPreferredSize( new Dimension( buttonIcons.get(buttonType).getIconWidth(), (buttonIcons.get(buttonType).getIconHeight())+20 ));
 
 
         createListener();
