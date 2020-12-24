@@ -6,19 +6,23 @@ import com.javigation.drone_link.mavlink.DroneTelemetry;
 import io.mavsdk.System;
 import io.mavsdk.telemetry.Telemetry;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 public class DroneController {
 
     public System drone;
     public DroneConnection connection;
     public DroneTelemetry Telemetry;
+    public StateMachine stateMachine;
 
     public DroneController(DroneConnection connection) {
         this.connection = connection;
         connection.controller = this;
+        stateMachine = new StateMachine(this);
         drone = new System("127.0.0.1", connection.MavSDKPort);
         GUIManager.dronePainter.addDrone(this);
     }
@@ -60,10 +64,18 @@ public class DroneController {
 
     public void performCommandChain(CommandChain chain, Method doOnComplete) {
 
-        Completable commandStack;
+        Completable commandStack = Completable.timer(0, TimeUnit.MILLISECONDS);
         for ( Command cmd : chain.CommandList ) {
-
+            switch (cmd.commandType) {
+                case TAKEOFF:
+                    commandStack = commandStack.andThen(drone.getAction().setTakeoffAltitude(cmd.getArg("alt")))
+                            .andThen(drone.getAction().takeoff());
+                    if (!drone.getTelemetry().getArmed().blockingFirst())
+                        commandStack = commandStack.andThen(drone.getAction().arm());
+                    break;
+            }
         }
+        commandStack.subscribe();
     }
 
 
