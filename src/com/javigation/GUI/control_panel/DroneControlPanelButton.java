@@ -30,6 +30,8 @@ public class DroneControlPanelButton extends JButton {
     public DroneControlPanelButton(DroneControlPanel droneControlPanel, Command.CommandType buttonType) {
         setFocusPainted(false);
         setRolloverEnabled(false);
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        setIgnoreRepaint(true);
         this.droneControlPanel = droneControlPanel;
         this.buttonType = buttonType;
         setIgnoreRepaint(true);
@@ -79,7 +81,6 @@ public class DroneControlPanelButton extends JButton {
                         DroneConnection.Get().controller.Land().subscribe();
                         break;
                     case ASCEND:
-                        GUIManager.dronePainter.addDrone(DroneConnection.Get().controller);
                         break;
                     case DESCEND:
                     case RTL:

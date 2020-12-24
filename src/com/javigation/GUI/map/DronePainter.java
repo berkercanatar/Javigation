@@ -48,6 +48,14 @@ public class DronePainter extends AbstractPainter<JXMapViewer>
 
     }
 
+    public void removeDrone(DroneController drone)
+    {
+        if (drones.containsKey(drone)) {
+            this.drones.remove(drone);
+        }
+
+    }
+
     private int nextIcon() {
         int nextIconNumber = drones.size() % ICON_COUNT;
         while( drones.size() < ICON_COUNT && drones.containsValue(nextIconNumber) ) {
