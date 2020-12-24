@@ -3,7 +3,6 @@ package com.javigation.GUI;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -33,7 +32,6 @@ public class TabController extends JPanel {
     public JPanel tabCameraView = new JPanel(new BorderLayout());
     public JPanel tabDroneSettings = new JPanel(new BorderLayout());
     public JPanel tabTutorial = new JPanel(new BorderLayout());
-    public TutorialPanel tutorial = new TutorialPanel();
 
     public TabController() {
         setLayout(new BorderLayout());
@@ -73,35 +71,18 @@ public class TabController extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
-                    if( pnl == tabTutorial){
-                        lbl.setBackground(TAB_SELECTED_COLOR);
-                        //JOptionPane help = new JOptionPane(null);
-                        //help.add(tutorial);
-
-                        UIManager.put("OptionPane.border",new LineBorder(TAB_BAR_COLOR));
-                        UIManager.put("OptionPane.okButtonText","Done");
-                        //JDialog dialog = help.createDialog(null,"Help");
-                        //((Frame)dialog.getParent()).setIconImage(new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/tutorial.png")).getImage());
-                        //dialog.setResizable(true);
-                        //dialog.setVisible(true);
-
-                        JOptionPane.showMessageDialog(null,tutorial,"Help",JOptionPane.PLAIN_MESSAGE);
-                        lbl.setBackground(TAB_UNSELECTED_COLOR);
+                    if ( pnl == tabCameraView ) {
+                        GUIManager.vc.getParent().remove(GUIManager.vc);
+                        tabCameraView.add(GUIManager.vc);
+                    } else if ( pnl == tabFlightPlan ) {
+                        //GUIManager.vc.getParent().remove(GUIManager.vc);
+                        //GUIManager.gstPanel.add(GUIManager.vc, BorderLayout.CENTER);
+                        GUIManager.containers.refreshCameraContainer();
                     }
-                    else {
-                        if (pnl == tabCameraView) {
-                            GUIManager.vc.getParent().remove(GUIManager.vc);
-                            tabCameraView.add(GUIManager.vc);
-                        } else if (pnl == tabFlightPlan) {
-                            //GUIManager.vc.getParent().remove(GUIManager.vc);
-                            //GUIManager.gstPanel.add(GUIManager.vc, BorderLayout.CENTER);
-                            GUIManager.containers.refreshCameraContainer();
-                        }
 
-                        tabControl.setSelectedComponent(pnl);
-                        resetTabColors();
-                        lbl.setBackground(TAB_SELECTED_COLOR);
-                    }
+                    tabControl.setSelectedComponent(pnl);
+                    resetTabColors();
+                    lbl.setBackground(TAB_SELECTED_COLOR);
                 }
             });
             tabBarTabsPanel.add(lbl, gridBagConst);
