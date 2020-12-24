@@ -8,8 +8,8 @@ On this page I will keep a weekly record of what I have done for the CS102 group
 ### ~ 17/12/2020 ~
 This week I started to work on SwarmControlPanel class and search for SwarmControl algorithms.
 
-### ~ date ~
-This week I helped abc brainstorm ideas for...
+### ~ 21/12/2020 ~
+This week I tried to design the switch between camera view and map. I completed with one bug and this bug has resolved by Berker. In 23/12/2020, Hakan and I started to work on the formation of drones. We completed the regular formation of drones but not yet resolved the motion of drones.
 
 ### ~ date ~
 blah, blah, blah...
