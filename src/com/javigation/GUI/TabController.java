@@ -18,6 +18,7 @@ public class TabController extends JPanel {
     private JPanel tabBarTabsPanel = new JPanel(new GridBagLayout());//new FlowLayout(FlowLayout.LEADING, 5, 0));
     private JPanel tabBarStatusPanel = new JPanel(new BorderLayout());
 
+
     private static final Color TAB_SELECTED_COLOR = new Color(37, 101, 74);
     private static final Color TAB_UNSELECTED_COLOR = new Color(21, 53, 68);
     private static final Color TAB_TITLE_COLOR = Color.WHITE;
@@ -30,6 +31,7 @@ public class TabController extends JPanel {
     public JPanel tabFlightPlan = new JPanel(new BorderLayout());
     public JPanel tabCameraView = new JPanel(new BorderLayout());
     public JPanel tabDroneSettings = new JPanel(new BorderLayout());
+    public JPanel tabTutorial = new JPanel(new BorderLayout());
 
     public TabController() {
         setLayout(new BorderLayout());
@@ -49,6 +51,7 @@ public class TabController extends JPanel {
         panelToHeader.put(tabFlightPlan, new JLabel("Flight Plan", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/flightplan.png")), JLabel.LEFT));
         panelToHeader.put(tabCameraView, new JLabel("Camera View", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/camera.png")), JLabel.LEFT));
         panelToHeader.put(tabDroneSettings, new JLabel("Drone Settings", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/dronesettings.png")), JLabel.LEFT));
+        panelToHeader.put(tabTutorial, new JLabel( new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/tutorial.png")),JLabel.LEFT));
 
         Border border = new RoundedBorder(Color.BLACK,1,16);
         GridBagConstraints gridBagConst = new GridBagConstraints();
