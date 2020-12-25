@@ -4,6 +4,8 @@ import com.javigation.GUI.GUIManager;
 import com.javigation.GUI.RoundedBorder;
 import com.javigation.Utils;
 import com.javigation.flight.Command;
+import com.javigation.flight.StateChangedListener;
+import com.javigation.flight.StateMachine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +15,8 @@ public class AutopilotControlPanel extends JPanel {
     private static final int PANEL_WIDTH = 180;
     private static final int PANEL_HEIGHT = 350;
 
+    public static AutopilotControlPanel INSTANCE;
+
     public AutopilotControlPanel() {
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setLayout(new FlowLayout( FlowLayout.LEFT));
@@ -20,7 +24,7 @@ public class AutopilotControlPanel extends JPanel {
         setBorder(new RoundedBorder(Color.BLACK, 5, 20, Utils.colorWithAlpha(GUIManager.COLOR_PURPLE, 0.20f)));
 
         generateButtons();
-
+        INSTANCE = this;
     }
     private void generateButtons() {
 
@@ -41,4 +45,14 @@ public class AutopilotControlPanel extends JPanel {
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.RTL, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanRTL()));
         add(rtl);
     }
+
+    public void OnStateChanged(StateMachine.StateTypes changedType, boolean isAdded) {
+        for ( Component comp : getComponents() ) {
+            if ( comp instanceof AutopilotControlPanelButton ) {
+                AutopilotControlPanelButton button = (AutopilotControlPanelButton) comp;
+                ((AutopilotControlPanelButton) comp).OnStateChanged(changedType, isAdded);
+            }
+        }
+    }
+
 }
