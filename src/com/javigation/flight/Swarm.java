@@ -1,14 +1,7 @@
 package com.javigation.flight;
 
-import com.javigation.Statics;
-import com.javigation.drone_link.mavlink.*;
-import com.javigation.flight.DroneController;
+import com.javigation.drone_link.DroneConnection;
 import io.mavsdk.telemetry.Telemetry;
-import io.reactivex.Flowable;
-import org.jxmapviewer.viewer.GeoPosition;
-
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Create Swarm Object +

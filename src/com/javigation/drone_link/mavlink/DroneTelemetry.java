@@ -1,5 +1,6 @@
 package com.javigation.drone_link.mavlink;
 
+import com.javigation.drone_link.DroneConnection;
 import com.javigation.flight.DroneController;
 import io.mavsdk.System;
 import io.mavsdk.telemetry.Telemetry;

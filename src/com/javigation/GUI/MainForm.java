@@ -1,10 +1,9 @@
 package com.javigation.GUI;
 
 import com.javigation.Utils;
-import com.javigation.drone_link.mavlink.DroneConnection;
+import com.javigation.drone_link.DroneConnection;
 import com.javigation.drone_link.video.GStreamerDownloader;
 import com.javigation.Statics;
-import com.javigation.flight.StateMachine;
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Kernel32;
 

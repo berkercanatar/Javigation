@@ -1,11 +1,10 @@
 package com.javigation.flight;
 
-import com.javigation.drone_link.mavlink.DroneConnection;
+import com.javigation.drone_link.DroneConnection;
 import io.mavsdk.telemetry.Telemetry;
 import io.reactivex.Flowable;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class Follower {
 

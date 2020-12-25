@@ -1,12 +1,11 @@
 package com.javigation.flight;
 
 import com.javigation.GUI.GUIManager;
-import com.javigation.drone_link.mavlink.DroneConnection;
+import com.javigation.drone_link.DroneConnection;
 import com.javigation.drone_link.mavlink.DroneTelemetry;
 import io.mavsdk.System;
 import io.mavsdk.telemetry.Telemetry;
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import java.lang.reflect.Method;

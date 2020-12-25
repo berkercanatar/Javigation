@@ -31,7 +31,7 @@ public class StateMachine {
         LANDING,
         FOLLOWER,
         LEADER,
-        IN_RTL
+        RTL_RUNNING
     }
 
     public StateMachine(DroneController controller) {
@@ -152,7 +152,7 @@ public class StateMachine {
                 ) &&
                 no(
                         StateTypes.FAILSAFE_ENABLED,
-                        StateTypes.IN_RTL
+                        StateTypes.RTL_RUNNING
                 );
     }
 

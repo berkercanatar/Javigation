@@ -1,13 +1,13 @@
-package com.javigation.drone_link.mavlink;
+package com.javigation.drone_link;
 
 import com.javigation.GUI.GUIManager;
 import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.Utils;
+import com.javigation.drone_link.mavlink.DroneTelemetry;
+import com.javigation.drone_link.mavlink.MavSDKServer;
+import com.javigation.drone_link.mavlink.MavSDKServerReadyListener;
 import com.javigation.flight.DroneController;
-import com.javigation.flight.StateMachine;
 import io.mavsdk.System;
-import io.mavsdk.telemetry.Telemetry;
-import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 
