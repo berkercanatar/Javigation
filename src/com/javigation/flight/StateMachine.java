@@ -31,6 +31,7 @@ public class StateMachine {
         LANDING,
         FOLLOWER,
         LEADER,
+        IN_RTL
     }
 
     public StateMachine(DroneController controller) {
@@ -68,6 +69,12 @@ public class StateMachine {
             case ON_GROUND:
                 ClearState(StateTypes.IN_AIR);
                 break;
+            case MISSION_PAUSED:
+                ClearState(StateTypes.MISSON_RUNNING);
+                break;
+            case MISSON_RUNNING:
+                ClearState(StateTypes.MISSION_PAUSED);
+                break;
         }
     }
 
@@ -90,7 +97,8 @@ public class StateMachine {
                         StateTypes.ON_GROUND
                 ) &&
                 no(
-                        StateTypes.FAILSAFE_ENABLED
+                        StateTypes.FAILSAFE_ENABLED,
+                        StateTypes.TAKING_OFF
                 );
     }
 
@@ -102,7 +110,8 @@ public class StateMachine {
                         StateTypes.ARMED
                 ) &&
                 no(
-                        StateTypes.FAILSAFE_ENABLED
+                        StateTypes.FAILSAFE_ENABLED,
+                        StateTypes.LANDING
                 );
     }
 
@@ -131,6 +140,70 @@ public class StateMachine {
                         StateTypes.MISSON_RUNNING,
                         StateTypes.ON_THE_WAY,
                         StateTypes.LANDING
+                );
+    }
+
+    public boolean CanRTL() {
+        return
+                yes(
+                        StateTypes.PREFLIGHTCHECK_PASS,
+                        StateTypes.IN_AIR,
+                        StateTypes.ARMED
+                ) &&
+                no(
+                        StateTypes.FAILSAFE_ENABLED,
+                        StateTypes.IN_RTL
+                );
+    }
+
+    public boolean CanStartMission() {
+        return
+                yes(
+                        StateTypes.PREFLIGHTCHECK_PASS,
+                        StateTypes.MISSION_UPLOADED
+                ) &&
+                no(
+                        StateTypes.FAILSAFE_ENABLED,
+                        StateTypes.MISSION_PAUSED,
+                        StateTypes.MISSON_RUNNING
+                );
+    }
+
+    public boolean CanPauseMission() {
+        return
+                yes(
+                        StateTypes.PREFLIGHTCHECK_PASS,
+                        StateTypes.MISSION_UPLOADED,
+                        StateTypes.MISSON_RUNNING
+                ) &&
+                no(
+                        StateTypes.FAILSAFE_ENABLED,
+                        StateTypes.MISSION_PAUSED
+                );
+    }
+
+
+    public boolean CanResumeMission() {
+        return
+                yes(
+                        StateTypes.PREFLIGHTCHECK_PASS,
+                        StateTypes.MISSION_UPLOADED,
+                        StateTypes.MISSION_PAUSED
+                ) &&
+                no(
+                        StateTypes.FAILSAFE_ENABLED,
+                        StateTypes.MISSON_RUNNING
+                );
+    }
+
+
+    public boolean CanAbort() {
+        return
+                yes(
+                        StateTypes.PREFLIGHTCHECK_PASS
+                ) &&
+                no(
+                        StateTypes.FAILSAFE_ENABLED
                 );
     }
 
