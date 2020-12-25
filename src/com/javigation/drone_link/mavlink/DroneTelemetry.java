@@ -8,6 +8,7 @@ import org.jxmapviewer.viewer.GeoPosition;
 public class DroneTelemetry {
 
     public DroneConnection connection;
+    public Telemetry.EulerAngle Attitude;
     private DroneController controller;
     private System drone;
 
