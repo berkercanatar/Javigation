@@ -69,6 +69,8 @@ public class GUIManager {
         containers = new Containers(mapViewer, vc);
 
         //tabControl.tabFlightPlan.add(mapViewer);
+        TutorialPanel tutorial = new TutorialPanel();
+        tabControl.tabTutorial.add(tutorial);
 
 
         tabControl.tabFlightPlan.add(containers.MainContainer);
