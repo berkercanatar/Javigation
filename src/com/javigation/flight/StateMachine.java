@@ -16,7 +16,7 @@ public class StateMachine {
 
     public enum StateTypes {
         ON_GROUND,
-        ON_AIR,
+        IN_AIR,
         ARMED,
         DISARMED,
         OFFBOARD,
@@ -44,11 +44,31 @@ public class StateMachine {
     public void SetState( StateTypes state ) {
         if (!ActiveStates.contains(state))
             ActiveStates.add(state);
+        FixConflicts(state);
     }
 
     public void ClearState( StateTypes state ) {
         if (ActiveStates.contains(state))
             ActiveStates.remove(state);
+    }
+
+
+
+    private void FixConflicts(StateTypes state) {
+        switch (state) {
+            case ARMED:
+                ClearState(StateTypes.DISARMED);
+                break;
+            case DISARMED:
+                ClearState(StateTypes.ARMED);
+                break;
+            case IN_AIR:
+                ClearState(StateTypes.ON_GROUND);
+                break;
+            case ON_GROUND:
+                ClearState(StateTypes.IN_AIR);
+                break;
+        }
     }
 
     private boolean yes( StateTypes... states ) {
@@ -78,7 +98,7 @@ public class StateMachine {
         return
                 yes(
                         StateTypes.PREFLIGHTCHECK_PASS,
-                        StateTypes.ON_AIR,
+                        StateTypes.IN_AIR,
                         StateTypes.ARMED
                 ) &&
                 no(
@@ -90,7 +110,7 @@ public class StateMachine {
         return
                 yes(
                         StateTypes.PREFLIGHTCHECK_PASS,
-                        StateTypes.ON_AIR,
+                        StateTypes.ON_GROUND,
                         StateTypes.DISARMED
                 ) &&
                 no(
@@ -105,7 +125,7 @@ public class StateMachine {
                         StateTypes.ARMED
                 ) &&
                 no(
-                        StateTypes.ON_AIR,
+                        StateTypes.IN_AIR,
                         StateTypes.HOLD,
                         StateTypes.OFFBOARD,
                         StateTypes.MISSON_RUNNING,
@@ -114,5 +134,10 @@ public class StateMachine {
                 );
     }
 
-
+    @Override
+    public String toString() {
+        return "StateMachine{" +
+                "ActiveStates=" + ActiveStates +
+                '}';
+    }
 }
