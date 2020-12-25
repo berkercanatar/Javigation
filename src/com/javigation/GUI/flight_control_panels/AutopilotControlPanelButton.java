@@ -66,18 +66,21 @@ public class AutopilotControlPanelButton extends JButton{
             public void run() {
                 for (ButtonFunction buttonFunction : buttonFunctions) {
                     try {
+                        Utils.info(DroneControlPanel.controllingDrone.controller.stateMachine);
                         if (buttonFunction.check()) {
+                            setVisible(true);
                             activeType = buttonFunction;
                             resetSizeIcon();
-                            break;
+                            return;
                         }
                     } catch (NullPointerException ex) {
-                        if (!(activeType ==buttonFunctions[0])) {
+                        if (!(activeType == buttonFunctions[0])) {
                             activeType = buttonFunctions[0];
                             resetSizeIcon();
                         }
                     }
                 }
+                setVisible(false);
             }
         };
 
@@ -92,7 +95,7 @@ public class AutopilotControlPanelButton extends JButton{
             public void actionPerformed(ActionEvent e) {
                 switch (activeType.CommandType) {
                     case TAKEOFF:
-                        if (activeType.check() || true)
+                        if (activeType.check())
                             CommandChain.Create(DroneControlPanel.controllingDrone.controller).TakeOff(15f).Perform();
                         break;
                     case LAND:

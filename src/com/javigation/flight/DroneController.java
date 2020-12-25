@@ -70,7 +70,7 @@ public class DroneController {
                 case TAKEOFF:
                     commandStack = commandStack.andThen(drone.getAction().setTakeoffAltitude(cmd.getArg("alt")))
                             .andThen(drone.getAction().takeoff());
-                    if (!drone.getTelemetry().getArmed().blockingFirst())
+                    if (!connection.controller.Telemetry.Armed)
                         commandStack = commandStack.andThen(drone.getAction().arm());
                     break;
             }
