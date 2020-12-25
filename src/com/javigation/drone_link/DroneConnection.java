@@ -7,6 +7,7 @@ import com.javigation.drone_link.mavlink.DroneTelemetry;
 import com.javigation.drone_link.mavlink.MavSDKServer;
 import com.javigation.drone_link.mavlink.MavSDKServerReadyListener;
 import com.javigation.flight.DroneController;
+import com.javigation.flight.StateMachine;
 import io.mavsdk.System;
 
 import java.util.ArrayList;
@@ -72,7 +73,8 @@ public class DroneConnection implements MavSDKServerReadyListener {
         connection.isDroneConnected = true;
         connection.controller = new DroneController(connection);
         connection.controller.Telemetry = new DroneTelemetry(connection);
-        connection.controller.SubscribeForTelemetry();
+        connection.controller.stateMachine = new StateMachine(connection.controller);
+        connection.controller.Telemetry.SubscribeForTelemetry();
         GUIManager.dronePainter.addDrone(connection.controller);
         java.lang.System.out.println("CONNECTED " + connection.MavlinkPort);
 
