@@ -32,5 +32,15 @@ public class AutopilotControlPanel extends JPanel {
 
         add(land_takeoff);
 
+        JButton mission_pause_resume = new AutopilotControlPanelButton(this,
+                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.MISSION_PAUSE, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanPauseMission()),
+                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.MISSION_RESUME, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanResumeMission()));
+
+        add(mission_pause_resume);
+
+        JButton rtl = new AutopilotControlPanelButton(this,
+                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.RTL, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanRTL()));
+
+        add(rtl);
     }
 }
