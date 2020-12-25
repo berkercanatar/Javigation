@@ -17,7 +17,7 @@ public final class Statics {
 
     public static Path GSTREAMER_ROOT;
 
-    public static final int MAP_FPS = 10;
+    public static final int MAP_FPS = 15;
     public static final double CONSTANT_DISTANCE = 5;
 
     public static final float MANUAL_CONTROL_HORIZONTAL_VELOCITY_MS = 5f;
