@@ -52,24 +52,23 @@ public class PopupManager {
     }
 
     public static void showInfo(String message){
-        new PopupManager( message, "info");
+        new PopupManager( message, "error");
     }
 
     private void showIt() {
         popup.setOpacity(1);
         popup.setVisible(true);
 
-        Timer t = new Timer(3000, new ActionListener() {
+        Timer t = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (((Timer) e.getSource()).getDelay() == 3000) {
-                    for (double d = 1.00; d > 0.0002; d -= 0.0001) {
-                        //Thread.sleep(100);
-                        popup.setOpacity((float)d);
-                    }
-                    popup.setVisible(false);
-                    ((Timer) e.getSource()).stop();
+                float d = 1;
+                while (((Timer) e.getSource()).getDelay() != 1000) {
+                        popup.setOpacity(d);
+                        d -= 0.0001;
                 }
+                popup.setVisible(false);
+                ((Timer) e.getSource()).stop();
 
             }
         });
