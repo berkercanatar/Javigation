@@ -2,16 +2,14 @@ package com.javigation.GUI.flight_control_panels;
 
 import com.javigation.GUI.RoundedBorder;
 import com.javigation.Utils;
-import com.javigation.drone_link.mavlink.DroneConnection;
 import com.javigation.flight.Command;
 import com.javigation.flight.CommandChain;
+import com.javigation.flight.StateMachine;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.function.BooleanSupplier;
 
 public class AutopilotControlPanelButton extends JButton{
@@ -19,6 +17,25 @@ public class AutopilotControlPanelButton extends JButton{
     private AutopilotControlPanel autopilotControlPanel;
     private ButtonFunction[] buttonFunctions;
     private ButtonFunction activeType;
+
+    public void OnStateChanged(StateMachine.StateTypes changedType, boolean isAdded) {
+        for (ButtonFunction buttonFunction : buttonFunctions) {
+            try {
+                if (buttonFunction.check()) {
+                    setVisible(true);
+                    activeType = buttonFunction;
+                    resetSizeIcon();
+                    return;
+                }
+            } catch (NullPointerException ex) {
+                if (!(activeType == buttonFunctions[0])) {
+                    activeType = buttonFunctions[0];
+                    resetSizeIcon();
+                }
+            }
+        }
+        setVisible(false);
+    }
 
     public static class ButtonFunction {
         public Command.CommandType CommandType;
@@ -36,6 +53,7 @@ public class AutopilotControlPanelButton extends JButton{
 
     public AutopilotControlPanelButton(AutopilotControlPanel autopilotControlPanel, ButtonFunction... buttonFunctions) {
 
+        setVisible(false);
         setFocusPainted(false);
         setRolloverEnabled(false);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -56,38 +74,8 @@ public class AutopilotControlPanelButton extends JButton{
 
         createListener();
 
-        startTimer();
-
     }
 
-    private void startTimer() {
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                for (ButtonFunction buttonFunction : buttonFunctions) {
-                    try {
-                        Utils.info(DroneControlPanel.controllingDrone.controller.stateMachine);
-                        if (buttonFunction.check()) {
-                            setVisible(true);
-                            activeType = buttonFunction;
-                            resetSizeIcon();
-                            return;
-                        }
-                    } catch (NullPointerException ex) {
-                        if (!(activeType == buttonFunctions[0])) {
-                            activeType = buttonFunctions[0];
-                            resetSizeIcon();
-                        }
-                    }
-                }
-                setVisible(false);
-            }
-        };
-
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 0, 500);
-
-    }
 
     private void createListener() {
         addActionListener(new ActionListener() {
@@ -96,18 +84,28 @@ public class AutopilotControlPanelButton extends JButton{
                 switch (activeType.CommandType) {
                     case TAKEOFF:
                         if (activeType.check())
-                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).TakeOff(15f).Perform();
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).TakeOff(12f).Perform();
                         break;
                     case LAND:
                         if (activeType.check())
-                            DroneConnection.Get().controller.Land().subscribe();
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).Land().Perform();
                         break;
                     case ASCEND:
                         break;
                     case DESCEND:
+                        break;
                     case RTL:
+                        if(activeType.check())
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).RTL().Perform();
+                        break;
                     case MISSION_PAUSE:
+                        if(activeType.check())
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionPause().Perform();
+                            break;
                     case MISSION_RESUME:
+                        if(activeType.check())
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionResume().Perform();
+                        break;
                     case MISSION_ABORT:
                 }
             }

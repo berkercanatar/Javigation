@@ -17,6 +17,7 @@ public class Command {
         SET_HEADING,
         RTL,
         GO_TO_LOCATION,
+        MISSION_START,
         MISSION_PAUSE,
         MISSION_RESUME,
         MISSION_ABORT,

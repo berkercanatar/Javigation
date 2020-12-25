@@ -3,7 +3,7 @@ package com.javigation.GUI.flight_control_panels;
 import com.javigation.GUI.RoundedBorder;
 import com.javigation.Statics;
 import com.javigation.Utils;
-import com.javigation.drone_link.mavlink.DroneConnection;
+import com.javigation.drone_link.DroneConnection;
 import com.javigation.flight.Command;
 import io.mavsdk.offboard.Offboard;
 

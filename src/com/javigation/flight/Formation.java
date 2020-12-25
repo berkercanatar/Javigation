@@ -1,13 +1,8 @@
 package com.javigation.flight;
 
 import com.javigation.Statics;
-import com.javigation.drone_link.mavlink.DroneConnection;
-import com.javigation.drone_link.mavlink.DroneTelemetry;
-import io.mavsdk.telemetry.Telemetry;
+import com.javigation.drone_link.DroneConnection;
 import org.jxmapviewer.viewer.GeoPosition;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 public class Formation {
 

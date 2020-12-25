@@ -1,12 +1,12 @@
 package com.javigation.flight;
 
 import com.javigation.GUI.GUIManager;
-import com.javigation.drone_link.mavlink.DroneConnection;
+import com.javigation.Utils;
+import com.javigation.drone_link.DroneConnection;
 import com.javigation.drone_link.mavlink.DroneTelemetry;
 import io.mavsdk.System;
 import io.mavsdk.telemetry.Telemetry;
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import java.lang.reflect.Method;
@@ -22,56 +22,8 @@ public class DroneController {
     public DroneController(DroneConnection connection) {
         this.connection = connection;
         connection.controller = this;
-        stateMachine = new StateMachine(this);
         drone = new System("127.0.0.1", connection.MavSDKPort);
         GUIManager.dronePainter.addDrone(this);
-    }
-
-    public void SubscribeForTelemetry() {
-
-        io.mavsdk.telemetry.Telemetry telem = drone.getTelemetry();
-
-        drone.getTelemetry().getPosition().subscribe( position -> {
-            synchronized (Telemetry) {
-                Telemetry.Position = position;
-            }
-        });
-
-        telem.getArmed().subscribe( isArmed -> {
-            synchronized (Telemetry) {
-                connection.controller.Telemetry.Armed = isArmed;
-                if (isArmed)
-                    stateMachine.SetState(StateMachine.StateTypes.ARMED);
-                else
-                    stateMachine.SetState(StateMachine.StateTypes.DISARMED);
-            }
-        });
-
-        telem.getInAir().subscribe( isInAir -> {
-            synchronized (Telemetry) {
-                Telemetry.InAir = isInAir;
-                if (isInAir)
-                    stateMachine.SetState(StateMachine.StateTypes.IN_AIR);
-                else
-                    stateMachine.SetState(StateMachine.StateTypes.ON_GROUND);
-            }
-        });
-
-        telem.getHealthAllOk().subscribe( checkPassed -> {
-            synchronized (Telemetry) {
-                Telemetry.InAir = checkPassed;
-                if (checkPassed)
-                    stateMachine.SetState(StateMachine.StateTypes.PREFLIGHTCHECK_PASS);
-                else
-                    stateMachine.ClearState(StateMachine.StateTypes.PREFLIGHTCHECK_PASS);
-            }
-        });
-
-        telem.getAttitudeEuler().subscribe( attitude -> {
-            synchronized (Telemetry) {
-                Telemetry.Attitude = attitude;
-            }
-        });
     }
 
     public Completable Arm(){
@@ -109,7 +61,13 @@ public class DroneController {
                     commandStack = commandStack.andThen(drone.getAction().setTakeoffAltitude(cmd.getArg("alt")))
                             .andThen(drone.getAction().takeoff());
                     if (!connection.controller.Telemetry.Armed)
-                        commandStack = commandStack.andThen(drone.getAction().arm());
+                        commandStack = commandStack.andThen(drone.getAction().arm()).repeatUntil(() -> Telemetry.Armed);
+                    break;
+                case LAND:
+                    commandStack = commandStack.andThen(drone.getAction().land());
+                    break;
+                case RTL:
+                    commandStack = commandStack.andThen(drone.getAction().returnToLaunch());
                     break;
             }
         }

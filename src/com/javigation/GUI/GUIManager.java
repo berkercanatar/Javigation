@@ -176,9 +176,8 @@ public class GUIManager {
         Gst.init("Javigation");
 
         vc = new GstVideoComponent();
-        Bin bin = Gst.parseBinFromDescription(
-                "videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",
-                true);
+        Bin bin = Gst.parseBinFromDescription("videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",true);
+        //Bin bin = Gst.parseBinFromDescription("v4l2src ! videoconvert",true);
         pipe = new Pipeline();
         pipe.addMany(bin, vc.getElement());
         Pipeline.linkMany(bin, vc.getElement());

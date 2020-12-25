@@ -1,14 +1,11 @@
 package com.javigation.drone_link.mavlink;
 
+import com.javigation.drone_link.DroneConnection;
 import com.sun.jna.Platform;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-interface MavSDKServerReadyListener {
-    void onServerInitialized();
-}
 
 public class MavSDKServer  {
 
