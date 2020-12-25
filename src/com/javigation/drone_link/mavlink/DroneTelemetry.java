@@ -18,6 +18,9 @@ public class DroneTelemetry {
     }
 
 
+    public boolean Armed;
+    public boolean InAir;
+
 
     public Telemetry.Position Position;
     public GeoPosition GeoPosition() { return new GeoPosition(Position.getLatitudeDeg(), Position.getLongitudeDeg()); }
