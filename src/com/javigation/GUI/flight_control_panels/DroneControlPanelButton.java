@@ -1,6 +1,7 @@
 package com.javigation.GUI.flight_control_panels;
 
 import com.javigation.GUI.RoundedBorder;
+import com.javigation.GUI.popup.PopupManager;
 import com.javigation.Statics;
 import com.javigation.Utils;
 import com.javigation.drone_link.DroneConnection;
@@ -80,6 +81,7 @@ public class DroneControlPanelButton extends JButton {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                PopupManager.showInfo("Mouse Pressed");
                 Offboard.VelocityBodyYawspeed motion;
                 switch (buttonType) {
                         //DroneConnection.Get().drone.getTelemetry().getPosition().sample(2, TimeUnit.SECONDS).subscribe(isArmed -> {
