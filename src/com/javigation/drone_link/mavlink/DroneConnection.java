@@ -4,7 +4,11 @@ import com.javigation.GUI.GUIManager;
 import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.Utils;
 import com.javigation.flight.DroneController;
+import com.javigation.flight.StateMachine;
 import io.mavsdk.System;
+import io.mavsdk.telemetry.Telemetry;
+import io.reactivex.disposables.Disposable;
+
 import java.util.ArrayList;
 
 public class DroneConnection implements MavSDKServerReadyListener {
@@ -74,6 +78,9 @@ public class DroneConnection implements MavSDKServerReadyListener {
 
         if (DroneControlPanel.controllingDrone == null)
             DroneControlPanel.controllingDrone = connection;
+
+        doSubscriptions(connection);
+
     }
 
     public static void onDroneDisconnected(DroneConnection connection) {
@@ -95,5 +102,36 @@ public class DroneConnection implements MavSDKServerReadyListener {
         connection.controller = null;
     }
 
+    private static void doSubscriptions(DroneConnection connection) {
+        System drone = connection.drone;
+        DroneController controller = connection.controller;
+        StateMachine machine = controller.stateMachine;
+        Telemetry telem = drone.getTelemetry();
+
+        telem.getArmed().subscribe( isArmed -> {
+            connection.controller.Telemetry.Armed = isArmed;
+            if (isArmed)
+                machine.SetState(StateMachine.StateTypes.ARMED);
+            else
+                machine.SetState(StateMachine.StateTypes.DISARMED);
+        });
+
+        telem.getInAir().subscribe( isInAir -> {
+        controller.Telemetry.InAir = isInAir;
+        if (isInAir)
+            machine.SetState(StateMachine.StateTypes.IN_AIR);
+        else
+            machine.SetState(StateMachine.StateTypes.ON_GROUND);
+        });
+
+        telem.getHealthAllOk().subscribe( checkPassed -> {
+            controller.Telemetry.InAir = checkPassed;
+            if (checkPassed)
+                machine.SetState(StateMachine.StateTypes.PREFLIGHTCHECK_PASS);
+            else
+                machine.ClearState(StateMachine.StateTypes.PREFLIGHTCHECK_PASS);
+        });
+
+    }
 
 }
