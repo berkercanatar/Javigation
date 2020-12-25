@@ -47,6 +47,14 @@ public class PopupManager {
         new PopupManager( message, "warning");
     }
 
+    public static void showError(String message){
+        new PopupManager( message, "error");
+    }
+
+    public static void showInfo(String message){
+        new PopupManager( message, "info");
+    }
+
     private void showIt() {
         popup.setOpacity(1);
         popup.setVisible(true);
