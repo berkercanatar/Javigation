@@ -29,12 +29,12 @@ public class CommandChain {
         return this;
     }
 
-    public CommandChain TakeOff() {
-        return TakeOff(false);
+    public CommandChain TakeOff(float altitude) {
+        return TakeOff(altitude, false);
     }
 
-    public CommandChain TakeOff(boolean wait) {
-        CommandList.add((new Command(Command.CommandType.TAKEOFF)).withArg("wait", wait));
+    public CommandChain TakeOff(float altitude, boolean wait) {
+        CommandList.add((new Command(Command.CommandType.TAKEOFF)).withArg("alt", altitude).withArg("wait", wait));
         return this;
     }
 

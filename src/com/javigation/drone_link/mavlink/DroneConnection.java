@@ -1,6 +1,7 @@
 package com.javigation.drone_link.mavlink;
 
 import com.javigation.GUI.GUIManager;
+import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.Utils;
 import com.javigation.flight.DroneController;
 import io.mavsdk.System;
@@ -70,6 +71,9 @@ public class DroneConnection implements MavSDKServerReadyListener {
         connection.controller.SubscribeForTelemetry();
         GUIManager.dronePainter.addDrone(connection.controller);
         java.lang.System.out.println("CONNECTED " + connection.MavlinkPort);
+
+        if (DroneControlPanel.controllingDrone == null)
+            DroneControlPanel.controllingDrone = connection;
     }
 
     public static void onDroneDisconnected(DroneConnection connection) {
@@ -80,6 +84,15 @@ public class DroneConnection implements MavSDKServerReadyListener {
         GUIManager.dronePainter.removeDrone(connection.controller);
 
         java.lang.System.out.println("DISCONNECTED " + connection.MavlinkPort);
+
+        if (DroneControlPanel.controllingDrone == connection) {
+            if (DroneConnection.Connections.size() > 0)
+                DroneControlPanel.controllingDrone = DroneConnection.Connections.get(0);
+            else
+                DroneControlPanel.controllingDrone = null;
+        }
+
+        connection.controller = null;
     }
 
 
