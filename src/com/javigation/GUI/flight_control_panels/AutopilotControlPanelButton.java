@@ -106,8 +106,17 @@ public class AutopilotControlPanelButton extends JButton{
                         break;
                     case DESCEND:
                     case RTL:
+                        if(activeType.check())
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).RTL().Perform();
+                        break;
                     case MISSION_PAUSE:
+                        if(activeType.check())
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionPause().Perform();
+                            break;
                     case MISSION_RESUME:
+                        if(activeType.check())
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionResume().Perform();
+                        break;
                     case MISSION_ABORT:
                 }
             }
