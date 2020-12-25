@@ -79,8 +79,6 @@ public class DroneConnection implements MavSDKServerReadyListener {
         if (DroneControlPanel.controllingDrone == null)
             DroneControlPanel.controllingDrone = connection;
 
-        doSubscriptions(connection);
-
     }
 
     public static void onDroneDisconnected(DroneConnection connection) {
@@ -100,38 +98,6 @@ public class DroneConnection implements MavSDKServerReadyListener {
         }
 
         connection.controller = null;
-    }
-
-    private static void doSubscriptions(DroneConnection connection) {
-        System drone = connection.drone;
-        DroneController controller = connection.controller;
-        StateMachine machine = controller.stateMachine;
-        Telemetry telem = drone.getTelemetry();
-
-        telem.getArmed().subscribe( isArmed -> {
-            connection.controller.Telemetry.Armed = isArmed;
-            if (isArmed)
-                machine.SetState(StateMachine.StateTypes.ARMED);
-            else
-                machine.SetState(StateMachine.StateTypes.DISARMED);
-        });
-
-        telem.getInAir().subscribe( isInAir -> {
-        controller.Telemetry.InAir = isInAir;
-        if (isInAir)
-            machine.SetState(StateMachine.StateTypes.IN_AIR);
-        else
-            machine.SetState(StateMachine.StateTypes.ON_GROUND);
-        });
-
-        telem.getHealthAllOk().subscribe( checkPassed -> {
-            controller.Telemetry.InAir = checkPassed;
-            if (checkPassed)
-                machine.SetState(StateMachine.StateTypes.PREFLIGHTCHECK_PASS);
-            else
-                machine.ClearState(StateMachine.StateTypes.PREFLIGHTCHECK_PASS);
-        });
-
     }
 
 }

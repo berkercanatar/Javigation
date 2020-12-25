@@ -28,10 +28,48 @@ public class DroneController {
     }
 
     public void SubscribeForTelemetry() {
+
+        io.mavsdk.telemetry.Telemetry telem = drone.getTelemetry();
+
         drone.getTelemetry().getPosition().subscribe( position -> {
             synchronized (Telemetry) {
                 Telemetry.Position = position;
-                //GUIManager.mapViewer.repaint();
+            }
+        });
+
+        telem.getArmed().subscribe( isArmed -> {
+            synchronized (Telemetry) {
+                connection.controller.Telemetry.Armed = isArmed;
+                if (isArmed)
+                    stateMachine.SetState(StateMachine.StateTypes.ARMED);
+                else
+                    stateMachine.SetState(StateMachine.StateTypes.DISARMED);
+            }
+        });
+
+        telem.getInAir().subscribe( isInAir -> {
+            synchronized (Telemetry) {
+                Telemetry.InAir = isInAir;
+                if (isInAir)
+                    stateMachine.SetState(StateMachine.StateTypes.IN_AIR);
+                else
+                    stateMachine.SetState(StateMachine.StateTypes.ON_GROUND);
+            }
+        });
+
+        telem.getHealthAllOk().subscribe( checkPassed -> {
+            synchronized (Telemetry) {
+                Telemetry.InAir = checkPassed;
+                if (checkPassed)
+                    stateMachine.SetState(StateMachine.StateTypes.PREFLIGHTCHECK_PASS);
+                else
+                    stateMachine.ClearState(StateMachine.StateTypes.PREFLIGHTCHECK_PASS);
+            }
+        });
+
+        telem.getAttitudeEuler().subscribe( attitude -> {
+            synchronized (Telemetry) {
+                Telemetry.Attitude = attitude;
             }
         });
     }
