@@ -56,7 +56,7 @@ public class MavSDKServer  {
                 BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 String line;
                 while ((line = in.readLine()) != null) {
-                    System.err.println(line);
+                    System.out.println(line);
                     if (line.contains("Server set to listen"))
                         connection.onServerInitialized();
                     else if (line.contains("Discovered"))
