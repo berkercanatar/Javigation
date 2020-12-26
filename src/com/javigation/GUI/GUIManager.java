@@ -179,8 +179,9 @@ public class GUIManager {
         Gst.init("Javigation");
 
         vc = new GstVideoComponent();
-        Bin bin = Gst.parseBinFromDescription("videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",true);
+        //Bin bin = Gst.parseBinFromDescription("videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",true);
         //Bin bin = Gst.parseBinFromDescription("v4l2src ! videoconvert",true);
+        Bin bin = Gst.parseBinFromDescription("udpsrc port=5600 ! application/x-rtp, encoding-name=H264, payload=96 ! rtph264depay ! h264parse ! avdec_h264 ! videoconvert",true);
         pipe = new Pipeline();
         pipe.addMany(bin, vc.getElement());
         Pipeline.linkMany(bin, vc.getElement());

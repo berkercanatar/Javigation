@@ -25,6 +25,20 @@ public class MavSDKServer  {
 
     }
 
+    public MavSDKServer(DroneConnection connection, String serialPort, int baudRate, int localMavSDKPort) {
+        String mavSdkProcPath = "";
+        if (Platform.isLinux()) {
+            mavSdkProcPath = MavSDKServer.class.getClassLoader().getResource("mavsdk_server/mavsdk_server_manylinux2010-x64").getPath();
+        } else if (Platform.isWindows()) {
+            mavSdkProcPath = MavSDKServer.class.getClassLoader().getResource("mavsdk_server/mavsdk_server_win32.exe").getPath();
+        }
+
+        this.connection = connection;
+
+        launch(mavSdkProcPath, "-p", Integer.toString(localMavSDKPort),  "serial://" + serialPort + ":" + baudRate);
+
+    }
+
     private void launch(final String ... args) {
         String threadID = "MAVSDK-Server";
 
@@ -54,6 +68,8 @@ public class MavSDKServer  {
                 String line;
                 while ((line = in.readLine()) != null) {
                     System.out.println(line);
+                    if( !connection.isDroneConnected)
+                        DroneConnection.onDroneConnected(connection);
                     if (line.contains("Server set to listen"))
                         connection.onServerInitialized();
                     else if (line.contains("Discovered"))

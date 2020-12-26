@@ -46,6 +46,7 @@ public class DroneTelemetry implements StateChangedListener {
 
         drone.getTelemetry().getPosition().subscribe( position -> {
             synchronized (this) {
+                Utils.info(position);
                 Position = position;
             }
         });
@@ -101,10 +102,6 @@ public class DroneTelemetry implements StateChangedListener {
                         break;
                 }
             }
-        });
-
-        drone.getMission().downloadMission().subscribe( mission -> {
-            Utils.info("MISSION DOWNLOADED");
         });
 
         drone.getTelemetry().getLandedState().subscribe( landedState -> {
