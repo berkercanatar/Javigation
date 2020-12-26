@@ -1,6 +1,7 @@
 package com.javigation.GUI.flight_control_panels;
 
 import com.javigation.GUI.RoundedBorder;
+import com.javigation.GUI.popup.PopupManager;
 import com.javigation.Statics;
 import com.javigation.Utils;
 import com.javigation.drone_link.DroneConnection;
@@ -48,8 +49,6 @@ public class DroneControlPanelButton extends JButton {
         setIgnoreRepaint(true);
         setOpaque(false);
         setContentAreaFilled(false);
-
-        DroneConnection.Get();
 
         setPreferredSize( new Dimension( buttonIcons().get(buttonType).getIconWidth() + 10, buttonIcons().get(buttonType).getIconHeight() + 10));
         setMinimumSize( getPreferredSize() );
