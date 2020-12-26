@@ -71,5 +71,14 @@ public final class Utils {
 
         return rotated;
     }
+
+    public static float CalculateBearing(double lat1, double lon1, double lat2, double lon2) {
+        double diff = lon2 - lon1;
+        double x = Math.cos(Math.toRadians(lat2)) * Math.sin(Math.toRadians(diff));
+        double y = Math.cos(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) - Math.sin(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(diff));
+        double bearing = (float) Math.atan2(x, y);
+        bearing = Math.toDegrees(bearing);
+        return  (float)bearing;
+    }
     
 }
