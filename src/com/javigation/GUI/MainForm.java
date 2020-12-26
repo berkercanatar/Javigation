@@ -30,7 +30,7 @@ public class MainForm extends JFrame {
 
         boolean isDebugging = Utils.runningFromIntelliJ();
         //if (!isDebugging) //Skip splash screen when debugging
-            //new SplashScreen();
+        new SplashScreen();
 
         CheckLocalFolder();
         if (Platform.isWindows())

@@ -22,9 +22,7 @@ public class DroneController {
     public DroneController(DroneConnection connection) {
         this.connection = connection;
         connection.controller = this;
-        drone = new System("192.168.1.11", connection.MavSDKPort);
-        Utils.info("192.168.1.11");
-        Utils.info(connection.MavSDKPort);
+        drone = new System("127.0.0.1", connection.MavSDKPort);
         GUIManager.dronePainter.addDrone(this);
     }
 
