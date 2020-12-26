@@ -3,13 +3,14 @@ package com.javigation.flight;
 import com.javigation.drone_link.DroneConnection;
 import io.mavsdk.telemetry.Telemetry;
 import io.reactivex.Flowable;
+import org.jxmapviewer.viewer.GeoPosition;
 
 import java.util.ArrayList;
 
-public class Follower {
+public class Follower implements SwarmDrone {
 
 
-    private ArrayList<Flowable<Telemetry.Position>> followerPosition;
+    private ArrayList<GeoPosition> followerPosition;
     private DroneConnection follower;
     private boolean isLeader;
     private int time;
@@ -18,26 +19,32 @@ public class Follower {
 
     public Follower(DroneConnection follower){
         this.follower = follower;
-        followerPosition.add(follower.drone.getTelemetry().getPosition());
+        followerPosition = new ArrayList<>();
+        followerPosition.add(follower.controller.GetGeoPosition());
         isLeader = false;
 
     }
 
-    public void updatePos( Flowable<Telemetry.Position> newPos, int time ){
+    public void updatePos( GeoPosition newPos, int time ){
         this.time = time;
         if ( time != 0)
             followerPosition.add(time, newPos );
 
     }
 
-    public Flowable<Telemetry.Position> getPos(){
+    public GeoPosition getPos(){
 
         return followerPosition.get(time);
 
     }
 
-    public DroneConnection getFollower(){
+    public DroneConnection getDrone(){
+
         return follower;
+    }
+
+    public void setStatus( boolean isLeader ){
+        this.isLeader = isLeader;
     }
 
     public boolean checkStatus() {

@@ -2,6 +2,7 @@ package com.javigation.flight;
 
 import com.javigation.Statics;
 import com.javigation.drone_link.DroneConnection;
+import io.mavsdk.telemetry.Telemetry;
 import org.jxmapviewer.viewer.GeoPosition;
 
 public class Formation {
@@ -37,24 +38,15 @@ public class Formation {
 
     }
 
-    private float metersToLatitude(GeoPosition near, double meters) {
-        return (float) (meters / 110.6*1000);
-    }
-
-    private float metersToLongitude(GeoPosition near, double meters) {
-        float lat = (float) Math.toRadians(near.getLatitude());
-        return (float) (meters /
-                        (111132.954 - 559.822 * Math.cos(2*lat) + 1.175 * Math.cos(4*lat)));
-    }
 
     public DroneConnection defineLeader(DroneConnection leader, DroneConnection follower1,
                                             DroneConnection follower2){
-        double d1 = distance(follower1.controller.Telemetry.GeoPosition().getLatitude(),leader.controller.Telemetry.GeoPosition().getLatitude(),
-                follower1.controller.Telemetry.GeoPosition().getLongitude(), leader.controller.Telemetry.GeoPosition().getLongitude() );
-        double d2 = distance(follower2.controller.Telemetry.GeoPosition().getLatitude(),leader.controller.Telemetry.GeoPosition().getLatitude(),
-                follower2.controller.Telemetry.GeoPosition().getLongitude(), leader.controller.Telemetry.GeoPosition().getLongitude() );
-        double d3 = distance(follower1.controller.Telemetry.GeoPosition().getLatitude(),follower2.controller.Telemetry.GeoPosition().getLatitude(),
-                follower1.controller.Telemetry.GeoPosition().getLongitude(), follower2.controller.Telemetry.GeoPosition().getLongitude() );
+        double d1 = distance(follower1.controller.Telemetry.Position.getLatitudeDeg(),leader.controller.Telemetry.Position.getLatitudeDeg(),
+                follower1.controller.Telemetry.Position.getLongitudeDeg(), leader.controller.Telemetry.Position.getLongitudeDeg() );
+        double d2 = distance(follower2.controller.Telemetry.Position.getLatitudeDeg(),leader.controller.Telemetry.Position.getLatitudeDeg(),
+                follower2.controller.Telemetry.Position.getLongitudeDeg(), leader.controller.Telemetry.Position.getLongitudeDeg() );
+        double d3 = distance(follower1.controller.Telemetry.Position.getLatitudeDeg(),follower2.controller.Telemetry.Position.getLatitudeDeg(),
+                follower1.controller.Telemetry.Position.getLongitudeDeg(), follower2.controller.Telemetry.Position.getLongitudeDeg());
 
         if( d1 >= d2 && d1 >= d3) {
             if(format == "Triangle")
@@ -95,34 +87,35 @@ public class Formation {
         //float leaderAltitude = leader.controller.Telemetry.Position.getAbsoluteAltitudeM();
         //float f1Altitude = f1.controller.Telemetry.Position.getAbsoluteAltitudeM();
         //float f2Altitude = f2.controller.Telemetry.Position.getAbsoluteAltitudeM();
-        GeoPosition leaderPos = leader.controller.Telemetry.GeoPosition();
-        double height =  (Math.sqrt(3) * Statics.CONSTANT_DISTANCE/2) *-1;
+        Telemetry.Position leaderPos = leader.controller.Telemetry.Position;
+
+        double height =  (Math.sqrt(3) * Statics.CONSTANT_DISTANCE/2) * -1;
         double left = Statics.CONSTANT_DISTANCE / -2;
         double right = Statics.CONSTANT_DISTANCE / 2;
 
-        GeoPosition positionL = getRelativePosition(leaderPos, height, left);
-        GeoPosition positionR = getRelativePosition(leaderPos, height, right);
+        Telemetry.Position positionL = getRelativePosition(leaderPos, left, height);
+        Telemetry.Position positionR = getRelativePosition(leaderPos, right, height);
 
-        double f1Latitude = f1.controller.Telemetry.GeoPosition().getLatitude();
-        double f2Latitude = f2.controller.Telemetry.GeoPosition().getLatitude();
+        double f1Latitude = f1.controller.Telemetry.Position.getLatitudeDeg();
+        double f2Latitude = f2.controller.Telemetry.Position.getLatitudeDeg();
 
-        double f1Longitude = f1.controller.Telemetry.GeoPosition().getLongitude();
-        double f2Longitude = f2.controller.Telemetry.GeoPosition().getLongitude();
+        double f1Longitude = f1.controller.Telemetry.Position.getLongitudeDeg();
+        double f2Longitude = f2.controller.Telemetry.Position.getLongitudeDeg();
 
 
-        double pos1 = distance(f1Latitude,positionL.getLatitude(), f1Longitude, positionL.getLongitude()); //F1
-        double pos2 = distance(f1Latitude,positionR.getLatitude(), f1Longitude, positionR.getLongitude());
-        double pos3 = distance(f2Latitude,positionL.getLatitude(), f2Longitude, positionL.getLongitude()); //F2
-        double pos4 = distance(f2Latitude,positionR.getLatitude(), f2Longitude, positionR.getLongitude());
+        double pos1 = distance(f1Latitude,positionL.getLatitudeDeg(), f1Longitude, positionL.getLongitudeDeg()); //F1
+        double pos2 = distance(f1Latitude,positionR.getLatitudeDeg(), f1Longitude, positionR.getLongitudeDeg());
+        double pos3 = distance(f2Latitude,positionL.getLatitudeDeg(), f2Longitude, positionL.getLongitudeDeg()); //F2
+        double pos4 = distance(f2Latitude,positionR.getLatitudeDeg(), f2Longitude, positionR.getLongitudeDeg());
 
         if( pos1+pos2 > pos3+pos4) {
             if(pos1 > pos2) {
-                f1Command.GoTo(positionR.getLatitude(), positionR.getLongitude()).Perform();
-                f2Command.GoTo(positionL.getLatitude(), positionL.getLongitude()).Perform();
+                f1Command.GoTo(positionR.getLatitudeDeg(), positionR.getLongitudeDeg()).Perform();
+                f2Command.GoTo(positionL.getLatitudeDeg(), positionL.getLongitudeDeg()).Perform();
             }
             else{
-                f1Command.GoTo(positionL.getLatitude(), positionL.getLongitude()).Perform();
-                f2Command.GoTo(positionR.getLatitude(), positionR.getLongitude()).Perform();
+                f1Command.GoTo(positionL.getLatitudeDeg(), positionL.getLongitudeDeg()).Perform();
+                f2Command.GoTo(positionR.getLatitudeDeg(), positionR.getLongitudeDeg()).Perform();
             }
         }
 
@@ -136,38 +129,49 @@ public class Formation {
         CommandChain f1Command = CommandChain.Create(f1.controller);
         CommandChain f2Command = CommandChain.Create(f2.controller);
 
-        GeoPosition leaderPos = leader.controller.Telemetry.GeoPosition();
+        Telemetry.Position leaderPos = leader.controller.Telemetry.Position;
 
-        GeoPosition positionL = getRelativePosition(leaderPos, 0, Statics.CONSTANT_DISTANCE * -1);
-        GeoPosition positionR = getRelativePosition(leaderPos, 0, Statics.CONSTANT_DISTANCE);
+        Telemetry.Position positionL = getRelativePosition(leaderPos, 0, Statics.CONSTANT_DISTANCE * -1);
+        Telemetry.Position positionR = getRelativePosition(leaderPos, 0, Statics.CONSTANT_DISTANCE);
 
-        double f1Latitude = f1.controller.Telemetry.GeoPosition().getLatitude();
-        double f2Latitude = f2.controller.Telemetry.GeoPosition().getLatitude();
-        double f1Longitude = f1.controller.Telemetry.GeoPosition().getLongitude();
-        double f2Longitude = f2.controller.Telemetry.GeoPosition().getLongitude();
+        double f1Latitude = f1.controller.Telemetry.Position.getLatitudeDeg();
+        double f2Latitude = f2.controller.Telemetry.Position.getLatitudeDeg();
+        double f1Longitude = f1.controller.Telemetry.Position.getLongitudeDeg();
+        double f2Longitude = f2.controller.Telemetry.Position.getLongitudeDeg();
 
-        double pos1 = distance(f1Latitude,positionL.getLatitude(), f1Longitude, positionL.getLongitude()); //F1
-        double pos2 = distance(f1Latitude,positionR.getLatitude(), f1Longitude, positionR.getLongitude());
-        double pos3 = distance(f2Latitude,positionL.getLatitude(), f2Longitude, positionL.getLongitude()); //F2
-        double pos4 = distance(f2Latitude,positionR.getLatitude(), f2Longitude, positionR.getLongitude());
+        double pos1 = distance(f1Latitude,positionL.getLatitudeDeg(), f1Longitude, positionL.getLongitudeDeg()); //F1
+        double pos2 = distance(f1Latitude,positionR.getLatitudeDeg(), f1Longitude, positionR.getLongitudeDeg());
+        double pos3 = distance(f2Latitude,positionL.getLatitudeDeg(), f2Longitude, positionL.getLongitudeDeg()); //F2
+        double pos4 = distance(f2Latitude,positionR.getLatitudeDeg(), f2Longitude, positionR.getLongitudeDeg());
 
         if( pos1+pos2 > pos3+pos4) {
             if(pos1 > pos2) {
-                f1Command.GoTo(positionR.getLatitude(), positionR.getLongitude()).Perform();
-                f2Command.GoTo(positionL.getLatitude(), positionL.getLongitude()).Perform();
+                f1Command.GoTo(positionR.getLatitudeDeg(), positionR.getLongitudeDeg()).Perform();
+                f2Command.GoTo(positionL.getLatitudeDeg(), positionL.getLongitudeDeg()).Perform();
             }
             else{
-                f1Command.GoTo(positionL.getLatitude(), positionL.getLongitude()).Perform();
-                f2Command.GoTo(positionR.getLatitude(), positionR.getLongitude()).Perform();
+                f1Command.GoTo(positionL.getLatitudeDeg(), positionL.getLongitudeDeg()).Perform();
+                f2Command.GoTo(positionR.getLatitudeDeg(), positionR.getLongitudeDeg()).Perform();
             }
         }
     }
 
-    public GeoPosition getRelativePosition(GeoPosition pos, double forward, double right) {
+    public Telemetry.Position getRelativePosition(Telemetry.Position pos, double forward, double right) {
 
         double lat = metersToLatitude(pos, forward);
         double lon = metersToLongitude(pos, right);
 
-        return new GeoPosition(lat, lon);
+        return new Telemetry.Position(lat, lon, pos.getAbsoluteAltitudeM(), pos.getRelativeAltitudeM());
+    }
+
+
+    private float metersToLatitude(Telemetry.Position near, double meters) {
+        return (float) (meters / 110.6*1000);
+    }
+
+    private float metersToLongitude(Telemetry.Position near, double meters) {
+        float lat = (float) Math.toRadians(near.getLatitudeDeg());
+        return (float) (meters /
+                (111132.954 - 559.822 * Math.cos(2*lat) + 1.175 * Math.cos(4*lat)));
     }
 }
