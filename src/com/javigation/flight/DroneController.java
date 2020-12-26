@@ -69,6 +69,17 @@ public class DroneController {
                 case RTL:
                     commandStack = commandStack.andThen(drone.getAction().returnToLaunch());
                     break;
+                case GO_TO_LOCATION:
+                    float heading = cmd.getArg("heading") == null ? Telemetry.Attitude.getYawDeg() : cmd.getArg("heading");
+                    commandStack = commandStack.andThen(drone.getAction().gotoLocation(cmd.getArg("lat"), cmd.getArg("lon"), Telemetry.Position.getAbsoluteAltitudeM(), heading));
+                    break;
+                case HOLD:
+                    if (Telemetry.FlightMode == io.mavsdk.telemetry.Telemetry.FlightMode.OFFBOARD)
+                        commandStack = commandStack.andThen(drone.getOffboard().stop());
+                    else
+                        commandStack = commandStack.andThen(drone.getAction().gotoLocation(Telemetry.Position.getLatitudeDeg(), Telemetry.Position.getLongitudeDeg(), Telemetry.Position.getAbsoluteAltitudeM(), Telemetry.Attitude.getYawDeg()));
+                    Utils.info("SET HOLD MODE");
+                    break;
             }
         }
         commandStack.subscribe();
