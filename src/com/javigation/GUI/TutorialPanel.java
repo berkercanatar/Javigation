@@ -20,24 +20,24 @@ public class TutorialPanel extends JPanel {
     }
 
     public void setGUI(){
-        this.setBackground(TAB_UNSELECTED_COLOR);
+        this.setBackground(TAB_BAR_COLOR);
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.SCROLL_TAB_LAYOUT);
-        Dimension a = new Dimension(1000,1000);
+        Dimension a = new Dimension(1000,450);
         tabbedPane.setPreferredSize(a);
         JPanel helpTab1, helpTab2, helpTab3, helpTab4;
         ControlPanelTutorial controlPanelTutorial = new ControlPanelTutorial();
         helpTab1 = new JPanel();
         helpTab2 = new JPanel();
         helpTab3 = new JPanel();
-        helpTab4 = new JPanel();
 
         tabbedPane.setBackground(Color.yellow);
         tabbedPane.setForeground(Color.black);
 
-        tabbedPane.addTab("  Connecting to drone", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/javigation.png")),helpTab1);
-        tabbedPane.addTab("Controlling the drone",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/flightPlan.png")),controlPanelTutorial);
-
-        helpTab2.add( new JLabel("Controlling The Drone",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/flightPlan.png")),JLabel.LEADING ));
+        tabbedPane.addTab("Connect to the drone  ", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/javigation.png")),helpTab1);
+        tabbedPane.addTab("Get ready for take-off",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/droneSettings.png")),helpTab2);
+        tabbedPane.addTab("Learn to fly          ",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/flightPlan.png")),controlPanelTutorial);
+        tabbedPane.addTab("Eye in the sky        ",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/camera.png")),helpTab3);
+        tabbedPane.setFont(new Font( "Tahoma", Font.BOLD, 16 ));
 
 
 
@@ -46,7 +46,7 @@ public class TutorialPanel extends JPanel {
 
 
         add(tabbedPane);
-        setSize(2000,2000);
+        setSize(1000,450);
         setVisible(true);
     }
 
@@ -62,6 +62,6 @@ class ControlPanelTutorial extends JPanel{
 
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawImage(flightControl,273,410,null);
+        g.drawImage(flightControl,273,300,null);
     }
 }
