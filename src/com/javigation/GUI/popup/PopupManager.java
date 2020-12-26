@@ -25,19 +25,15 @@ public class PopupManager {
         JPanel pnl = new JPanel(){
             @Override
             protected void paintComponent(Graphics g) {
-                int width = g.getFontMetrics().stringWidth(message);
-                int hei = g.getFontMetrics().getMaxAscent();
 
-                g.setColor( color );
-                g.fillRect(10, 10, width + 30, hei + 10);
                 g.setColor( colorText );
-                g.drawString( message, 150 - (width/2), (35+hei)/2);
+                g.drawString( message, 30, 25);
 
             }
         };
-        pnl.setPreferredSize( new Dimension(300, 35));
+        pnl.setPreferredSize( new Dimension(1000, 50));
         popup.add( pnl );
-        popup.setLocation(900, 100);
+        popup.setLocation(450, 100);
         popup.pack();
 
         showIt();
@@ -57,21 +53,20 @@ public class PopupManager {
         new PopupManager( message, "info");
     }
 
+    public static void showComplete(String message){
+        new PopupManager( message, "completed");
+    }
+
     private void showIt() {
-        popup.setOpacity(1);
         popup.setVisible(true);
 
         Timer t = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                float d = 1;
-                while (((Timer) e.getSource()).getDelay() != 1000) {
-                        popup.setOpacity(d);
-                        d -= 0.0001;
+                if ( ((Timer) e.getSource()).getDelay() == 1000) {
+                    popup.setVisible(false);
+                    ((Timer) e.getSource()).stop();
                 }
-                popup.setVisible(false);
-                ((Timer) e.getSource()).stop();
-
             }
         });
 
@@ -91,6 +86,8 @@ public class PopupManager {
             return Color.red;
         else if ( type.equals("warning") )
             return Color.yellow;
+        else if ( type.equals("completed") )
+            return Color.green;
         else
             return Color.blue;
     }
