@@ -8,6 +8,9 @@ import java.awt.event.ActionListener;
 public class PopupManager {
 
     JWindow popup;
+    private float alpha = 0f;
+    private long start = -1;
+    private long runtime = 2000;
 
 
     public PopupManager(String message, String type){
@@ -22,14 +25,13 @@ public class PopupManager {
         JPanel pnl = new JPanel(){
             @Override
             protected void paintComponent(Graphics g) {
-
                 int width = g.getFontMetrics().stringWidth(message);
-                int hei = 35;
+                int hei = g.getFontMetrics().getMaxAscent();
 
                 g.setColor( color );
                 g.fillRect(10, 10, width + 30, hei + 10);
                 g.setColor( colorText );
-                g.drawString( message, 150 - width, 17);
+                g.drawString( message, 150 - (width/2), (35+hei)/2);
 
             }
         };
@@ -52,7 +54,7 @@ public class PopupManager {
     }
 
     public static void showInfo(String message){
-        new PopupManager( message, "error");
+        new PopupManager( message, "info");
     }
 
     private void showIt() {
