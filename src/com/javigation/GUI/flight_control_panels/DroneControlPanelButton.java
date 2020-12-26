@@ -49,8 +49,6 @@ public class DroneControlPanelButton extends JButton {
         setOpaque(false);
         setContentAreaFilled(false);
 
-        DroneConnection.Get();
-
         setPreferredSize( new Dimension( buttonIcons().get(buttonType).getIconWidth() + 10, buttonIcons().get(buttonType).getIconHeight() + 10));
         setMinimumSize( getPreferredSize() );
         setMaximumSize( getPreferredSize() );
