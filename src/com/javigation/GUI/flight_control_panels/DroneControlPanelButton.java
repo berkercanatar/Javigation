@@ -1,6 +1,7 @@
 package com.javigation.GUI.flight_control_panels;
 
 import com.javigation.GUI.RoundedBorder;
+import com.javigation.GUI.popup.PopupManager;
 import com.javigation.Statics;
 import com.javigation.Utils;
 import com.javigation.drone_link.DroneConnection;
