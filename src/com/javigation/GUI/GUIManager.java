@@ -6,6 +6,9 @@ import com.javigation.GUI.map.DronePainter;
 import com.javigation.GUI.map.RoutePainter;
 import com.javigation.GUI.map.TileCleaner;
 import com.javigation.Statics;
+import com.javigation.Utils;
+import com.javigation.flight.CommandChain;
+import com.javigation.flight.DroneController;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
 import org.freedesktop.gstreamer.Pipeline;
@@ -224,6 +227,10 @@ public class GUIManager {
                 switch (mouseButton){
                     case LEFT:
                         System.out.print("LEFT:");
+                        if (DroneControlPanel.controllingDrone != null) {
+                            DroneController controller = DroneControlPanel.controllingDrone.controller;
+                            CommandChain.Create(controller).GoTo(location.getLatitude(), location.getLongitude(), false).Perform();
+                        }
                         break;
                     case RIGHT:
                         System.out.print("RIGHT:");
