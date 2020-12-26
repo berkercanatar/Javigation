@@ -81,7 +81,6 @@ public class DroneControlPanelButton extends JButton {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                PopupManager.showInfo("Mouse Pressed");
                 Offboard.VelocityBodyYawspeed motion;
                 switch (buttonType) {
                         //DroneConnection.Get().drone.getTelemetry().getPosition().sample(2, TimeUnit.SECONDS).subscribe(isArmed -> {
