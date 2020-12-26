@@ -46,7 +46,6 @@ public class DroneTelemetry implements StateChangedListener {
 
         drone.getTelemetry().getPosition().subscribe( position -> {
             synchronized (this) {
-                Utils.info(position);
                 Position = position;
             }
         });

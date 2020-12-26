@@ -1,5 +1,6 @@
 package com.javigation.flight;
 
+import com.javigation.Utils;
 import com.javigation.drone_link.DroneConnection;
 import io.mavsdk.offboard.Offboard;
 import io.mavsdk.telemetry.Telemetry;
@@ -42,7 +43,7 @@ public class Swarm {
         this.drone3 = drone3;
 
         formation = new Formation(format);
-        if(DroneConnection.Connections.size() == 3 && !isLeaderSelected) {
+        if(DroneConnection.Connections.size() >= 3 && !isLeaderSelected) {
             leader = formation.defineLeader(drone, drone2, drone3);
 
             if (leader == drone) {
@@ -71,16 +72,14 @@ public class Swarm {
 
     public void flyTogether(DroneConnection l) {
 
-        leadCommand = new CommandChain(lead.getDrone().controller);
-        leadCommand.GoTo(37,38).Perform(); ///comes from user
-        leader.drone.getTelemetry().getPosition().take(1, TimeUnit.SECONDS);
-
-
-        leader.drone.getTelemetry().getPosition().subscribe( position -> {
-            Telemetry.Position newPosition = formation.getRelativePosition(leaderPosition, 3,4);
+        lead.getDrone().drone.getTelemetry().getPosition().subscribe( position -> {
+            Telemetry.Position newPosition = formation.getRelativePosition(position, 3,4);
             CommandChain.Create(follow1.getDrone().controller).GoTo(newPosition.getLatitudeDeg(), newPosition.getLongitudeDeg()).Perform();
 
-            Telemetry.Position newPosition2 = formation.getRelativePosition(leaderPosition, -3,4);
+
+            Utils.info(newPosition.getLatitudeDeg() + "," + newPosition.getLongitudeDeg());
+
+            Telemetry.Position newPosition2 = formation.getRelativePosition(position, -3,4);
             CommandChain.Create(follow2.getDrone().controller).GoTo(newPosition.getLatitudeDeg(), newPosition.getLongitudeDeg()).Perform();
         });
 

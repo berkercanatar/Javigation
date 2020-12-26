@@ -7,8 +7,10 @@ import com.javigation.GUI.map.RoutePainter;
 import com.javigation.GUI.map.TileCleaner;
 import com.javigation.Statics;
 import com.javigation.Utils;
+import com.javigation.drone_link.DroneConnection;
 import com.javigation.flight.CommandChain;
 import com.javigation.flight.DroneController;
+import com.javigation.flight.Swarm;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
 import org.freedesktop.gstreamer.Pipeline;
@@ -235,6 +237,7 @@ public class GUIManager {
                         break;
                     case RIGHT:
                         System.out.print("RIGHT:");
+                        Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), "Triangle", false);
                         break;
                 }
                 System.out.println(location.getLatitude()+","+location.getLongitude());

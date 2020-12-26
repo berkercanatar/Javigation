@@ -27,10 +27,9 @@ public class DroneControlPanel extends JPanel {
         setBackground(GUIManager.COLOR_TRANSPARENT);
         setBorder(new RoundedBorder(Color.BLACK, 5, 20, Utils.colorWithAlpha(GUIManager.COLOR_PURPLE, 0.20f)));
 
-        DroneConnection.Get();
-//        DroneConnection.Get(14540);
-//        DroneConnection.Get(14541);
-//        DroneConnection.Get(14542);
+        DroneConnection.Get(14540);
+        DroneConnection.Get(14541);
+        DroneConnection.Get(14542);
 
         generateButtons();
         addMouseListener(new MouseAdapter() { });
