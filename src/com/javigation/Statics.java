@@ -22,8 +22,10 @@ public final class Statics {
 
     public static final float MANUAL_CONTROL_HORIZONTAL_VELOCITY_MS = 5f;
     public static final float MANUAL_CONTROL_VERTICAL_VELOCITY_MS = 2f;
-    public static final float MANUAL_CONTROL_YAW_DEG_S = 30f;
+    public static final float MANUAL_CONTROL_YAW_DEG_S = 25f;
 
     public static final List<StateMachine.StateTypes> DefaultStates = Arrays.asList(StateMachine.StateTypes.DISARMED, StateMachine.StateTypes.ON_GROUND);
+
+    public static double RADIUS_OF_EARTH = 6378.1;
 
 }

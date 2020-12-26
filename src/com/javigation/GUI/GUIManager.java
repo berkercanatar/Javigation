@@ -8,9 +8,7 @@ import com.javigation.GUI.map.TileCleaner;
 import com.javigation.Statics;
 import com.javigation.Utils;
 import com.javigation.drone_link.DroneConnection;
-import com.javigation.flight.CommandChain;
-import com.javigation.flight.DroneController;
-import com.javigation.flight.Swarm;
+import com.javigation.flight.*;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
 import org.freedesktop.gstreamer.Pipeline;
@@ -232,12 +230,12 @@ public class GUIManager {
                         System.out.print("LEFT:");
                         if (DroneControlPanel.controllingDrone != null) {
                             DroneController controller = DroneControlPanel.controllingDrone.controller;
-                            CommandChain.Create(controller).GoTo(location.getLatitude(), location.getLongitude(), false).Perform();
+                            CommandChain.Create(controller).GoTo(location.getLatitude(), location.getLongitude(), controller.stateMachine.CheckState(StateMachine.StateTypes.LEADER)).Perform();
                         }
                         break;
                     case RIGHT:
                         System.out.print("RIGHT:");
-                        Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), "Triangle", false);
+                        Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
                         break;
                 }
                 System.out.println(location.getLatitude()+","+location.getLongitude());

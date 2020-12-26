@@ -7,22 +7,24 @@ import org.jxmapviewer.viewer.GeoPosition;
 
 public class Formation {
 
-    private String format;
+    public FormationType format;
 
-    public Formation(String format){
-        if(format == "Triangle"){
-            this.format = "Triangle";
-        }
-        else if(format == "Horizontal"){
-            this.format = "Horizontal";
-        }
+    private DroneConnection leader;
+    private DroneConnection follower1;
+    private DroneConnection follower2;
 
+    public Formation(FormationType format){
+        this.format = format;
+
+    }
+
+    public enum FormationType {
+        TRIANGLE,
+        HORIZONTAL,
     }
 
     private double distance(double latitudeFollower, double latitudeLeader,   //(f1.lat, ?, f1.long, ?)
                             double longitudeFollower, double longitudeLeader){
-        //radius in km
-        double radius = 6371;
 
         // Haversine
         double distanceLongitude = Math.toRadians(longitudeLeader) - Math.toRadians(longitudeFollower);
@@ -34,7 +36,7 @@ public class Formation {
         double j = 2 * Math.asin(Math.sqrt(i));
 
         //convert meters
-        return (radius*j*1000);
+        return (Statics.RADIUS_OF_EARTH * j * 1000);
 
     }
 
@@ -49,33 +51,37 @@ public class Formation {
                 follower1.controller.Telemetry.Position.getLongitudeDeg(), follower2.controller.Telemetry.Position.getLongitudeDeg());
 
         if( d1 >= d2 && d1 >= d3) {
-            if(format == "Triangle")
-                setPositionsForTriangle(follower2, leader, follower1);
-            else
-                setPositionsForHorizontal(follower2, leader, follower1);
+//            if(format == FormationType.TRIANGLE)
+//                setPositionsForTriangle(follower2, leader, follower1);
+//            else
+//                setPositionsForHorizontal(follower2, leader, follower1);
 
             return follower2;
         }
 
         else if (d2 >= d1 && d2 >= d3){
-            if(format == "Triangle")
-                setPositionsForTriangle(follower1, leader, follower2);
-            else
-                setPositionsForHorizontal(follower1, leader, follower2);
+//            if(format == FormationType.TRIANGLE)
+//                setPositionsForTriangle(follower1, leader, follower2);
+//            else
+//                setPositionsForHorizontal(follower1, leader, follower2);
 
             return follower1;
         }
 
         else if(d3>=d1 && d3 >= d2) {
-            if(format == "Triangle")
-                setPositionsForTriangle(leader, follower2, follower1);
-            else
-                setPositionsForHorizontal(leader, follower2, follower1);
+            if(format == FormationType.TRIANGLE)
+//                setPositionsForTriangle(leader, follower2, follower1);
+//            else
+//                setPositionsForHorizontal(leader, follower2, follower1);
 
             return leader;
         }
 
         return leader;
+
+    }
+
+    public void setPosition(DroneConnection leader, DroneConnection f1, DroneConnection f2) {
 
     }
 

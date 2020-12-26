@@ -70,7 +70,7 @@ public class DroneController {
                     commandStack = commandStack.andThen(drone.getAction().returnToLaunch());
                     break;
                 case GO_TO_LOCATION:
-                    float heading = cmd.getArg("heading") == null ? Telemetry.Attitude.getYawDeg() : cmd.getArg("heading");
+                    Float heading = cmd.getArg("heading") == null ? Telemetry.Attitude.getYawDeg() : cmd.getArg("heading");
                     commandStack = commandStack.andThen(drone.getAction().gotoLocation(cmd.getArg("lat"), cmd.getArg("lon"), Telemetry.Position.getAbsoluteAltitudeM(), heading));
                     break;
                 case HOLD:

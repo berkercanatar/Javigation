@@ -76,11 +76,11 @@ public class CommandChain {
         return this;
     }
 
-    public CommandChain GoTo(double lat, double lon, double heading) {
+    public CommandChain GoTo(double lat, double lon, float heading) {
         CommandList.add((new Command(Command.CommandType.GO_TO_LOCATION)).withArg("lat", lat).withArg("lon", lon).withArg("heading", heading));
         return this;
     }
-    public CommandChain GoTo(double lat, double lon, double alt, double heading) {
+    public CommandChain GoTo(double lat, double lon, double alt, float heading) {
         CommandList.add((new Command(Command.CommandType.GO_TO_LOCATION)).withArg("lat", lat).withArg("lon", lon).withArg("alt", alt).withArg("heading", heading));
         return this;
     }

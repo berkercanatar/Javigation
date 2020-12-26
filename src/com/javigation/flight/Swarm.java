@@ -1,5 +1,6 @@
 package com.javigation.flight;
 
+import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.Utils;
 import com.javigation.drone_link.DroneConnection;
 import io.mavsdk.offboard.Offboard;
@@ -7,6 +8,8 @@ import io.mavsdk.telemetry.Telemetry;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import java.text.Normalizer;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,7 +40,7 @@ public class Swarm {
     Follower follow2;
     CommandChain leadCommand;
 
-    public Swarm(DroneConnection drone, DroneConnection drone2, DroneConnection drone3, String format, boolean isLeaderSelected) {
+    public Swarm(DroneConnection drone, DroneConnection drone2, DroneConnection drone3, Formation.FormationType format, boolean isLeaderSelected) {
         this.drone = drone;
         this.drone2 = drone2;
         this.drone3 = drone3;
@@ -72,16 +75,29 @@ public class Swarm {
 
     public void flyTogether(DroneConnection l) {
 
-        lead.getDrone().drone.getTelemetry().getPosition().subscribe( position -> {
-            Telemetry.Position newPosition = formation.getRelativePosition(position, 3,4);
-            CommandChain.Create(follow1.getDrone().controller).GoTo(newPosition.getLatitudeDeg(), newPosition.getLongitudeDeg()).Perform();
+        DroneControlPanel.controllingDrone = lead.getDrone();
 
+        Timer swarmTimer = new Timer();
 
-            Utils.info(newPosition.getLatitudeDeg() + "," + newPosition.getLongitudeDeg());
+        lead.getDrone().controller.stateMachine.SetState(StateMachine.StateTypes.LEADER);
+        follow1.getDrone().controller.stateMachine.SetState(StateMachine.StateTypes.FOLLOWER);
+        follow2.getDrone().controller.stateMachine.SetState(StateMachine.StateTypes.FOLLOWER);
 
-            Telemetry.Position newPosition2 = formation.getRelativePosition(position, -3,4);
-            CommandChain.Create(follow2.getDrone().controller).GoTo(newPosition.getLatitudeDeg(), newPosition.getLongitudeDeg()).Perform();
-        });
+        TimerTask swarmUpdateTask = new TimerTask() {
+            @Override
+            public void run() {
+                Telemetry.Position leaderPos = lead.getDrone().controller.Telemetry.Position;
+                float leaderHeading = lead.getDrone().controller.Telemetry.Attitude.getYawDeg();
+
+                Telemetry.Position newPosition1 = Utils.FindRelativePosition(leaderPos,  (formation.format == Formation.FormationType.TRIANGLE ? 135 : 90) + leaderHeading, 20);
+                CommandChain.Create(follow1.getDrone().controller).GoTo(newPosition1.getLatitudeDeg(), newPosition1.getLongitudeDeg(), leaderHeading).Perform();
+
+                Telemetry.Position newPosition2 = Utils.FindRelativePosition(leaderPos, (formation.format == Formation.FormationType.TRIANGLE ? 225 : 270) + leaderHeading, 20);
+                CommandChain.Create(follow2.getDrone().controller).GoTo(newPosition2.getLatitudeDeg(), newPosition2.getLongitudeDeg(), leaderHeading).Perform();
+            }
+        };
+
+        swarmTimer.schedule(swarmUpdateTask, 0, 150);
 
 
     }

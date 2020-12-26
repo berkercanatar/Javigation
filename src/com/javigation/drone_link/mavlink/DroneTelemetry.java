@@ -128,7 +128,6 @@ public class DroneTelemetry implements StateChangedListener {
         drone.getTelemetry().getVelocityNed().subscribe( velocity -> {
             if (FlightMode == Telemetry.FlightMode.OFFBOARD && !DroneControlPanel.IsControlling) {
                 double airSpeed = Math.sqrt( Math.pow(velocity.getNorthMS(), 2) + Math.pow(velocity.getEastMS(), 2) + Math.pow(velocity.getDownMS(), 2) );
-                Utils.info(airSpeed);
                 if (airSpeed < 0.25) {
                     CommandChain.Create(controller).Hold().Perform();
                 }
