@@ -1,7 +1,12 @@
 package com.javigation.flight;
 
 import com.javigation.drone_link.DroneConnection;
+import io.mavsdk.offboard.Offboard;
 import io.mavsdk.telemetry.Telemetry;
+import org.jxmapviewer.viewer.GeoPosition;
+
+import java.text.Normalizer;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Create Swarm Object +
@@ -20,42 +25,68 @@ import io.mavsdk.telemetry.Telemetry;
 public class Swarm {
 
     DroneConnection drone;
-    DroneConnection follower1;
-    DroneConnection follower2;
+    DroneConnection drone2;
+    DroneConnection drone3;
     DroneConnection leader;
     private int velocity;
-    public Telemetry.Position Position;
+    private Telemetry.Position leaderPosition;
     Formation formation;
+    Leader lead;
+    Follower follow1;
+    Follower follow2;
+    CommandChain leadCommand;
 
-    public Swarm(DroneConnection drone, DroneConnection follower1, DroneConnection follower2, String format) {
+    public Swarm(DroneConnection drone, DroneConnection drone2, DroneConnection drone3, String format, boolean isLeaderSelected) {
         this.drone = drone;
-        this.follower1 = follower1;
-        this.follower2 = follower2;
+        this.drone2 = drone2;
+        this.drone3 = drone3;
 
         formation = new Formation(format);
-        leader = formation.defineLeader(drone, follower1, follower2);
+        if(DroneConnection.Connections.size() == 3 && !isLeaderSelected) {
+            leader = formation.defineLeader(drone, drone2, drone3);
 
-        if(leader == drone){
+            if (leader == drone) {
+                lead = new Leader(drone);
+                follow1 = new Follower(drone2);
+                follow2 = new Follower(drone3);
+                flyTogether(drone);
+            }
 
-        }
+            else if (leader == drone2) {
+                lead = new Leader(drone2);
+                follow1 = new Follower(drone);
+                follow2 = new Follower(drone3);
+                flyTogether(drone2);
+            }
 
-        else if(leader == follower1){
-
-        }
-
-        else if(leader == follower2) {
-
+            else if (leader == drone3) {
+                lead = new Leader(drone3);
+                follow1 = new Follower(drone2);
+                follow2 = new Follower(drone);
+                flyTogether(drone3);
+            }
         }
 
     }
 
-    public void flyTogether() {
+    public void flyTogether(DroneConnection l) {
+
+        leadCommand = new CommandChain(lead.getDrone().controller);
+        leadCommand.GoTo(37,38).Perform(); ///comes from user
+        leader.drone.getTelemetry().getPosition().take(1, TimeUnit.SECONDS);
+
+
+        leader.drone.getTelemetry().getPosition().subscribe( position -> {
+            Telemetry.Position newPosition = formation.getRelativePosition(leaderPosition, 3,4);
+            CommandChain.Create(follow1.getDrone().controller).GoTo(newPosition.getLatitudeDeg(), newPosition.getLongitudeDeg()).Perform();
+
+            Telemetry.Position newPosition2 = formation.getRelativePosition(leaderPosition, -3,4);
+            CommandChain.Create(follow2.getDrone().controller).GoTo(newPosition.getLatitudeDeg(), newPosition.getLongitudeDeg()).Perform();
+        });
+
 
     }
 
-
-    private void updateVelocity() {
-    }
 
     private void updatePosition() {
 
