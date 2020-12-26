@@ -33,19 +33,21 @@ public class AutopilotControlPanel extends JPanel {
         JButton land_takeoff = new AutopilotControlPanelButton(this,
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.TAKEOFF, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanTakeOff()),
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.LAND, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanLand()));
-
         add(land_takeoff);
+
+        JButton rtl = new AutopilotControlPanelButton(this,
+                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.RTL, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanRTL()));
+        add(rtl);
 
         JButton mission_pause_resume = new AutopilotControlPanelButton(this,
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.MISSION_START, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanStartMission()),
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.MISSION_PAUSE, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanPauseMission()),
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.MISSION_RESUME, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanResumeMission()));
-
         add(mission_pause_resume);
 
-        JButton rtl = new AutopilotControlPanelButton(this,
-                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.RTL, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanRTL()));
-        add(rtl);
+        JButton hold_or_mission_abort = new AutopilotControlPanelButton(this,
+                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.H, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanResumeMission()));
+        add(mission_pause_resume);
     }
 
     public void OnStateChanged(StateMachine.StateTypes changedType, boolean isAdded) {
