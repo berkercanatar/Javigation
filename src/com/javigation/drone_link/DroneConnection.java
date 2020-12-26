@@ -40,8 +40,26 @@ public class DroneConnection implements MavSDKServerReadyListener {
         server = new MavSDKServer(this, incomingMavlinkPort, localMavSDKPort);
     }
 
+    private DroneConnection(int incomingMavlinkPort, String serialPort, int baudRate) {
+        MavlinkPort = incomingMavlinkPort;
+        MavSDKPort = 4790;
+        VideoPort = 5600;
+        server = new MavSDKServer(this, "/dev/ttyUSB0", 57600, MavSDKPort);
+    }
+
     public static DroneConnection Get() {
         return Get(MAVLINK_BASE_PORT);
+    }
+
+    public static DroneConnection test = null;
+    public static DroneConnection Get(boolean useSerial) {
+        if ( test != null )
+            return test;
+        else{
+            test = new DroneConnection(14540, "/dev/ttyUSB2", 57600);
+            return test;
+        }
+
     }
 
     public static DroneConnection Get(int mavlinkPort) {

@@ -62,8 +62,6 @@ public class DroneControlPanelButton extends JButton {
         
     }
 
-    private long last = 0;
-
     private void createListener() {
         addMouseListener(new MouseListener() {
             @Override
@@ -80,6 +78,7 @@ public class DroneControlPanelButton extends JButton {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                DroneControlPanel.IsControlling = true;
                 Offboard.VelocityBodyYawspeed motion;
                 switch (buttonType) {
                         //DroneConnection.Get().drone.getTelemetry().getPosition().sample(2, TimeUnit.SECONDS).subscribe(isArmed -> {
@@ -118,6 +117,7 @@ public class DroneControlPanelButton extends JButton {
             @Override
             public void mouseReleased(MouseEvent e) {
                 DroneControlPanel.controllingDrone.drone.getOffboard().setVelocityBody(holdMotion).subscribe();
+                DroneControlPanel.IsControlling = false;
             }
 
             @Override

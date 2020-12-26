@@ -6,6 +6,9 @@ import com.javigation.GUI.map.DronePainter;
 import com.javigation.GUI.map.RoutePainter;
 import com.javigation.GUI.map.TileCleaner;
 import com.javigation.Statics;
+import com.javigation.Utils;
+import com.javigation.flight.CommandChain;
+import com.javigation.flight.DroneController;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
 import org.freedesktop.gstreamer.Pipeline;
@@ -176,8 +179,9 @@ public class GUIManager {
         Gst.init("Javigation");
 
         vc = new GstVideoComponent();
-        Bin bin = Gst.parseBinFromDescription("videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",true);
+        //Bin bin = Gst.parseBinFromDescription("videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",true);
         //Bin bin = Gst.parseBinFromDescription("v4l2src ! videoconvert",true);
+        Bin bin = Gst.parseBinFromDescription("udpsrc port=5600 ! application/x-rtp, encoding-name=H264, payload=96 ! rtph264depay ! h264parse ! avdec_h264 ! videoconvert",true);
         pipe = new Pipeline();
         pipe.addMany(bin, vc.getElement());
         Pipeline.linkMany(bin, vc.getElement());
@@ -224,6 +228,10 @@ public class GUIManager {
                 switch (mouseButton){
                     case LEFT:
                         System.out.print("LEFT:");
+                        if (DroneControlPanel.controllingDrone != null) {
+                            DroneController controller = DroneControlPanel.controllingDrone.controller;
+                            CommandChain.Create(controller).GoTo(location.getLatitude(), location.getLongitude(), false).Perform();
+                        }
                         break;
                     case RIGHT:
                         System.out.print("RIGHT:");

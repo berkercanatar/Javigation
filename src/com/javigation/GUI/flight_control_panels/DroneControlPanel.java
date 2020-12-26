@@ -8,6 +8,7 @@ import com.javigation.flight.Command;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 
 public class DroneControlPanel extends JPanel {
 
@@ -18,6 +19,8 @@ public class DroneControlPanel extends JPanel {
 
     private ControlStickButtons rightButtonsContainer, leftButtonsContainer;
 
+    public static boolean IsControlling = false;
+
     public DroneControlPanel() {
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setLayout(new GridLayout(0, 2, 50, 0));
@@ -25,6 +28,7 @@ public class DroneControlPanel extends JPanel {
         setBorder(new RoundedBorder(Color.BLACK, 5, 20, Utils.colorWithAlpha(GUIManager.COLOR_PURPLE, 0.20f)));
 
         generateButtons();
+        addMouseListener(new MouseAdapter() { });
 
     }
 

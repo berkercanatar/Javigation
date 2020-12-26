@@ -27,6 +27,7 @@ public class Command {
         ROLL_RIGHT,
         YAW_CCW,
         YAW_CW,
+        HOLD,
     }
 
     public CommandType commandType;

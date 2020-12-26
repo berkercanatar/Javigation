@@ -4,11 +4,11 @@ import com.javigation.GUI.GUIManager;
 import com.javigation.GUI.RoundedBorder;
 import com.javigation.Utils;
 import com.javigation.flight.Command;
-import com.javigation.flight.StateChangedListener;
 import com.javigation.flight.StateMachine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 
 public class AutopilotControlPanel extends JPanel {
 
@@ -25,6 +25,8 @@ public class AutopilotControlPanel extends JPanel {
 
         generateButtons();
         INSTANCE = this;
+
+        addMouseListener(new MouseAdapter() { });
     }
     private void generateButtons() {
 
