@@ -1,8 +1,10 @@
 package com.javigation.drone_link.mavlink;
 
 import com.javigation.GUI.flight_control_panels.AutopilotControlPanel;
+import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.Utils;
 import com.javigation.drone_link.DroneConnection;
+import com.javigation.flight.CommandChain;
 import com.javigation.flight.DroneController;
 import com.javigation.flight.StateChangedListener;
 import com.javigation.flight.StateMachine;
@@ -125,6 +127,16 @@ public class DroneTelemetry implements StateChangedListener {
                     break;
             }
             LandedState = landedState;
+        });
+
+        drone.getTelemetry().getVelocityNed().subscribe( velocity -> {
+            if (FlightMode == Telemetry.FlightMode.OFFBOARD && !DroneControlPanel.IsControlling) {
+                double airSpeed = Math.sqrt( Math.pow(velocity.getNorthMS(), 2) + Math.pow(velocity.getEastMS(), 2) + Math.pow(velocity.getDownMS(), 2) );
+                Utils.info(airSpeed);
+                if (airSpeed < 0.25) {
+                    CommandChain.Create(controller).Hold().Perform();
+                }
+            }
         });
 
 
