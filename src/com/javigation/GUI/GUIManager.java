@@ -72,7 +72,7 @@ public class GUIManager {
 
         //tabControl.tabFlightPlan.add(mapViewer);
         TutorialPanel tutorial = new TutorialPanel();
-        tabControl.tabTutorial.add(tutorial);
+        //tabControl.tabTutorial.add(tutorial);
 
 
         tabControl.tabFlightPlan.add(containers.MainContainer);
