@@ -31,8 +31,8 @@ public class Slider extends JPanel {
         }
 
         UIDefaults slide = new UIDefaults();
-        slide.put("Slider.thumbHeight", 100);
-        slide.put("Slider.thumbWidth", 50);
+        slide.put("Slider.thumbHeight", 75);
+        slide.put("Slider.thumbWidth", 75);
 
         JSlider slider = new JSlider();
         slider.setValue(0);
@@ -45,9 +45,10 @@ public class Slider extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (100 * slider.getValue() / slider.getMaximum() > 85) {
+                if (100 * slider.getValue() / slider.getMaximum() > 95) {
                     setVisible(false);
                     action.Perform();
+                    slider.setValue(0);
                 } else {
                     slider.setValue(0);
                 }
@@ -56,38 +57,27 @@ public class Slider extends JPanel {
 
         slider.putClientProperty("Nimbus.Overrides", slide);
         JButton button = new JButton("Exit");
-        actionNameLabel = new JLabel("Confirmation");
+        actionNameLabel = new JLabel("Confirm");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
             }
         });
-        JPanel p = new JPanel();
+
         JPanel labelP = new JPanel();
         actionNameLabel.setHorizontalAlignment( SwingConstants.CENTER );
         labelP.setLayout( new BorderLayout());
         labelP.add(actionNameLabel, BorderLayout.CENTER);
         labelP.add( button, BorderLayout.EAST);
 
-        p.setLayout( new BorderLayout() );
-        p.add(labelP, BorderLayout.NORTH);
-        p.setBackground(Color.DARK_GRAY);
-        p.add(slider, BorderLayout.CENTER);
+        setLayout( new BorderLayout() );
+        add(labelP, BorderLayout.NORTH);
+        setBackground(Color.DARK_GRAY);
+        add(slider, BorderLayout.CENTER);
 
     }
 
-    public void makeUI() {
-        JFrame f = new JFrame();
-
-        f.setUndecorated(true);
-        //f.getContentPane().add(p);
-        f.setResizable(false);
-        f.setSize(320, 240);
-        f.setLocation(800, 800);
-        f.setVisible(true);
-
-    }
     public static void launchSlider(String text, CommandChain action) {
         INSTANCE.action = action;
         INSTANCE.actionNameLabel.setText(text);
