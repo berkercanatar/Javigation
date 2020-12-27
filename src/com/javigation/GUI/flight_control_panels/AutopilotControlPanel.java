@@ -46,7 +46,7 @@ public class AutopilotControlPanel extends JPanel {
         add(mission_pause_resume);
 
         JButton hold_or_mission_abort = new AutopilotControlPanelButton(this,
-                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.H, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanResumeMission()));
+                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.HOLD, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanResumeMission()));
         add(mission_pause_resume);
     }
 
