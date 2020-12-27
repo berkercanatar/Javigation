@@ -49,7 +49,7 @@ class ControlPanelTutorial extends JPanel{
     JPanel firstPanel;
     JPanel secondPanel;
     JPanel selectedPanel;
-    BufferedImage ascend,descend,land,missionAbort,missionPause,missionResume,missionStart,pitchDown,pitchUp,rollLeft,rollRight,rtl,takeOff,yawCcw,yawCw;
+    BufferedImage ascend,descend,land,missionAbort,missionPause,missionResume,missionStart,pitchDown,pitchUp,rollLeft,rollRight,rtl,takeOff,yawCcw,yawCw,hold,missionPlanDone,uploadMission,planMission;
 
     public ControlPanelTutorial(){
         change = new JButton();
@@ -80,7 +80,10 @@ class ControlPanelTutorial extends JPanel{
             rtl = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/rtl.png").getPath()));
             land = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/land.png").getPath()));
             takeOff = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/takeOff.png").getPath()));
-
+            hold = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/hold.png").getPath()));
+            missionPlanDone = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_plan_done.png").getPath()));
+            planMission = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/plan_mission.png").getPath()));
+            uploadMission = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/upload_mission.png").getPath()));
 
         } catch (IOException e){
             System.out.println("Could not find the image");
@@ -144,33 +147,53 @@ class ControlPanelTutorial extends JPanel{
             change.setText("Next");
         }
         if( selectedPanel==secondPanel) {
-            g.drawImage(autoPilotControl1, 310, 115, null);
-            g.drawImage(autoPilotControl2,500,115,null);
+            g.drawImage(autoPilotControl1, 310, 95, null);//-20
+            g.drawImage(autoPilotControl2,500,95,null);
             g.setFont(new Font( "Tahoma", Font.BOLD, 20 ));
             g.setColor(Color.WHITE);
             g.drawString("Auto Control Panel",410,80);
             g.setFont(new Font( "Tahoma", Font.BOLD, 13 ));
-            g.drawString("Red bordered buttons indicates the unavailable functions.",500-190+5,115+343+25);
+            g.drawString("Red bordered buttons indicates the unavailable functions.",315,115+343+25);
+            g.drawString("Green bordered buttons indicates the functions currently in use.",300,120+343);
             g.setFont(new Font( "Tahoma", Font.BOLD, 16 ));
 
             g.drawImage(takeOff,180,70,null);
             g.drawImage(land,230,70,null);
             g.drawString("Take-off & Land",45,100);
             g.drawLine(350,155,200,110);
-            g.drawLine(540,155,250,110);
+            //g.drawLine(540,155,250,110);
 
             g.drawImage(rtl,730,70,null);
             g.drawString("Return to Launch",790,100);
-            g.drawLine(620,152,750,110);
+            g.drawLine(655,155,750,110);
 
-            g.drawImage(missionPause,180,115+343/2-20,null);
-            g.drawImage(missionResume,230,115+343/2-20,null);
+            g.drawImage(missionStart,230,(266+70)/2,null);
+            g.drawString("Start The Mission",85,(296+100)/2);
+            g.drawLine(350,110+(266+70)/2-60,250,110+(266+70)/2-70);
+
+            g.drawImage(missionPause,180,266,null);
+            g.drawImage(missionResume,230,266,null);
             g.drawString("Pause & Resume",45,286);
             g.drawString("The Mission",60,306);
-            g.drawLine(350,235,);
 
-            g.drawImage(missionAbort,730,115+343/2-20,null);
-            g.drawString("Abort The Mission",790,115+343/2+10);
+            g.drawImage(missionAbort,230,266+(266-((266+70)/2)),null);
+            g.drawString("Abort The Mission",85,296+(296-(296+100)/2));
+            g.drawLine(255,373,435,243);
+
+            g.drawImage(uploadMission,730,266,null);
+            g.drawString("Upload a Mission",790,296);
+            g.drawLine(650,330,740,300);
+
+            g.drawImage(hold,730 ,(266+70)/2,null);
+            g.drawLine(593,270,740,200);
+            g.drawString("Hold The Drone",790,(110+296)/2);
+
+            g.drawImage(missionPlanDone,730,266+(266-((266+70)/2)),null);
+            g.drawImage(planMission,780,266+(266-((266+70)/2)),null);
+            g.drawLine(565,360,740,385);
+            g.drawString("Plan & Confirm",840,385);
+            g.drawString("The Mission",855,405);
+
 
 
             //g.drawLine(80,80,340,145);
