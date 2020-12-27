@@ -70,6 +70,7 @@ public class GUIManager {
         setupGStreamer();
         setupMapControlPanel();
         setupMapAutopilotControlPanel();
+        setupSliderPanel();
 
         containers = new Containers(mapViewer, vc);
 
@@ -143,6 +144,24 @@ public class GUIManager {
         gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
         gui.setVisible(true);
 
+    }
+
+    private static void setupSliderPanel() { //TODO: SLIDER
+
+        //Slider sliderPanel = new SliderPanel();
+        JPanel sliderPanel = new JPanel();
+
+        sliderPanel.setPreferredSize(new Dimension(400,100)); //SHOULD BE IN THE CONSTRUCTOR OF SLIDER CLASS
+
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.anchor = GridBagConstraints.SOUTH;
+        gc.weightx = 1.0;
+        gc.weighty = 1.0;
+        gc.gridx = 1;
+        gc.gridy = 2;
+        int inset = 30;
+        gc.insets = new Insets(inset, inset, inset, inset);
+        mapViewer.add(sliderPanel, gc);
     }
 
     private static void setupMapControlPanel() {
@@ -241,7 +260,7 @@ public class GUIManager {
                         System.out.print("RIGHT:");
                         //Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
                         PopupManager.showError("Test Popup");
-                        Slider.launchSlider();
+                        //Slider.launchSlider("Takeoff", CommandChain.Create());
                         break;
                 }
                 System.out.println(location.getLatitude()+","+location.getLongitude());
