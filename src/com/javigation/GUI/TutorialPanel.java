@@ -33,8 +33,8 @@ public class TutorialPanel extends JPanel {
         CameraTutorial camTutorial = new CameraTutorial();
 
         tabbedPane.addTab("Connect to the drone", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/javigation.png")),helpTab1);
-        tabbedPane.addTab("Get ready for take-off",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/droneSettings.png")),helpTab2);
-        tabbedPane.addTab("Learn to fly",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/flightPlan.png")),controlPanelTutorial);
+        tabbedPane.addTab("Get ready for take-off",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/dronesettings.png")),helpTab2);
+        tabbedPane.addTab("Learn to fly",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/flightplan.png")),controlPanelTutorial);
         tabbedPane.addTab("Manage the camera",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/camera.png")),camTutorial);
         tabbedPane.setFont(new Font( "Tahoma", Font.BOLD, 16 ));
 
@@ -80,7 +80,7 @@ class ControlPanelTutorial extends JPanel{
             missionStart = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_start.png").getPath()));
             rtl = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/rtl.png").getPath()));
             land = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/land.png").getPath()));
-            takeOff = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/takeOff.png").getPath()));
+            takeOff = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/takeoff.png").getPath()));
             hold = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/hold.png").getPath()));
             missionPlanDone = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_plan_done.png").getPath()));
             planMission = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/plan_mission.png").getPath()));

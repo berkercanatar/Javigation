@@ -93,7 +93,6 @@ public class TabController extends JPanel {
                         resetTabColors();
                         lbl.setBackground(TAB_SELECTED_COLOR);
                     }
-                }
             });
             tabBarTabsPanel.add(lbl, gridBagConst);
         }
