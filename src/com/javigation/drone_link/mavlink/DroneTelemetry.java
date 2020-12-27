@@ -33,10 +33,15 @@ public class DroneTelemetry implements StateChangedListener {
     public Telemetry.FlightMode FlightMode;
     public Telemetry.LandedState LandedState;
     public Telemetry.Battery Battery;
+    public Boolean CheckPassed;
+    public Telemetry.VelocityNed Velocity;
+    public Telemetry.GpsInfo GPS;
 
 
     public Telemetry.Position Position;
     public GeoPosition GeoPosition() { return new GeoPosition(Position.getLatitudeDeg(), Position.getLongitudeDeg()); }
+    public Float AirSpeed() {return (float)Math.sqrt( Math.pow(Velocity.getNorthMS(), 2) + Math.pow(Velocity.getEastMS(), 2) + Math.pow(Velocity.getDownMS(), 2) ); }
+    public Float HorizontalSpeed() {return (float)Math.sqrt( Math.pow(Velocity.getNorthMS(), 2) + Math.pow(Velocity.getEastMS(), 2) ); }
 
 
     public void SubscribeForTelemetry() {
@@ -73,7 +78,7 @@ public class DroneTelemetry implements StateChangedListener {
 
         telem.getHealthAllOk().subscribe( checkPassed -> {
             synchronized (this) {
-                InAir = checkPassed;
+                CheckPassed = checkPassed;
                 if (checkPassed)
                     stateMachine.SetState(StateMachine.StateTypes.PREFLIGHTCHECK_PASS);
                 else
@@ -127,9 +132,9 @@ public class DroneTelemetry implements StateChangedListener {
         });
 
         drone.getTelemetry().getVelocityNed().subscribe( velocity -> {
+            Velocity = velocity;
             if (FlightMode == Telemetry.FlightMode.OFFBOARD && !DroneControlPanel.IsControlling) {
-                double airSpeed = Math.sqrt( Math.pow(velocity.getNorthMS(), 2) + Math.pow(velocity.getEastMS(), 2) + Math.pow(velocity.getDownMS(), 2) );
-                if (airSpeed < 0.25) {
+                if (AirSpeed() < 0.25) {
                     CommandChain.Create(controller).Hold().Perform();
                 }
             }
@@ -137,6 +142,10 @@ public class DroneTelemetry implements StateChangedListener {
 
         drone.getTelemetry().getBattery().subscribe( battery -> {
             Battery = battery;
+        });
+
+        drone.getTelemetry().getGpsInfo().subscribe( gpsInfo -> {
+            GPS = gpsInfo;
         });
 
 

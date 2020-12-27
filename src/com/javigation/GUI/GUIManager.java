@@ -37,7 +37,7 @@ public class GUIManager {
     public static JXMapViewer mapViewer;
     private static List<DefaultTileFactory> mapFactories;
     private static WaypointPainter<Waypoint> waypointPainter;
-    private static TabController tabControl;
+    public static TabController tabControl;
     private static JPanel panelMain = new JPanel();
     public static DronePainter dronePainter;
 
@@ -74,7 +74,6 @@ public class GUIManager {
         //tabControl.tabFlightPlan.add(mapViewer);
 
         tabControl.tabBarStatusPanel.add(new TelemetryPanel());
-
 
         tabControl.tabFlightPlan.add(containers.MainContainer);
 

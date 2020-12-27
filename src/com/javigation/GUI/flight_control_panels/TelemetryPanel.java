@@ -1,10 +1,15 @@
 package com.javigation.GUI.flight_control_panels;
 
+import com.javigation.GUI.GUIManager;
 import com.javigation.drone_link.DroneConnection;
+import com.javigation.drone_link.mavlink.DroneTelemetry;
+import com.javigation.flight.DroneController;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.TimerTask;
+import java.util.function.Function;
 
 public class TelemetryPanel extends JPanel {
 
@@ -16,7 +21,8 @@ public class TelemetryPanel extends JPanel {
         FLIGHT_TIME,
         HOME_DISTANCE,
         HORIZONTAL_SPEED,
-        IMU,
+        ROLL,
+        PITCH,
         LATITUDE,
         LONGITUDE,
         MODE,
@@ -34,9 +40,19 @@ public class TelemetryPanel extends JPanel {
     public TelemetryPanel() {
         INSTANCE = this;
 
-        TelemetryComponents.add( new TelemetryComponent("BATTERY", TelemType.BATTERY_LEVEL, controller -> {
-            return controller.Telemetry.Battery.getRemainingPercent();
-        }, "%" ) );
+        //setLayout(new SpringLayout());
+        setLayout(new FlowLayout(FlowLayout.LEADING, 5, 4));
+        setBackground(GUIManager.COLOR_BLUE);
+
+        Function<DroneController, DroneTelemetry> function = controller -> controller.Telemetry;
+
+        TelemetryComponents.add( new TelemetryComponent("BATTERY", TelemType.BATTERY_LEVEL, function, "%" ) );
+        TelemetryComponents.add( new TelemetryComponent("VOLT", TelemType.VOLTAGE, function, "V" ) );
+        TelemetryComponents.add( new TelemetryComponent("GPS SATS", TelemType.SATELLITE, function ) );
+        TelemetryComponents.add( new TelemetryComponent("ALT", TelemType.ALTITUDE, function, "m" ) );
+        TelemetryComponents.add( new TelemetryComponent("PITCH", TelemType.PITCH, function, "°" ) );
+        TelemetryComponents.add( new TelemetryComponent("ROLL", TelemType.ROLL, function, "°" ) );
+        TelemetryComponents.add( new TelemetryComponent("HEADING", TelemType.YAW, function, "°" ) );
 
         for ( TelemetryComponent telemetryComponent : TelemetryComponents ) {
             add(telemetryComponent);
@@ -48,7 +64,8 @@ public class TelemetryPanel extends JPanel {
             @Override
             public void run() {
                 for ( TelemetryComponent telemetryComponent : TelemetryComponents ) {
-                    telemetryComponent.Update(DroneControlPanel.controllingDrone.controller);
+                    if (DroneControlPanel.controllingDrone != null)
+                        telemetryComponent.Update(DroneControlPanel.controllingDrone.controller);
                 }
             }
         };

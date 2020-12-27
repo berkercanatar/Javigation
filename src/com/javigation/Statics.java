@@ -29,6 +29,6 @@ public final class Statics {
 
     public static final double RADIUS_OF_EARTH = 6378.1;
 
-    public static final Color TELEMETRY_DEFAULT_COLOR = Color.black;
+    public static final Color TELEMETRY_DEFAULT_COLOR = Color.white;
 
 }

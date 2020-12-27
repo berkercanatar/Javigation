@@ -88,6 +88,7 @@ public class TabController extends JPanel {
 
         tabBarPanel.add(tabBarTabsPanel, BorderLayout.LINE_START);
         tabBarPanel.add(tabBarStatusPanel, BorderLayout.CENTER);
+        tabBarStatusPanel.setBackground(Color.black);
 
         add(tabBarPanel, BorderLayout.NORTH);
         add(tabControl, BorderLayout.CENTER);
