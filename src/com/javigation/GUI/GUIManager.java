@@ -5,6 +5,7 @@ import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.GUI.map.DronePainter;
 import com.javigation.GUI.map.RoutePainter;
 import com.javigation.GUI.map.TileCleaner;
+import com.javigation.GUI.popup.PopupManager;
 import com.javigation.Statics;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
@@ -227,6 +228,11 @@ public class GUIManager {
                         break;
                     case RIGHT:
                         System.out.print("RIGHT:");
+<<<<<<< Updated upstream
+=======
+                        //Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
+                        PopupManager.showError("Test Popup");
+>>>>>>> Stashed changes
                         break;
                 }
                 System.out.println(location.getLatitude()+","+location.getLongitude());

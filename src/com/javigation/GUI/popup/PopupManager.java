@@ -12,8 +12,15 @@ public class PopupManager {
     private long start = -1;
     private long runtime = 2000;
 
+    public enum PopupType {
+        WARNING,
+        ERROR,
+        INFO,
+        SUCCESS
+    }
 
-    public PopupManager(String message, String type){
+
+    public PopupManager(String message, PopupType type){
 
         popup = new JWindow();
         Color color = getType(type);
@@ -42,31 +49,28 @@ public class PopupManager {
     }
 
     public static void showAlert(String message){
-        new PopupManager( message, "warning");
+        new PopupManager( message, PopupType.WARNING);
     }
 
     public static void showError(String message){
-        new PopupManager( message, "error");
+        new PopupManager( message, PopupType.ERROR);
     }
 
     public static void showInfo(String message){
-        new PopupManager( message, "info");
+        new PopupManager( message, PopupType.INFO);
     }
 
     public static void showComplete(String message){
-        new PopupManager( message, "completed");
+        new PopupManager( message, PopupType.SUCCESS);
     }
 
     private void showIt() {
         popup.setVisible(true);
 
-        Timer t = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ( ((Timer) e.getSource()).getDelay() == 1000) {
-                    popup.setVisible(false);
-                    ((Timer) e.getSource()).stop();
-                }
+        Timer t = new Timer(1000, e -> {
+            if ( ((Timer) e.getSource()).getDelay() == 1000) {
+                popup.setVisible(false);
+                ((Timer) e.getSource()).stop();
             }
         });
 
@@ -78,17 +82,15 @@ public class PopupManager {
         return y >= 128 ? Color.black : Color.white;
     }
 
-    private Color getType(String type) {
+    private Color getType(PopupType type) {
 
-        type = type.toLowerCase();
+        Color color = switch (type) {
+            case ERROR -> Color.red;
+            case WARNING -> Color.yellow;
+            case SUCCESS -> Color.green;
+            default -> Color.blue;
+        };
 
-        if ( type.equals("error") )
-            return Color.red;
-        else if ( type.equals("warning") )
-            return Color.yellow;
-        else if ( type.equals("completed") )
-            return Color.green;
-        else
-            return Color.blue;
+        return color;
     }
 }
