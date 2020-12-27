@@ -16,7 +16,7 @@ public class TabController extends JPanel {
     private static final int TOP_PANEL_HEIGHT = 70;
     private JPanel tabBarPanel = new JPanel(new BorderLayout(0,0));
     private JPanel tabBarTabsPanel = new JPanel(new GridBagLayout());//new FlowLayout(FlowLayout.LEADING, 5, 0));
-    private JPanel tabBarStatusPanel = new JPanel(new BorderLayout());
+    public JPanel tabBarStatusPanel = new JPanel(new BorderLayout());
 
     private static final Color TAB_SELECTED_COLOR = new Color(37, 101, 74);
     private static final Color TAB_UNSELECTED_COLOR = new Color(21, 53, 68);
@@ -88,6 +88,7 @@ public class TabController extends JPanel {
 
         tabBarPanel.add(tabBarTabsPanel, BorderLayout.LINE_START);
         tabBarPanel.add(tabBarStatusPanel, BorderLayout.CENTER);
+        tabBarStatusPanel.setBackground(Color.black);
 
         add(tabBarPanel, BorderLayout.NORTH);
         add(tabControl, BorderLayout.CENTER);
