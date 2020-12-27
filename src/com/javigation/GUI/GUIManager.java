@@ -6,6 +6,7 @@ import com.javigation.GUI.flight_control_panels.TelemetryPanel;
 import com.javigation.GUI.map.DronePainter;
 import com.javigation.GUI.map.RoutePainter;
 import com.javigation.GUI.map.TileCleaner;
+import com.javigation.GUI.popup.PopupManager;
 import com.javigation.GUI.popup.Slider;
 import com.javigation.Statics;
 import com.javigation.Utils;
@@ -239,6 +240,7 @@ public class GUIManager {
                     case RIGHT:
                         System.out.print("RIGHT:");
                         //Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
+                        PopupManager.showError("Test Popup");
                         Slider.launchSlider();
                         break;
                 }
