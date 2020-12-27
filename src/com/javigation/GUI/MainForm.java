@@ -1,7 +1,7 @@
 package com.javigation.GUI;
 
 import com.javigation.Utils;
-import com.javigation.drone_link.mavlink.DroneConnection;
+import com.javigation.drone_link.DroneConnection;
 import com.javigation.drone_link.video.GStreamerDownloader;
 import com.javigation.Statics;
 import com.sun.jna.Platform;
@@ -30,7 +30,7 @@ public class MainForm extends JFrame {
 
         boolean isDebugging = Utils.runningFromIntelliJ();
         //if (!isDebugging) //Skip splash screen when debugging
-            //new SplashScreen();
+        //  new SplashScreen();
 
         CheckLocalFolder();
         if (Platform.isWindows())

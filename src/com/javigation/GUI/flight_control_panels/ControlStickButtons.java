@@ -1,4 +1,4 @@
-package com.javigation.GUI.control_panel;
+package com.javigation.GUI.flight_control_panels;
 
 import com.javigation.GUI.GUIManager;
 

@@ -1,6 +1,8 @@
 package com.javigation.GUI;
 
-import com.javigation.GUI.control_panel.DroneControlPanel;
+import com.javigation.GUI.flight_control_panels.AutopilotControlPanel;
+import com.javigation.GUI.flight_control_panels.DroneControlPanel;
+import com.javigation.GUI.flight_control_panels.TelemetryPanel;
 import com.javigation.GUI.map.DronePainter;
 import com.javigation.GUI.map.RoutePainter;
 import com.javigation.GUI.map.TileCleaner;
@@ -8,7 +10,6 @@ import com.javigation.Statics;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
 import org.freedesktop.gstreamer.Pipeline;
-import org.freedesktop.gstreamer.Registry;
 import org.freedesktop.gstreamer.swing.GstVideoComponent;
 import org.jxmapviewer.GoogleMapsTileFactoryInfo;
 import org.jxmapviewer.JXMapViewer;
@@ -22,11 +23,9 @@ import org.jxmapviewer.viewer.*;
 
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.border.LineBorder;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class GUIManager {
     public static JXMapViewer mapViewer;
     private static List<DefaultTileFactory> mapFactories;
     private static WaypointPainter<Waypoint> waypointPainter;
-    private static TabController tabControl;
+    public static TabController tabControl;
     private static JPanel panelMain = new JPanel();
     public static DronePainter dronePainter;
 
@@ -65,6 +64,7 @@ public class GUIManager {
         setupMap();
         setupGStreamer();
         setupMapControlPanel();
+        setupMapAutopilotControlPanel();
 
         containers = new Containers(mapViewer, vc);
 
@@ -72,6 +72,7 @@ public class GUIManager {
         TutorialPanel tutorial = new TutorialPanel();
         //tabControl.tabTutorial.add(tutorial);
 
+        tabControl.tabBarStatusPanel.add(new TelemetryPanel());
 
         tabControl.tabFlightPlan.add(containers.MainContainer);
 
@@ -145,7 +146,6 @@ public class GUIManager {
 
         DroneControlPanel pnl = new DroneControlPanel();
 
-        mapViewer.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.EAST;
         gc.weightx = 1.0;
@@ -153,8 +153,23 @@ public class GUIManager {
         gc.gridx = 1;
         gc.gridy = 1;
         int inset = 30;
-        gc.insets = new Insets(50, inset, inset, inset);
+        gc.insets = new Insets(-600, inset, inset, inset);
         mapViewer.add(pnl, gc);
+    }
+
+    private static void setupMapAutopilotControlPanel() {
+        AutopilotControlPanel pnl = new AutopilotControlPanel();
+
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.anchor = GridBagConstraints.NORTHEAST;
+        gc.weightx = 1.0;
+        gc.weighty = 1.0;
+        gc.gridx = 1;
+        gc.gridy = 0;
+        int inset = 30;
+        gc.insets = new Insets(20, inset, inset, inset);
+        mapViewer.add(pnl, gc);
+
     }
 
     public static GstVideoComponent vc;
@@ -165,37 +180,14 @@ public class GUIManager {
         Gst.init("Javigation");
 
         vc = new GstVideoComponent();
-        Bin bin = Gst.parseBinFromDescription(
-                "videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",
-                true);
+        Bin bin = Gst.parseBinFromDescription("videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",true);
+        //Bin bin = Gst.parseBinFromDescription("v4l2src ! videoconvert",true);
         pipe = new Pipeline();
         pipe.addMany(bin, vc.getElement());
         Pipeline.linkMany(bin, vc.getElement());
 
 
         pipe.play();
-
-//        gstPanel = new JPanel(new BorderLayout());
-//        gstPanel.add(vc, BorderLayout.CENTER);
-//
-//        int thickness = 3;
-//        int height = 234;
-//        int inset = 30;
-//        gstPanel.setPreferredSize(new Dimension(height*16/9 + thickness*2, height+thickness*2));
-//        gstPanel.setBorder(new LineBorder(Color.RED, thickness));
-//
-//        mapViewer.setLayout(new GridBagLayout());
-//        GridBagConstraints gc = new GridBagConstraints();
-//        gc.anchor = GridBagConstraints.SOUTHEAST;
-//        gc.weightx = 1.0;
-//        gc.weighty = 1.0;
-//        gc.gridx = 1;
-//        gc.gridy = 0;
-//        gc.insets = new Insets(inset, inset, inset, inset);
-//        mapViewer.add(gstPanel, gc);
-//
-//        gstPanel.setLayout(new OverlayLayout(gstPanel));
-//        //mapViewer.revalidate();
 
     }
 
@@ -260,6 +252,8 @@ public class GUIManager {
 
         CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(routePainter, waypointPainter, dronePainter);
         mapViewer.setOverlayPainter(painter);
+
+        mapViewer.setLayout(new GridBagLayout());
 
         new Thread(new Runnable() {
             @Override

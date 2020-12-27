@@ -1,9 +1,15 @@
-package com.javigation.drone_link.mavlink;
+package com.javigation.drone_link;
 
 import com.javigation.GUI.GUIManager;
+import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.Utils;
+import com.javigation.drone_link.mavlink.DroneTelemetry;
+import com.javigation.drone_link.mavlink.MavSDKServer;
+import com.javigation.drone_link.mavlink.MavSDKServerReadyListener;
 import com.javigation.flight.DroneController;
+import com.javigation.flight.StateMachine;
 import io.mavsdk.System;
+
 import java.util.ArrayList;
 
 public class DroneConnection implements MavSDKServerReadyListener {
@@ -34,8 +40,26 @@ public class DroneConnection implements MavSDKServerReadyListener {
         server = new MavSDKServer(this, incomingMavlinkPort, localMavSDKPort);
     }
 
+    private DroneConnection(int incomingMavlinkPort, String serialPort, int baudRate) {
+        MavlinkPort = incomingMavlinkPort;
+        MavSDKPort = 4790;
+        VideoPort = 5600;
+        server = new MavSDKServer(this, "/dev/ttyUSB0", 57600, MavSDKPort);
+    }
+
     public static DroneConnection Get() {
         return Get(MAVLINK_BASE_PORT);
+    }
+
+    public static DroneConnection test = null;
+    public static DroneConnection Get(boolean useSerial) {
+        if ( test != null )
+            return test;
+        else{
+            test = new DroneConnection(14540, "/dev/ttyUSB2", 57600);
+            return test;
+        }
+
     }
 
     public static DroneConnection Get(int mavlinkPort) {
@@ -67,9 +91,14 @@ public class DroneConnection implements MavSDKServerReadyListener {
         connection.isDroneConnected = true;
         connection.controller = new DroneController(connection);
         connection.controller.Telemetry = new DroneTelemetry(connection);
-        connection.controller.SubscribeForTelemetry();
+        connection.controller.stateMachine = new StateMachine(connection.controller);
+        connection.controller.Telemetry.SubscribeForTelemetry();
         GUIManager.dronePainter.addDrone(connection.controller);
         java.lang.System.out.println("CONNECTED " + connection.MavlinkPort);
+
+        if (DroneControlPanel.controllingDrone == null)
+            DroneControlPanel.controllingDrone = connection;
+
     }
 
     public static void onDroneDisconnected(DroneConnection connection) {
@@ -80,7 +109,15 @@ public class DroneConnection implements MavSDKServerReadyListener {
         GUIManager.dronePainter.removeDrone(connection.controller);
 
         java.lang.System.out.println("DISCONNECTED " + connection.MavlinkPort);
-    }
 
+        if (DroneControlPanel.controllingDrone == connection) {
+            if (DroneConnection.Connections.size() > 0)
+                DroneControlPanel.controllingDrone = DroneConnection.Connections.get(0);
+            else
+                DroneControlPanel.controllingDrone = null;
+        }
+
+        connection.controller = null;
+    }
 
 }

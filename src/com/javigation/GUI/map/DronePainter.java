@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
 
+import com.javigation.Utils;
 import com.javigation.flight.DroneController;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.painter.AbstractPainter;
@@ -76,7 +77,7 @@ public class DronePainter extends AbstractPainter<JXMapViewer>
         for (Map.Entry<DroneController, Integer> drone : drones.entrySet())
         {
             try {
-                if (drone.getKey() != null && drone.getKey().connection.isDroneConnected && drone.getKey().connection.controller.Telemetry.Position != null)
+                if (drone.getKey() != null && drone.getKey().connection.isDroneConnected && drone.getKey().Telemetry != null && drone.getKey().connection.controller.Telemetry.Position != null)
                     paintDrone(g, map, drone.getKey(), droneIcons.get(drone.getValue()));
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -87,13 +88,25 @@ public class DronePainter extends AbstractPainter<JXMapViewer>
 
     }
 
+    private float lastHeading = -1;
+    private BufferedImage lastIcon = null;
     public void paintDrone(Graphics2D g, JXMapViewer map, DroneController drone, BufferedImage droneIcon)
     {
         Point2D point = map.getTileFactory().geoToPixel(drone.Telemetry.GeoPosition(), map.getZoom());
         int x = (int)point.getX() -droneIcon.getWidth() / 2;
         int y = (int)point.getY() -droneIcon.getHeight() / 2;
 
-        g.drawImage(droneIcon, x, y, null);
+        if (lastIcon == null || (drone.Telemetry.Attitude != null && drone.Telemetry.Attitude.getYawDeg() != lastHeading) )
+            lastIcon = Utils.rotateImageByDegrees(droneIcon, drone.Telemetry.Attitude.getYawDeg());
+
+        if (lastIcon == null) {
+            lastIcon = droneIcon;
+            lastHeading = 0;
+        }
+
+        BufferedImage rotated = Utils.rotateImageByDegrees(droneIcon, (drone.Telemetry.Attitude != null ? drone.Telemetry.Attitude.getYawDeg() : 0));
+
+        g.drawImage(rotated, x, y, null);
     }
 
 }

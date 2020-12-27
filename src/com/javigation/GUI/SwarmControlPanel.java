@@ -1,6 +1,6 @@
 package com.javigation.GUI;
 
-import com.javigation.drone_link.mavlink.DroneConnection;
+import com.javigation.drone_link.DroneConnection;
 import org.jxmapviewer.viewer.DefaultWaypointRenderer;
 
 import javax.imageio.ImageIO;

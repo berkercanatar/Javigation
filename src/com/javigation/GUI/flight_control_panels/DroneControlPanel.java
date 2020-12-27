@@ -1,31 +1,38 @@
-package com.javigation.GUI.control_panel;
+package com.javigation.GUI.flight_control_panels;
 
 import com.javigation.GUI.GUIManager;
-import com.javigation.GUI.MainForm;
 import com.javigation.GUI.RoundedBorder;
 import com.javigation.Utils;
+import com.javigation.drone_link.DroneConnection;
 import com.javigation.flight.Command;
-import com.javigation.flight.CommandChain;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Locale;
+import java.awt.event.MouseAdapter;
 
 public class DroneControlPanel extends JPanel {
+
+    public static DroneConnection controllingDrone;
 
     private static final int PANEL_WIDTH = 480;
     private static final int PANEL_HEIGHT = 180;
 
     private ControlStickButtons rightButtonsContainer, leftButtonsContainer;
 
+    public static boolean IsControlling = false;
+
     public DroneControlPanel() {
-        setPreferredSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
+        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setLayout(new GridLayout(0, 2, 50, 0));
         setBackground(GUIManager.COLOR_TRANSPARENT);
         setBorder(new RoundedBorder(Color.BLACK, 5, 20, Utils.colorWithAlpha(GUIManager.COLOR_PURPLE, 0.20f)));
 
+        DroneConnection.Get(14540);
+        //DroneConnection.Get(14541);
+        //DroneConnection.Get(14542);
+
         generateButtons();
+        addMouseListener(new MouseAdapter() { });
 
     }
 

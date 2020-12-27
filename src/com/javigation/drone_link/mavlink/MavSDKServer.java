@@ -1,14 +1,11 @@
 package com.javigation.drone_link.mavlink;
 
+import com.javigation.drone_link.DroneConnection;
 import com.sun.jna.Platform;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-interface MavSDKServerReadyListener {
-    void onServerInitialized();
-}
 
 public class MavSDKServer  {
 
@@ -25,6 +22,20 @@ public class MavSDKServer  {
         this.connection = connection;
 
         launch(mavSdkProcPath, "-p", Integer.toString(localMavSDKPort),  "udp://:" + incomingMavlinkPort);
+
+    }
+
+    public MavSDKServer(DroneConnection connection, String serialPort, int baudRate, int localMavSDKPort) {
+        String mavSdkProcPath = "";
+        if (Platform.isLinux()) {
+            mavSdkProcPath = MavSDKServer.class.getClassLoader().getResource("mavsdk_server/mavsdk_server_manylinux2010-x64").getPath();
+        } else if (Platform.isWindows()) {
+            mavSdkProcPath = MavSDKServer.class.getClassLoader().getResource("mavsdk_server/mavsdk_server_win32.exe").getPath();
+        }
+
+        this.connection = connection;
+
+        launch(mavSdkProcPath, "-p", Integer.toString(localMavSDKPort),  "serial://" + serialPort + ":" + baudRate);
 
     }
 
@@ -56,7 +67,9 @@ public class MavSDKServer  {
                 BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 String line;
                 while ((line = in.readLine()) != null) {
-                    System.err.println(line);
+                    System.out.println(line);
+                    if( !connection.isDroneConnected)
+                        DroneConnection.onDroneConnected(connection);
                     if (line.contains("Server set to listen"))
                         connection.onServerInitialized();
                     else if (line.contains("Discovered"))
