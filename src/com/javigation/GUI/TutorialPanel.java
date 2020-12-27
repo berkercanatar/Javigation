@@ -96,6 +96,9 @@ class ControlPanelTutorial extends JPanel{
                 repaint();
             }
         });
+        //change.setOpaque(true);
+        //change.setBackground(TutorialPanel.TAB_BAR_COLOR);
+        //change.setForeground(TutorialPanel.TAB_BAR_COLOR);
         this.add(selectedPanel);
         this.add(change);
 
@@ -131,6 +134,8 @@ class ControlPanelTutorial extends JPanel{
             g.drawString("Move Backward",779,361);
             g.drawString("Move Right",815,210);
             g.drawString("Move Forward",735,70);
+            g.setFont(new Font( "Tahoma", Font.BOLD, 20 ));
+            g.drawString("Control Panel",440,80);
 
             change.setText("Next");
         }
@@ -140,3 +145,8 @@ class ControlPanelTutorial extends JPanel{
         }
     }
 }
+/*class ConnectionTutorialPanel extends JPanel{
+
+    public ControlPanelTutorial
+
+}*/
