@@ -149,8 +149,8 @@ public class GUIManager {
     }
 
     private static void setupSliderPanel() { //TODO: SLIDER
-        //Slider sliderPanel = new SliderPanel();
-        JPanel sliderPanel = new JPanel();
+        //Slider slider = new Slider();
+        Slider sliderPanel = new Slider();
 
         sliderPanel.setPreferredSize(new Dimension(400,100)); //SHOULD BE IN THE CONSTRUCTOR OF SLIDER CLASS
 
@@ -261,7 +261,6 @@ public class GUIManager {
                         System.out.print("RIGHT:");
                         //Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
                         PopupManager.showError("Test Popup");
-                        //Slider.launchSlider("Takeoff", CommandChain.Create());
                         break;
                 }
                 System.out.println(location.getLatitude()+","+location.getLongitude());
