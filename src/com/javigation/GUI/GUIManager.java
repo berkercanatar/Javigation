@@ -79,7 +79,7 @@ public class GUIManager {
         //tabControl.tabFlightPlan.add(mapViewer);
 
         tabControl.tabBarStatusPanel.add(new TelemetryPanel());
-
+        tabControl.tabTutorial.add(new TutorialPanel());
         tabControl.tabFlightPlan.add(containers.MainContainer);
 
         JPanel panel = new JPanel();
