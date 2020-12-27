@@ -75,6 +75,13 @@ public class TabController extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
+                    if( pnl==tabCameraView){
+                        GUIManager.vc.getParent().remove(GUIManager.vc);
+                        tabCameraView.add(GUIManager.vc);
+                    } else if ( pnl == tabFlightPlan) {
+                        GUIManager.containers.refreshCameraContainer();
+                    }
+
                         tabControl.setSelectedComponent(pnl);
                         resetTabColors();
                         lbl.setBackground(TAB_SELECTED_COLOR);
