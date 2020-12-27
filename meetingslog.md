@@ -11,3 +11,8 @@ Below is a record of our project group meetings. This page will be submitted tog
 We reviewed progress. Furkan and Berker has finished the map, toolbar and general gui design of the program. We plan for future development. The branches are opened in Github according to the part which are being updated. We decide all classes.  Next meeting planned for 1 week later.
 
 **ToDo:** The remaining parts of the program will be completed by assigned people.
+
+***
+### Later Meetings
+***
+For later meetings, we discussed via Whatsapp group and Discord server. For assigning tasks, we used Whatsapp and for help we used Discord. Also, we worked together via TeamViewer.
