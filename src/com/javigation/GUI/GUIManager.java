@@ -2,6 +2,7 @@ package com.javigation.GUI;
 
 import com.javigation.GUI.flight_control_panels.AutopilotControlPanel;
 import com.javigation.GUI.flight_control_panels.DroneControlPanel;
+import com.javigation.GUI.flight_control_panels.TelemetryPanel;
 import com.javigation.GUI.map.DronePainter;
 import com.javigation.GUI.map.RoutePainter;
 import com.javigation.GUI.map.TileCleaner;
@@ -71,6 +72,8 @@ public class GUIManager {
         containers = new Containers(mapViewer, vc);
 
         //tabControl.tabFlightPlan.add(mapViewer);
+
+        tabControl.tabBarStatusPanel.add(new TelemetryPanel());
 
 
         tabControl.tabFlightPlan.add(containers.MainContainer);
