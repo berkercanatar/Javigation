@@ -82,10 +82,10 @@ public class TabController extends JPanel {
                         GUIManager.containers.refreshCameraContainer();
                     }
 
-                        tabControl.setSelectedComponent(pnl);
-                        resetTabColors();
-                        lbl.setBackground(TAB_SELECTED_COLOR);
-                    }
+                    tabControl.setSelectedComponent(pnl);
+                    resetTabColors();
+                    lbl.setBackground(TAB_SELECTED_COLOR);
+                }
             });
             tabBarTabsPanel.add(lbl, gridBagConst);
         }
