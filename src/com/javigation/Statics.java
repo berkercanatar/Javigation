@@ -3,6 +3,7 @@ package com.javigation;
 
 import com.javigation.flight.StateMachine;
 
+import java.awt.*;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,8 @@ public final class Statics {
 
     public static final List<StateMachine.StateTypes> DefaultStates = Arrays.asList(StateMachine.StateTypes.DISARMED, StateMachine.StateTypes.ON_GROUND);
 
-    public static double RADIUS_OF_EARTH = 6378.1;
+    public static final double RADIUS_OF_EARTH = 6378.1;
+
+    public static final Color TELEMETRY_DEFAULT_COLOR = Color.black;
 
 }

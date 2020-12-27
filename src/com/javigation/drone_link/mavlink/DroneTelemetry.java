@@ -32,6 +32,7 @@ public class DroneTelemetry implements StateChangedListener {
 
     public Telemetry.FlightMode FlightMode;
     public Telemetry.LandedState LandedState;
+    public Telemetry.Battery Battery;
 
 
     public Telemetry.Position Position;
@@ -132,6 +133,10 @@ public class DroneTelemetry implements StateChangedListener {
                     CommandChain.Create(controller).Hold().Perform();
                 }
             }
+        });
+
+        drone.getTelemetry().getBattery().subscribe( battery -> {
+            Battery = battery;
         });
 
 

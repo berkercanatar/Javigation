@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Command {
 
-    public static enum CommandType {
+    public enum CommandType {
         ARM,
         DISARM,
         TAKEOFF,
