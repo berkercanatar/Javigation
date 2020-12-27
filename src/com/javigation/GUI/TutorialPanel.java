@@ -16,6 +16,7 @@ public class TutorialPanel extends JPanel {
     public static final Color TAB_BAR_COLOR = new Color(46, 91, 114);
 
 
+
     public TutorialPanel(){
         setGUI();
     }
@@ -25,16 +26,16 @@ public class TutorialPanel extends JPanel {
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.SCROLL_TAB_LAYOUT);
         Dimension a = new Dimension(1000,550);
         tabbedPane.setPreferredSize(a);
-        JPanel helpTab1, helpTab2, helpTab3, helpTab4;
+        JPanel helpTab1, helpTab2;
         ControlPanelTutorial controlPanelTutorial = new ControlPanelTutorial();
         helpTab1 = new JPanel();
         helpTab2 = new JPanel();
-        helpTab3 = new JPanel();
+        CameraTutorial camTutorial = new CameraTutorial();
 
-        tabbedPane.addTab("Connect to the drone  ", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/javigation.png")),helpTab1);
+        tabbedPane.addTab("Connect to the drone", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/javigation.png")),helpTab1);
         tabbedPane.addTab("Get ready for take-off",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/droneSettings.png")),helpTab2);
-        tabbedPane.addTab("Learn to fly          ",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/flightPlan.png")),controlPanelTutorial);
-        tabbedPane.addTab("Eye in the sky        ",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/camera.png")),helpTab3);
+        tabbedPane.addTab("Learn to fly",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/flightPlan.png")),controlPanelTutorial);
+        tabbedPane.addTab("Manage the camera",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/camera.png")),camTutorial);
         tabbedPane.setFont(new Font( "Tahoma", Font.BOLD, 16 ));
 
         add(tabbedPane);
@@ -103,9 +104,6 @@ class ControlPanelTutorial extends JPanel{
                 repaint();
             }
         });
-        //change.setOpaque(true);
-        //change.setBackground(TutorialPanel.TAB_BAR_COLOR);
-        //change.setForeground(TutorialPanel.TAB_BAR_COLOR);
         this.add(selectedPanel);
         this.add(change);
 
@@ -202,8 +200,32 @@ class ControlPanelTutorial extends JPanel{
         }
     }
 }
-/*class ConnectionTutorialPanel extends JPanel{
+class CameraTutorial extends JPanel{
+    BufferedImage mapView,camView;
 
-    public ControlPanelTutorial
+    public CameraTutorial(){
+        setBackground(TutorialPanel.TAB_UNSELECTED_COLOR);
+        try{
+            camView = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/tutorialPanel/cameraView.png").getPath()));
+            mapView = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/tutorialPanel/mapView.png").getPath()));
+        }catch (IOException e){
+            System.out.println("couldn't find the image.");
+        }
 
-}*/
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setFont(new Font( "Tahoma", Font.BOLD, 20 ));
+        g.setColor(Color.WHITE);
+        g.drawString("Drone Camera",430,80);
+        g.drawImage(camView,80,120,null);
+        g.drawImage(mapView,530,120,null);
+        g.setFont(new Font( "Tahoma", Font.BOLD, 15 ));
+        g.drawString("Besides the Camera View panel, the view can be changed from map to camera by clicking indicated panels.",92,400);
+        g.drawOval(325,240,140,90);
+        g.drawOval(788,240,140,90);
+    }
+}
+
