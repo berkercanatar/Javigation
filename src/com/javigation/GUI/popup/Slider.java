@@ -1,84 +1,82 @@
 package com.javigation.GUI.popup;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Slider {
-    public JComponent makeUI() {
-        UIDefaults d = new UIDefaults();
-        d.put("Slider:SliderTrack[Enabled].backgroundPainter", new Painter<JSlider>() {
-            @Override public void paint(Graphics2D g, JSlider c, int w, int h) {
-                int arc         = 10;
-                int trackHeight = 8;
-                int trackWidth  = w - 2;
-                int fillTop     = 4;
-                int fillLeft    = 1;
 
-                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-                g.setStroke(new BasicStroke(1.5f));
-                g.setColor(Color.GRAY);
-                g.fillRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
+    public void makeUI() {
+        JFrame f = new JFrame();
 
-                int fillBottom = fillTop + trackHeight;
-                int fillRight  = xPositionForValue(
-                        c.getValue(), c,
-                        new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop));
 
-                g.setColor(Color.ORANGE);
-                g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
-
-                g.setColor(Color.WHITE);
-                g.drawRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
+        try {
+            for (UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(laf.getName())) {
+                    UIManager.setLookAndFeel(laf.getClassName());
+                }
             }
-            private int xPositionForValue(int value, JSlider slider, Rectangle trackRect) {
-                int min = slider.getMinimum();
-                int max = slider.getMaximum();
-                int trackLength = trackRect.width;
-                double valueRange = (double) max - (double) min;
-                double pixelsPerValue = (double) trackLength / valueRange;
-                int trackLeft = trackRect.x;
-                int trackRight = trackRect.x + (trackRect.width - 1);
-                int xPosition;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                xPosition = trackLeft;
-                xPosition += Math.round(pixelsPerValue * ((double) value - min));
-
-                xPosition = Math.max(trackLeft, xPosition);
-                xPosition = Math.min(trackRight, xPosition);
-
-                return xPosition;
-            }
-        });
+        UIDefaults slide = new UIDefaults();
+        slide.put("Slider.thumbHeight", 100);
+        slide.put("Slider.thumbWidth", 50);
 
         JSlider slider = new JSlider();
-        slider.putClientProperty("Nimbus.Overrides", d);
-
-        JPanel p = new JPanel();
-        p.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        p.setBackground(Color.DARK_GRAY);
-        p.add(new JSlider());
-        p.add(Box.createRigidArea(new Dimension(200, 20)));
-        p.add(slider);
-        return p;
-    }
-    public static void main(String... args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                for (UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels()) {
-                    if ("Nimbus".equals(laf.getName())) {
-                        UIManager.setLookAndFeel(laf.getClassName());
+        slider.setValue(0);
+        slider.addChangeListener(
+                new ChangeListener() {
+                    @Override
+                    public void stateChanged(ChangeEvent e) {
+                        if (((JSlider) e.getSource()).getValue() == ((JSlider) e.getSource()).getMaximum() )
+                        {
+                            System.out.println("Closed Slider");
+                            f.setVisible(false);
+                            f.dispose();
+                        }
+                        else
+                            ((JSlider) e.getSource()).setValue(0);
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+        );
+
+        slider.putClientProperty("Nimbus.Overrides", slide);
+        JButton button = new JButton("Exit");
+        JLabel label = new JLabel("Confirmation");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
             }
-            JFrame f = new JFrame();
-            f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            f.getContentPane().add(new Slider().makeUI());
-            f.setSize(320, 240);
-            f.setLocationRelativeTo(null);
-            f.setVisible(true);
         });
+        JPanel p = new JPanel();
+        JPanel labelP = new JPanel();
+        label.setHorizontalAlignment( SwingConstants.CENTER );
+        labelP.setLayout( new BorderLayout());
+        labelP.add(label, BorderLayout.CENTER);
+        labelP.add( button, BorderLayout.EAST);
+
+        p.setLayout( new BorderLayout() );
+        p.add(labelP, BorderLayout.NORTH);
+        p.setBackground(Color.DARK_GRAY);
+        p.add(slider, BorderLayout.CENTER);
+
+        f.setUndecorated(true);
+        f.getContentPane().add(p);
+        f.setResizable(false);
+        f.setSize(320, 240);
+        f.setLocation(800, 800);
+        f.setVisible(true);
+
+    }
+    public static void launchSlider() {
+
+            new Slider().makeUI();
+
     }
 }
