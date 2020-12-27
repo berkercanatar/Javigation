@@ -96,5 +96,21 @@ public final class Utils {
 
         return new Telemetry.Position(Math.toDegrees(lat), Math.toDegrees(lon), position.getAbsoluteAltitudeM(), position.getRelativeAltitudeM());
     }
+
+    public static float DistanceBetweenCordinatesM(Telemetry.Position pos1, Telemetry.Position pos2){
+
+        // Haversine
+        double distanceLongitude = Math.toRadians(pos1.getLongitudeDeg()) - Math.toRadians(pos2.getLongitudeDeg());
+        double distanceLatitude = Math.toRadians(pos1.getLatitudeDeg()) - Math.toRadians(pos2.getLatitudeDeg());
+        double i = Math.pow(Math.sin(distanceLatitude / 2), 2)
+                + Math.cos(Math.toRadians(pos2.getLatitudeDeg())) * Math.cos(Math.toRadians(pos1.getLatitudeDeg()))
+                * Math.pow(Math.sin(distanceLongitude / 2),2);
+
+        double j = Math.abs(2 * Math.asin(Math.sqrt(i)));
+
+        //convert meters
+        return (float)(Statics.RADIUS_OF_EARTH * j * 1000);
+
+    }
     
 }

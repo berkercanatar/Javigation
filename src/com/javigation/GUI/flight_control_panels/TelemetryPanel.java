@@ -50,9 +50,12 @@ public class TelemetryPanel extends JPanel {
         TelemetryComponents.add( new TelemetryComponent("VOLT", TelemType.VOLTAGE, function, "V" ) );
         TelemetryComponents.add( new TelemetryComponent("GPS SATS", TelemType.SATELLITE, function ) );
         TelemetryComponents.add( new TelemetryComponent("ALT", TelemType.ALTITUDE, function, "m" ) );
-        TelemetryComponents.add( new TelemetryComponent("PITCH", TelemType.PITCH, function, "°" ) );
-        TelemetryComponents.add( new TelemetryComponent("ROLL", TelemType.ROLL, function, "°" ) );
         TelemetryComponents.add( new TelemetryComponent("HEADING", TelemType.YAW, function, "°" ) );
+        TelemetryComponents.add( new TelemetryComponent("H.SPEED", TelemType.HORIZONTAL_SPEED, function, "m/s" ) );
+        TelemetryComponents.add( new TelemetryComponent("V.SPEED", TelemType.VERTICAL_SPEED, function, "m/s" ) );
+        TelemetryComponents.add( new TelemetryComponent("HOME", TelemType.HOME_DISTANCE, function, "m" ) );
+        TelemetryComponents.add( new TelemetryComponent(TelemType.ARM, function) );
+        TelemetryComponents.add( new TelemetryComponent("MODE", TelemType.MODE, function ) );
 
         for ( TelemetryComponent telemetryComponent : TelemetryComponents ) {
             add(telemetryComponent);

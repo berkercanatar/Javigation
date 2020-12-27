@@ -27,12 +27,17 @@ public class TelemetryComponent extends JPanel {
         this(text, telemType, function, null);
     }
 
+    public TelemetryComponent(TelemetryPanel.TelemType telemType , Function<DroneController, DroneTelemetry> function) {
+        this(null, telemType, function, null);
+    }
+
+
     public TelemetryComponent(String text, TelemetryPanel.TelemType telemType , Function<DroneController, DroneTelemetry> function, String unit) {
         this.unit = unit;
-        setPreferredSize( new Dimension(160, 30));
+        setPreferredSize( new Dimension(telemType == TelemetryPanel.TelemType.MODE ? 350 : 170, 30));
         setLayout(new FlowLayout(FlowLayout.LEFT, 3, 0));
         Utils.info(telemType.name());
-        JLabel labelHeader = new JLabel(text + ":", new ImageIcon(TelemetryComponent.class.getClassLoader().
+        JLabel labelHeader = new JLabel((text != null ? text + ":" : ""), new ImageIcon(TelemetryComponent.class.getClassLoader().
                 getResource("images/telemetry/" + telemType.name().toLowerCase(Locale.ENGLISH) + ".png")), JLabel.LEFT);
         labelHeader.setForeground(Color.black);
         labelHeader.setFont(new Font("ComicSansMS", Font.BOLD, 14));
@@ -88,7 +93,7 @@ public class TelemetryComponent extends JPanel {
                     break;
 
                 case HOME_DISTANCE:
-                    float home_distance = 10f;
+                    float home_distance = Math.round(Utils.DistanceBetweenCordinatesM(telem.Position, telem.Home));
                     text = String.valueOf(home_distance);
                     color = (home_distance < 50f) ? Color.green : ((home_distance < 75) ? Color.orange : Color.red);
                     break;
@@ -108,7 +113,7 @@ public class TelemetryComponent extends JPanel {
                 case MODE:
                     Telemetry.FlightMode mode = telem.FlightMode;
                     text = mode.toString();
-                    color = Color.blue;
+                    color = Color.CYAN;
                     break;
 
                 case PASS:
@@ -136,7 +141,7 @@ public class TelemetryComponent extends JPanel {
                     break;
 
                 case VERTICAL_SPEED:
-                    text = String.valueOf(-telem.Velocity.getDownMS());
+                    text = String.format("%.1f", -telem.Velocity.getDownMS());
                     break;
 
                 case VOLTAGE:

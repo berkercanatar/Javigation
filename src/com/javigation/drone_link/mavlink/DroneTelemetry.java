@@ -36,6 +36,7 @@ public class DroneTelemetry implements StateChangedListener {
     public Boolean CheckPassed;
     public Telemetry.VelocityNed Velocity;
     public Telemetry.GpsInfo GPS;
+    public Telemetry.Position Home;
 
 
     public Telemetry.Position Position;
@@ -146,6 +147,10 @@ public class DroneTelemetry implements StateChangedListener {
 
         drone.getTelemetry().getGpsInfo().subscribe( gpsInfo -> {
             GPS = gpsInfo;
+        });
+
+        drone.getTelemetry().getHome().subscribe( home -> {
+            Home = home;
         });
 
 

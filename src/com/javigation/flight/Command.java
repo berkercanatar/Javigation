@@ -21,6 +21,7 @@ public class Command {
         MISSION_PAUSE,
         MISSION_RESUME,
         MISSION_ABORT,
+        MISSION_UPLOAD,
         PITCH_DOWN,
         PITCH_UP,
         ROLL_LEFT,
