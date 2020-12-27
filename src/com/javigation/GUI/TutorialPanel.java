@@ -44,7 +44,7 @@ public class TutorialPanel extends JPanel {
 
 }
 class ControlPanelTutorial extends JPanel{
-    BufferedImage flightControl;
+    BufferedImage flightControl,autoPilotControl1,autoPilotControl2;
     JButton change;
     JPanel firstPanel;
     JPanel secondPanel;
@@ -64,19 +64,23 @@ class ControlPanelTutorial extends JPanel{
             flightControl = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/tutorialPanel/controlPanel.png").getPath()));
             ascend = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/ascend.png").getPath()));
             descend = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/descend.png").getPath()));
-            land = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/land.png").getPath()));
-            missionAbort = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_abort.png").getPath()));
-            missionPause = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_pause.png").getPath()));
-            missionResume = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_resume.png").getPath()));
-            missionStart = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_start.png").getPath()));
             pitchDown = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/pitch_down.png").getPath()));
             pitchUp = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/pitch_up.png").getPath()));
             rollLeft = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/roll_left.png").getPath()));
             rollRight = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/roll_right.png").getPath()));
-            rtl = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/rtl.png").getPath()));
-            takeOff = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/takeOff.png").getPath()));
             yawCcw = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/yaw_ccw.png").getPath()));
             yawCw = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/yaw_cw.png").getPath()));
+
+            autoPilotControl1 = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/tutorialPanel/autoControlPanel1.png").getPath()));
+            autoPilotControl2 = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/tutorialPanel/autoControlPanel2.png").getPath()));
+            missionAbort = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_abort.png").getPath()));
+            missionPause = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_pause.png").getPath()));
+            missionResume = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_resume.png").getPath()));
+            missionStart = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/mission_start.png").getPath()));
+            rtl = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/rtl.png").getPath()));
+            land = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/land.png").getPath()));
+            takeOff = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/controlPanel/takeOff.png").getPath()));
+
 
         } catch (IOException e){
             System.out.println("Could not find the image");
@@ -140,7 +144,37 @@ class ControlPanelTutorial extends JPanel{
             change.setText("Next");
         }
         if( selectedPanel==secondPanel) {
-            g.drawImage(flightControl, 0, 10, null);
+            g.drawImage(autoPilotControl1, 310, 115, null);
+            g.drawImage(autoPilotControl2,500,115,null);
+            g.setFont(new Font( "Tahoma", Font.BOLD, 20 ));
+            g.setColor(Color.WHITE);
+            g.drawString("Auto Control Panel",410,80);
+            g.setFont(new Font( "Tahoma", Font.BOLD, 13 ));
+            g.drawString("Red bordered buttons indicates the unavailable functions.",500-190+5,115+343+25);
+            g.setFont(new Font( "Tahoma", Font.BOLD, 16 ));
+
+            g.drawImage(takeOff,180,70,null);
+            g.drawImage(land,230,70,null);
+            g.drawString("Take-off & Land",45,100);
+            g.drawLine(350,155,200,110);
+            g.drawLine(540,155,250,110);
+
+            g.drawImage(rtl,730,70,null);
+            g.drawString("Return to Launch",790,100);
+            g.drawLine(620,152,750,110);
+
+            g.drawImage(missionPause,180,115+343/2-20,null);
+            g.drawImage(missionResume,230,115+343/2-20,null);
+            g.drawString("Pause & Resume",45,286);
+            g.drawString("The Mission",60,306);
+            g.drawLine(350,235,);
+
+            g.drawImage(missionAbort,730,115+343/2-20,null);
+            g.drawString("Abort The Mission",790,115+343/2+10);
+
+
+            //g.drawLine(80,80,340,145);
+
             change.setText("Back");
         }
     }
