@@ -1,5 +1,6 @@
 package com.javigation;
 
+import io.mavsdk.telemetry.Telemetry;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -70,6 +71,46 @@ public final class Utils {
         g2d.dispose();
 
         return rotated;
+    }
+
+    public static float CalculateBearing(Telemetry.Position pos1, Telemetry.Position pos2) {
+        return CalculateBearing(pos1.getLatitudeDeg(), pos1.getLongitudeDeg(), pos2.getLatitudeDeg(), pos2.getLongitudeDeg());
+    }
+
+    public static float CalculateBearing(double lat1, double lon1, double lat2, double lon2) {
+        double diff = lon2 - lon1;
+        double x = Math.cos(Math.toRadians(lat2)) * Math.sin(Math.toRadians(diff));
+        double y = Math.cos(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) - Math.sin(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(diff));
+        double bearing = (float) Math.atan2(x, y);
+        bearing = Math.toDegrees(bearing);
+        return  (float)bearing;
+    }
+
+    public static Telemetry.Position FindRelativePosition(Telemetry.Position position, double bearing, float distanceMeters) {
+        double latRad = Math.toRadians(position.getLatitudeDeg());
+        double lonRad = Math.toRadians(position.getLongitudeDeg());
+        double bearingRad = Math.toRadians(bearing);
+
+        double lat = Math.asin( Math.sin(latRad) * Math.cos(distanceMeters / (Statics.RADIUS_OF_EARTH * 1000)) + Math.cos(latRad) * Math.sin(distanceMeters / (Statics.RADIUS_OF_EARTH * 1000)) * Math.cos(bearingRad));
+        double lon = lonRad + Math.atan2(Math.sin(bearingRad) * Math.sin(distanceMeters / (Statics.RADIUS_OF_EARTH * 1000)) * Math.cos(latRad), Math.cos(distanceMeters / (Statics.RADIUS_OF_EARTH * 1000))-Math.sin(latRad) * Math.sin(lat));
+
+        return new Telemetry.Position(Math.toDegrees(lat), Math.toDegrees(lon), position.getAbsoluteAltitudeM(), position.getRelativeAltitudeM());
+    }
+
+    public static float DistanceBetweenCordinatesM(Telemetry.Position pos1, Telemetry.Position pos2){
+
+        // Haversine
+        double distanceLongitude = Math.toRadians(pos1.getLongitudeDeg()) - Math.toRadians(pos2.getLongitudeDeg());
+        double distanceLatitude = Math.toRadians(pos1.getLatitudeDeg()) - Math.toRadians(pos2.getLatitudeDeg());
+        double i = Math.pow(Math.sin(distanceLatitude / 2), 2)
+                + Math.cos(Math.toRadians(pos2.getLatitudeDeg())) * Math.cos(Math.toRadians(pos1.getLatitudeDeg()))
+                * Math.pow(Math.sin(distanceLongitude / 2),2);
+
+        double j = Math.abs(2 * Math.asin(Math.sqrt(i)));
+
+        //convert meters
+        return (float)(Statics.RADIUS_OF_EARTH * j * 1000);
+
     }
     
 }

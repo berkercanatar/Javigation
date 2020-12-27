@@ -1,5 +1,7 @@
 package com.javigation.flight;
 
+import com.javigation.Utils;
+
 import java.util.ArrayList;
 
 public class CommandChain {
@@ -68,11 +70,17 @@ public class CommandChain {
         return this;
     }
 
-    public CommandChain GoTo(double lat, double lon, double alt) {
-        CommandList.add((new Command(Command.CommandType.GO_TO_LOCATION)).withArg("lat", lat).withArg("lon", lon).withArg("alt", alt));
+    public CommandChain GoTo(double lat, double lon, boolean keepHeading) {
+        float heading = keepHeading ? controller.Telemetry.Attitude.getYawDeg() : Utils.CalculateBearing(controller.Telemetry.Position.getLatitudeDeg(), controller.Telemetry.Position.getLongitudeDeg(), lat, lon);
+        CommandList.add((new Command(Command.CommandType.GO_TO_LOCATION)).withArg("lat", lat).withArg("lon", lon).withArg("heading", heading));
         return this;
     }
-    public CommandChain GoTo(double lat, double lon, double alt, double heading) {
+
+    public CommandChain GoTo(double lat, double lon, float heading) {
+        CommandList.add((new Command(Command.CommandType.GO_TO_LOCATION)).withArg("lat", lat).withArg("lon", lon).withArg("heading", heading));
+        return this;
+    }
+    public CommandChain GoTo(double lat, double lon, double alt, float heading) {
         CommandList.add((new Command(Command.CommandType.GO_TO_LOCATION)).withArg("lat", lat).withArg("lon", lon).withArg("alt", alt).withArg("heading", heading));
         return this;
     }
@@ -102,4 +110,8 @@ public class CommandChain {
         return this;
     }
 
+    public CommandChain Hold() {
+        CommandList.add(new Command(Command.CommandType.HOLD));
+        return this;
+    }
 }

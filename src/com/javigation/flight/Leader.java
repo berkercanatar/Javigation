@@ -3,38 +3,44 @@ package com.javigation.flight;
 import com.javigation.drone_link.DroneConnection;
 import io.mavsdk.telemetry.Telemetry;
 import io.reactivex.Flowable;
+import org.jxmapviewer.viewer.GeoPosition;
 
 import java.util.ArrayList;
 
-public class Leader {
+public class Leader implements SwarmDrone{
 
-    private ArrayList<Flowable<Telemetry.Position>> leaderPosition;
+    private ArrayList<GeoPosition> leaderPosition;
     private DroneConnection leader;
     private boolean isLeader;
     private int time;
 
     public Leader(DroneConnection leader) {
         this.leader = leader;
-        leaderPosition.add(leader.drone.getTelemetry().getPosition());
+        leaderPosition = new ArrayList<>();
+        leaderPosition.add(leader.controller.GetGeoPosition());
         isLeader = true;
 
     }
 
-    public void updatePos(Flowable<Telemetry.Position> newPos, int time ){
+    public void updatePos(GeoPosition position, int time){
         this.time = time;
-        if ( time != 0)
-            leaderPosition.add(time, newPos );
+        if (time != 0)
+            leaderPosition.add(time, position );
 
     }
 
-    public Flowable<Telemetry.Position> getPos(){
+    public DroneConnection getDrone(){
+        return leader;
+    }
+
+    public GeoPosition getPos(){
 
         return leaderPosition.get(time);
 
     }
 
-    public DroneConnection getLeader(){
-        return leader;
+    public void setStatus( boolean isLeader ){
+        this.isLeader = isLeader;
     }
 
     public boolean checkStatus() {

@@ -1,8 +1,10 @@
 package com.javigation.drone_link.mavlink;
 
 import com.javigation.GUI.flight_control_panels.AutopilotControlPanel;
+import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.Utils;
 import com.javigation.drone_link.DroneConnection;
+import com.javigation.flight.CommandChain;
 import com.javigation.flight.DroneController;
 import com.javigation.flight.StateChangedListener;
 import com.javigation.flight.StateMachine;
@@ -30,10 +32,17 @@ public class DroneTelemetry implements StateChangedListener {
 
     public Telemetry.FlightMode FlightMode;
     public Telemetry.LandedState LandedState;
+    public Telemetry.Battery Battery;
+    public Boolean CheckPassed;
+    public Telemetry.VelocityNed Velocity;
+    public Telemetry.GpsInfo GPS;
+    public Telemetry.Position Home;
 
 
     public Telemetry.Position Position;
     public GeoPosition GeoPosition() { return new GeoPosition(Position.getLatitudeDeg(), Position.getLongitudeDeg()); }
+    public Float AirSpeed() {return (float)Math.sqrt( Math.pow(Velocity.getNorthMS(), 2) + Math.pow(Velocity.getEastMS(), 2) + Math.pow(Velocity.getDownMS(), 2) ); }
+    public Float HorizontalSpeed() {return (float)Math.sqrt( Math.pow(Velocity.getNorthMS(), 2) + Math.pow(Velocity.getEastMS(), 2) ); }
 
 
     public void SubscribeForTelemetry() {
@@ -70,7 +79,7 @@ public class DroneTelemetry implements StateChangedListener {
 
         telem.getHealthAllOk().subscribe( checkPassed -> {
             synchronized (this) {
-                InAir = checkPassed;
+                CheckPassed = checkPassed;
                 if (checkPassed)
                     stateMachine.SetState(StateMachine.StateTypes.PREFLIGHTCHECK_PASS);
                 else
@@ -101,10 +110,6 @@ public class DroneTelemetry implements StateChangedListener {
             }
         });
 
-        drone.getMission().downloadMission().subscribe( mission -> {
-            Utils.info("MISSION DOWNLOADED");
-        });
-
         drone.getTelemetry().getLandedState().subscribe( landedState -> {
             switch ( landedState ) {
                 case IN_AIR:
@@ -125,6 +130,27 @@ public class DroneTelemetry implements StateChangedListener {
                     break;
             }
             LandedState = landedState;
+        });
+
+        drone.getTelemetry().getVelocityNed().subscribe( velocity -> {
+            Velocity = velocity;
+            if (FlightMode == Telemetry.FlightMode.OFFBOARD && !DroneControlPanel.IsControlling) {
+                if (AirSpeed() < 0.25) {
+                    CommandChain.Create(controller).Hold().Perform();
+                }
+            }
+        });
+
+        drone.getTelemetry().getBattery().subscribe( battery -> {
+            Battery = battery;
+        });
+
+        drone.getTelemetry().getGpsInfo().subscribe( gpsInfo -> {
+            GPS = gpsInfo;
+        });
+
+        drone.getTelemetry().getHome().subscribe( home -> {
+            Home = home;
         });
 
 

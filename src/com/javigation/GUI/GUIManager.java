@@ -2,11 +2,16 @@ package com.javigation.GUI;
 
 import com.javigation.GUI.flight_control_panels.AutopilotControlPanel;
 import com.javigation.GUI.flight_control_panels.DroneControlPanel;
+import com.javigation.GUI.flight_control_panels.TelemetryPanel;
 import com.javigation.GUI.map.DronePainter;
 import com.javigation.GUI.map.RoutePainter;
 import com.javigation.GUI.map.TileCleaner;
 import com.javigation.GUI.popup.PopupManager;
+import com.javigation.GUI.popup.Slider;
 import com.javigation.Statics;
+import com.javigation.Utils;
+import com.javigation.drone_link.DroneConnection;
+import com.javigation.flight.*;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
 import org.freedesktop.gstreamer.Pipeline;
@@ -34,7 +39,7 @@ public class GUIManager {
     public static JXMapViewer mapViewer;
     private static List<DefaultTileFactory> mapFactories;
     private static WaypointPainter<Waypoint> waypointPainter;
-    private static TabController tabControl;
+    public static TabController tabControl;
     private static JPanel panelMain = new JPanel();
     public static DronePainter dronePainter;
 
@@ -70,6 +75,7 @@ public class GUIManager {
 
         //tabControl.tabFlightPlan.add(mapViewer);
 
+        tabControl.tabBarStatusPanel.add(new TelemetryPanel());
 
         tabControl.tabFlightPlan.add(containers.MainContainer);
 
@@ -179,6 +185,7 @@ public class GUIManager {
         vc = new GstVideoComponent();
         Bin bin = Gst.parseBinFromDescription("videotestsrc ! videoconvert ! capsfilter caps=video/x-raw,width=1280,height=720",true);
         //Bin bin = Gst.parseBinFromDescription("v4l2src ! videoconvert",true);
+        //Bin bin = Gst.parseBinFromDescription("udpsrc port=5600 ! application/x-rtp, encoding-name=H264, payload=96 ! rtph264depay ! h264parse ! avdec_h264 ! videoconvert",true);
         pipe = new Pipeline();
         pipe.addMany(bin, vc.getElement());
         Pipeline.linkMany(bin, vc.getElement());
@@ -225,14 +232,16 @@ public class GUIManager {
                 switch (mouseButton){
                     case LEFT:
                         System.out.print("LEFT:");
+                        if (DroneControlPanel.controllingDrone != null) {
+                            DroneController controller = DroneControlPanel.controllingDrone.controller;
+                            CommandChain.Create(controller).GoTo(location.getLatitude(), location.getLongitude(), controller.stateMachine.CheckState(StateMachine.StateTypes.LEADER)).Perform();
+                        }
                         break;
                     case RIGHT:
                         System.out.print("RIGHT:");
-<<<<<<< Updated upstream
-=======
                         //Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
                         PopupManager.showError("Test Popup");
->>>>>>> Stashed changes
+                        Slider.launchSlider();
                         break;
                 }
                 System.out.println(location.getLatitude()+","+location.getLongitude());

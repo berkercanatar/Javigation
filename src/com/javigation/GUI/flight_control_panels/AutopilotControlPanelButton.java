@@ -7,6 +7,7 @@ import com.javigation.flight.CommandChain;
 import com.javigation.flight.StateMachine;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,12 +18,13 @@ public class AutopilotControlPanelButton extends JButton{
     private AutopilotControlPanel autopilotControlPanel;
     private ButtonFunction[] buttonFunctions;
     private ButtonFunction activeType;
+    private Border redBorder, blackBorder;
 
     public void OnStateChanged(StateMachine.StateTypes changedType, boolean isAdded) {
         for (ButtonFunction buttonFunction : buttonFunctions) {
             try {
                 if (buttonFunction.check()) {
-                    setVisible(true);
+                    changeEnabled(true);
                     activeType = buttonFunction;
                     resetSizeIcon();
                     return;
@@ -34,7 +36,7 @@ public class AutopilotControlPanelButton extends JButton{
                 }
             }
         }
-        setVisible(false);
+        changeEnabled(false);
     }
 
     public static class ButtonFunction {
@@ -52,8 +54,6 @@ public class AutopilotControlPanelButton extends JButton{
     }
 
     public AutopilotControlPanelButton(AutopilotControlPanel autopilotControlPanel, ButtonFunction... buttonFunctions) {
-
-        setVisible(false);
         setFocusPainted(false);
         setRolloverEnabled(false);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -69,7 +69,9 @@ public class AutopilotControlPanelButton extends JButton{
 
         resetSizeIcon();
 
-        setBorder(new RoundedBorder(Color.BLACK, 2, 10, Utils.colorWithAlpha(Color.BLACK, 0.80f)));
+        redBorder = new RoundedBorder(Color.RED, 3, 10, Utils.colorWithAlpha(Color.BLACK, 0.80f));
+        blackBorder = new RoundedBorder(Color.BLACK, 2, 10, Utils.colorWithAlpha(Color.BLACK, 0.80f));
+        changeEnabled(false);
 
 
         createListener();
@@ -81,6 +83,8 @@ public class AutopilotControlPanelButton extends JButton{
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (getBorder() == redBorder)
+                    return;
                 switch (activeType.CommandType) {
                     case TAKEOFF:
                         if (activeType.check())
@@ -89,10 +93,6 @@ public class AutopilotControlPanelButton extends JButton{
                     case LAND:
                         if (activeType.check())
                             CommandChain.Create(DroneControlPanel.controllingDrone.controller).Land().Perform();
-                        break;
-                    case ASCEND:
-                        break;
-                    case DESCEND:
                         break;
                     case RTL:
                         if(activeType.check())
@@ -107,6 +107,11 @@ public class AutopilotControlPanelButton extends JButton{
                             CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionResume().Perform();
                         break;
                     case MISSION_ABORT:
+                        break;
+                    case HOLD:
+                        if(activeType.check())
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).Hold().Perform();
+                        break;
                 }
             }
         });
@@ -118,6 +123,14 @@ public class AutopilotControlPanelButton extends JButton{
                                         DroneControlPanelButton.buttonIcons().get(activeType.CommandType).getIconHeight() + 10));
         setMinimumSize( getPreferredSize() );
         setMaximumSize( getPreferredSize() );
+    }
+
+    private void changeEnabled(boolean isEnabled) {
+        setBorder(isEnabled ? blackBorder : redBorder);
+        if (!isEnabled) {
+            activeType = buttonFunctions[0];
+            resetSizeIcon();
+        }
     }
 
 }

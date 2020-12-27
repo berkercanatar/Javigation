@@ -4,11 +4,12 @@ import com.javigation.GUI.GUIManager;
 import com.javigation.GUI.RoundedBorder;
 import com.javigation.Utils;
 import com.javigation.flight.Command;
-import com.javigation.flight.StateChangedListener;
 import com.javigation.flight.StateMachine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.util.ArrayList;
 
 public class AutopilotControlPanel extends JPanel {
 
@@ -25,25 +26,42 @@ public class AutopilotControlPanel extends JPanel {
 
         generateButtons();
         INSTANCE = this;
+
+        addMouseListener(new MouseAdapter() { });
     }
+
     private void generateButtons() {
 
         JButton land_takeoff = new AutopilotControlPanelButton(this,
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.TAKEOFF, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanTakeOff()),
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.LAND, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanLand()));
-
         add(land_takeoff);
+
+        JButton rtl = new AutopilotControlPanelButton(this,
+                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.RTL, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanRTL()));
+        add(rtl);
 
         JButton mission_pause_resume = new AutopilotControlPanelButton(this,
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.MISSION_START, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanStartMission()),
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.MISSION_PAUSE, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanPauseMission()),
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.MISSION_RESUME, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanResumeMission()));
-
         add(mission_pause_resume);
 
-        JButton rtl = new AutopilotControlPanelButton(this,
-                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.RTL, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanRTL()));
-        add(rtl);
+        JButton mission_abort = new AutopilotControlPanelButton(this,
+                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.MISSION_ABORT, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanAbortMission()));
+        add(mission_abort);
+
+        JButton hold = new AutopilotControlPanelButton(this,
+                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.HOLD, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanHold()));
+        add(hold);
+
+        add(new JSeparator(JSeparator.HORIZONTAL));
+
+        MissionUploadButton upload_mission = new MissionUploadButton(this);
+        JButton plan_mission = new MissionPlanButton(this, upload_mission);
+        add(plan_mission);
+
+        add(upload_mission);
     }
 
     public void OnStateChanged(StateMachine.StateTypes changedType, boolean isAdded) {

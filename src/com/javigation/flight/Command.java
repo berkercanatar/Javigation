@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Command {
 
-    public static enum CommandType {
+    public enum CommandType {
         ARM,
         DISARM,
         TAKEOFF,
@@ -21,12 +21,14 @@ public class Command {
         MISSION_PAUSE,
         MISSION_RESUME,
         MISSION_ABORT,
+        MISSION_UPLOAD,
         PITCH_DOWN,
         PITCH_UP,
         ROLL_LEFT,
         ROLL_RIGHT,
         YAW_CCW,
         YAW_CW,
+        HOLD,
     }
 
     public CommandType commandType;

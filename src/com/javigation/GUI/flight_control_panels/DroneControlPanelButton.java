@@ -50,8 +50,6 @@ public class DroneControlPanelButton extends JButton {
         setOpaque(false);
         setContentAreaFilled(false);
 
-        DroneConnection.Get();
-
         setPreferredSize( new Dimension( buttonIcons().get(buttonType).getIconWidth() + 10, buttonIcons().get(buttonType).getIconHeight() + 10));
         setMinimumSize( getPreferredSize() );
         setMaximumSize( getPreferredSize() );
@@ -62,8 +60,6 @@ public class DroneControlPanelButton extends JButton {
         createListener();
         
     }
-
-    private long last = 0;
 
     private void createListener() {
         addMouseListener(new MouseListener() {
@@ -81,6 +77,7 @@ public class DroneControlPanelButton extends JButton {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                DroneControlPanel.IsControlling = true;
                 Offboard.VelocityBodyYawspeed motion;
                 switch (buttonType) {
                         //DroneConnection.Get().drone.getTelemetry().getPosition().sample(2, TimeUnit.SECONDS).subscribe(isArmed -> {
@@ -119,6 +116,7 @@ public class DroneControlPanelButton extends JButton {
             @Override
             public void mouseReleased(MouseEvent e) {
                 DroneControlPanel.controllingDrone.drone.getOffboard().setVelocityBody(holdMotion).subscribe();
+                DroneControlPanel.IsControlling = false;
             }
 
             @Override
