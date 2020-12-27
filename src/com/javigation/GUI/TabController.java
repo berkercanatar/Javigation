@@ -20,6 +20,7 @@ public class TabController extends JPanel {
     public JPanel tabBarStatusPanel = new JPanel(new BorderLayout());
 
 
+
     private static final Color TAB_SELECTED_COLOR = new Color(37, 101, 74);
     private static final Color TAB_UNSELECTED_COLOR = new Color(21, 53, 68);
     private static final Color TAB_TITLE_COLOR = Color.WHITE;
