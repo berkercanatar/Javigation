@@ -1,8 +1,12 @@
 package com.javigation.GUI.popup;
 
+import com.javigation.Utils;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -29,21 +33,22 @@ public class Slider {
 
         JSlider slider = new JSlider();
         slider.setValue(0);
-        slider.addChangeListener(
-                new ChangeListener() {
-                    @Override
-                    public void stateChanged(ChangeEvent e) {
-                        if (((JSlider) e.getSource()).getValue() == ((JSlider) e.getSource()).getMaximum() )
-                        {
-                            System.out.println("Closed Slider");
-                            f.setVisible(false);
-                            f.dispose();
-                        }
-                        else
-                            ((JSlider) e.getSource()).setValue(0);
-                    }
+        slider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (100 * slider.getValue() / slider.getMaximum() > 85) {
+                    f.setVisible(false);
+                    f.dispose();
+                } else {
+                    slider.setValue(0);
                 }
-        );
+            }
+        });
 
         slider.putClientProperty("Nimbus.Overrides", slide);
         JButton button = new JButton("Exit");
