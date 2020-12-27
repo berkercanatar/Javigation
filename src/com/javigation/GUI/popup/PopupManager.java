@@ -1,5 +1,7 @@
 package com.javigation.GUI.popup;
 
+import com.javigation.GUI.Containers;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,20 @@ public class PopupManager {
     private float alpha = 0f;
     private long start = -1;
     private long runtime = 2000;
+
+    private static JLabel messageLabel;
+
+    public static void setup() {
+        //CREATE POPUP PANEL or COMPONENT
+
+        messageLabel = new JLabel();
+        //messageLabel.setFont();
+
+        Containers.popupContainer.add(messageLabel);
+
+        Containers.popupContainer.add(new JButton());
+        Containers.popupContainer.setVisible(false);
+    }
 
     public enum PopupType {
         WARNING,
@@ -49,7 +65,12 @@ public class PopupManager {
     }
 
     public static void showAlert(String message){
-        new PopupManager( message, PopupType.WARNING);
+        //new PopupManager( message, PopupType.WARNING);
+
+        //SET BACKGROUNDS
+        messageLabel.setText(message);
+        Containers.popupContainer.setVisible(true);
+        //START TIMER
     }
 
     public static void showError(String message){

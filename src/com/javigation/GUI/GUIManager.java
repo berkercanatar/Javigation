@@ -70,9 +70,11 @@ public class GUIManager {
         setupGStreamer();
         setupMapControlPanel();
         setupMapAutopilotControlPanel();
-        setupSliderPanel();
 
         containers = new Containers(mapViewer, vc);
+
+        setupSliderPanel();
+        PopupManager.setup();
 
         //tabControl.tabFlightPlan.add(mapViewer);
 
@@ -147,7 +149,6 @@ public class GUIManager {
     }
 
     private static void setupSliderPanel() { //TODO: SLIDER
-
         //Slider sliderPanel = new SliderPanel();
         JPanel sliderPanel = new JPanel();
 

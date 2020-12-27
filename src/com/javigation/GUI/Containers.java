@@ -1,6 +1,7 @@
 package com.javigation.GUI;
 
 import com.javigation.Statics;
+import com.javigation.Utils;
 import org.freedesktop.gstreamer.swing.GstVideoComponent;
 import org.jxmapviewer.JXMapViewer;
 
@@ -22,6 +23,9 @@ public class Containers {
     private JPanel previewContentContainer;
     private JPanel previewOverlay;
 
+    public static JPanel popupContainer;
+    public static JPanel connectedDronesContainer;
+
     public enum ContentType {
         MAP,
         CAMERA
@@ -38,16 +42,27 @@ public class Containers {
                 synchronized (getTreeLock()) {
                     for ( int i = 0 ; i < getComponentCount() ; i++ ) {
                         Component comp = getComponent(i);
-                        if (i == 1) //Map
-                            comp.setBounds(0, 0, getWidth(), getHeight());
-                        else //Camera
-                            comp.setBounds(getWidth() - 550,getHeight() - 350, 500,300);
+                        switch (comp.getName()) {
+                            case "MainContentContainer":
+                                comp.setBounds(0, 0, getWidth(), getHeight());
+                                break;
+                            case "PreviewContainer":
+                                comp.setBounds(getWidth() - 550,getHeight() - 350, 500,300);
+                                break;
+                            case "PopupContainer":
+                                comp.setBounds(getWidth() / 2 - 400,20, 800,75);
+                                break;
+                            case "ConnectedDronesContainer":
+                                comp.setBounds(20,getHeight() / 2 - 250, 200,500);
+                                break;
+                        }
                     }
                 }
             }
         };
         mainContentContainer = new JPanel(new BorderLayout());
         mainContentContainer.add(MapContent);
+        mainContentContainer.setName("MainContentContainer");
         MainContainer.add(mainContentContainer, JLayeredPane.DEFAULT_LAYER);
 
         PreviewContainer = new JLayeredPane(){
@@ -55,7 +70,7 @@ public class Containers {
             public void doLayout() {
                 synchronized (getTreeLock()) {
                     for ( Component comp : getComponents() )
-                        comp.setBounds(0,0, getWidth(), getHeight() );
+                        comp.setBounds(0, 0, getWidth(), getHeight());
                 }
             }
         };
@@ -63,7 +78,16 @@ public class Containers {
         previewContentContainer = new JPanel(new BorderLayout());
         previewContentContainer.add(CameraContent);
         PreviewContainer.add(previewContentContainer, JLayeredPane.DEFAULT_LAYER);
-        MainContainer.add(PreviewContainer, JLayeredPane.POPUP_LAYER);
+        PreviewContainer.setName("PreviewContainer");
+        MainContainer.add(PreviewContainer, JLayeredPane.MODAL_LAYER);
+
+        popupContainer = new JPanel();
+        popupContainer.setName("PopupContainer");
+        MainContainer.add(popupContainer, JLayeredPane.POPUP_LAYER);
+
+        connectedDronesContainer = new JPanel();
+        connectedDronesContainer.setName("ConnectedDronesContainer");
+        MainContainer.add(connectedDronesContainer, JLayeredPane.POPUP_LAYER);
 
         previewOverlay = new JPanel();
         previewOverlay.setAlignmentX(1);
