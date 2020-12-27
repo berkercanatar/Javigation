@@ -238,10 +238,23 @@ public class StateMachine {
     }
 
 
-    public boolean CanAbort() {
+    public boolean CanAbortMission() {
         return
                 yes(
-                        StateTypes.PREFLIGHTCHECK_PASS
+                        StateTypes.PREFLIGHTCHECK_PASS,
+                        StateTypes.MISSON_RUNNING
+                ) &&
+                no(
+                        StateTypes.FAILSAFE_ENABLED
+                );
+    }
+
+    public boolean CanHold() {
+        return
+                yes(
+                        StateTypes.PREFLIGHTCHECK_PASS,
+                        StateTypes.ARMED,
+                        StateTypes.IN_AIR
                 ) &&
                 no(
                         StateTypes.FAILSAFE_ENABLED

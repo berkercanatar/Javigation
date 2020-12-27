@@ -18,8 +18,7 @@ public class AutopilotControlPanelButton extends JButton{
     private AutopilotControlPanel autopilotControlPanel;
     private ButtonFunction[] buttonFunctions;
     private ButtonFunction activeType;
-    private Border blackBorder;
-    private Border redBorder;
+    private Border redBorder, blackBorder;
 
     public void OnStateChanged(StateMachine.StateTypes changedType, boolean isAdded) {
         for (ButtonFunction buttonFunction : buttonFunctions) {
@@ -108,6 +107,11 @@ public class AutopilotControlPanelButton extends JButton{
                             CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionResume().Perform();
                         break;
                     case MISSION_ABORT:
+                        break;
+                    case HOLD:
+                        if(activeType.check())
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).Hold().Perform();
+                        break;
                 }
             }
         });
