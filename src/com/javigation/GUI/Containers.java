@@ -24,6 +24,7 @@ public class Containers {
     private JPanel previewOverlay;
 
     public static JPanel popupContainer;
+    public static JPanel sliderContainer;
     public static JPanel connectedDronesContainer;
 
     public enum ContentType {
@@ -55,6 +56,9 @@ public class Containers {
                             case "ConnectedDronesContainer":
                                 comp.setBounds(20,getHeight() / 2 - 250, 200,500);
                                 break;
+                            case "SliderContainer":
+                                comp.setBounds(getWidth() / 2 - 200,getHeight() - 130, 400,110);
+                                break;
                         }
                     }
                 }
@@ -84,6 +88,10 @@ public class Containers {
         popupContainer = new JPanel();
         popupContainer.setName("PopupContainer");
         MainContainer.add(popupContainer, JLayeredPane.POPUP_LAYER);
+
+        sliderContainer = new JPanel();
+        sliderContainer.setName("SliderContainer");
+        MainContainer.add(sliderContainer, JLayeredPane.POPUP_LAYER);
 
         connectedDronesContainer = new JPanel();
         connectedDronesContainer.setName("ConnectedDronesContainer");

@@ -1,5 +1,6 @@
 package com.javigation.GUI.popup;
 
+import com.javigation.GUI.Containers;
 import com.javigation.flight.CommandChain;
 
 import java.awt.*;
@@ -30,13 +31,15 @@ public class Slider extends JPanel {
             e.printStackTrace();
         }
 
+        setPreferredSize(new Dimension(400,110));
+
         UIDefaults slide = new UIDefaults();
         slide.put("Slider.thumbHeight", 75);
         slide.put("Slider.thumbWidth", 75);
 
         JSlider slider = new JSlider();
         slider.setValue(0);
-        setVisible(false);
+        Containers.sliderContainer.setVisible(false);
         slider.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -46,7 +49,7 @@ public class Slider extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (100 * slider.getValue() / slider.getMaximum() > 95) {
-                    setVisible(false);
+                    Containers.sliderContainer.setVisible(false);
                     action.Perform();
                     slider.setValue(0);
                 } else {
@@ -61,7 +64,7 @@ public class Slider extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
+                Containers.sliderContainer.setVisible(false);
             }
         });
 
@@ -81,6 +84,6 @@ public class Slider extends JPanel {
     public static void launchSlider(String text, CommandChain action) {
         INSTANCE.action = action;
         INSTANCE.actionNameLabel.setText(text);
-        INSTANCE.setVisible(true);
+        Containers.sliderContainer.setVisible(true);
     }
 }

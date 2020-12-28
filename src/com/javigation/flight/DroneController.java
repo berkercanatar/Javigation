@@ -84,7 +84,7 @@ public class DroneController {
                 case MISSION_UPLOAD:
                     commandStack = commandStack.andThen(drone.getMission().uploadMission(cmd.getArg("mission"))).doOnComplete(() -> {
                         connection.controller.stateMachine.SetState(StateMachine.StateTypes.MISSION_UPLOADED);
-                        PopupManager.showComplete("Mission uploaded!");
+                        PopupManager.showSuccess("Mission uploaded!");
                     });
                     break;
                 case MISSION_START, MISSION_RESUME:

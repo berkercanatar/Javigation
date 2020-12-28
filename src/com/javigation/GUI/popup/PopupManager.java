@@ -104,16 +104,16 @@ public class PopupManager {
         showIt();
     }
 
+    private static Timer t = new Timer(5000, e -> {
+        if ( ((Timer) e.getSource()).getDelay() == 5000) {
+            Containers.popupContainer.setVisible(false);
+            ((Timer) e.getSource()).stop();
+        }
+    });
+
     private static void showIt() {
         Containers.popupContainer.setVisible(true);
-
-        Timer t = new Timer(5000, e -> {
-            if ( ((Timer) e.getSource()).getDelay() == 5000) {
-                Containers.popupContainer.setVisible(false);
-                ((Timer) e.getSource()).stop();
-            }
-        });
-
+        t.stop();
         t.start();
     }
 

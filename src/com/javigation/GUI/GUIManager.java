@@ -7,6 +7,7 @@ import com.javigation.GUI.map.DronePainter;
 import com.javigation.GUI.map.RoutePainter;
 import com.javigation.GUI.map.TileCleaner;
 import com.javigation.GUI.popup.PopupManager;
+import com.javigation.GUI.popup.Slider;
 import com.javigation.Statics;
 import com.javigation.flight.*;
 import org.freedesktop.gstreamer.Bin;
@@ -145,21 +146,9 @@ public class GUIManager {
 
     }
 
-    private static void setupSliderPanel() { //TODO: SLIDER
-        //Slider slider = new Slider();
+    private static void setupSliderPanel() {
         Slider sliderPanel = new Slider();
-
-        sliderPanel.setPreferredSize(new Dimension(400,100)); //SHOULD BE IN THE CONSTRUCTOR OF SLIDER CLASS
-
-        GridBagConstraints gc = new GridBagConstraints();
-        gc.anchor = GridBagConstraints.SOUTH;
-        gc.weightx = 1.0;
-        gc.weighty = 0.3;
-        gc.gridx = 1;
-        gc.gridy = 2;
-        int inset = 20;
-        gc.insets = new Insets(inset, inset, inset, inset);
-        mapViewer.add(sliderPanel, gc);
+        Containers.sliderContainer.add(sliderPanel);
     }
 
     private static void setupMapAutopilotControlPanel() {
@@ -187,7 +176,7 @@ public class GUIManager {
         gc.gridx = 1;
         gc.gridy = 1;
         int inset = 30;
-        gc.insets = new Insets(-380, inset, inset, inset);
+        gc.insets = new Insets(-615, inset, inset, inset);
         mapViewer.add(pnl, gc);
     }
 

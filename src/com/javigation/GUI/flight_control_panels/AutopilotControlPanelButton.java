@@ -116,7 +116,7 @@ public class AutopilotControlPanelButton extends JButton{
                         break;
                     case HOLD:
                         if(activeType.check())
-                            Slider.launchSlider("HOLD", CommandChain.Create(DroneControlPanel.controllingDrone.controller).Hold());
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).Hold().Perform();
                         break;
                 }
             }
