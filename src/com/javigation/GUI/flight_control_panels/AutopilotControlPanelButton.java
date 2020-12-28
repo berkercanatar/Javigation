@@ -1,6 +1,7 @@
 package com.javigation.GUI.flight_control_panels;
 
 import com.javigation.GUI.RoundedBorder;
+import com.javigation.GUI.popup.Slider;
 import com.javigation.Utils;
 import com.javigation.flight.Command;
 import com.javigation.flight.CommandChain;
@@ -88,34 +89,34 @@ public class AutopilotControlPanelButton extends JButton{
                 switch (activeType.CommandType) {
                     case TAKEOFF:
                         if (activeType.check())
-                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).TakeOff(12f).Perform();
+                            Slider.launchSlider("TAKEOFF", CommandChain.Create(DroneControlPanel.controllingDrone.controller).TakeOff(12f));
                         break;
                     case LAND:
                         if (activeType.check())
-                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).Land().Perform();
+                            Slider.launchSlider("LAND", CommandChain.Create(DroneControlPanel.controllingDrone.controller).Land());
                         break;
                     case RTL:
                         if(activeType.check())
-                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).RTL().Perform();
+                            Slider.launchSlider("RTL", CommandChain.Create(DroneControlPanel.controllingDrone.controller).RTL());
                         break;
                     case MISSION_START:
                         if(activeType.check())
                             CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionStart().Perform();
                     case MISSION_PAUSE:
                         if(activeType.check())
-                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionPause().Perform();
+                            Slider.launchSlider("MISSION PAUSE", CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionPause());
                             break;
                     case MISSION_RESUME:
                         if(activeType.check())
-                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionResume().Perform();
+                            Slider.launchSlider("MISSION RESUME", CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionResume());
                         break;
                     case MISSION_ABORT:
                         if(activeType.check())
-                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionAbort().Perform();
+                            Slider.launchSlider("MISSION ABORT", CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionAbort());
                         break;
                     case HOLD:
                         if(activeType.check())
-                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).Hold().Perform();
+                            Slider.launchSlider("HOLD", CommandChain.Create(DroneControlPanel.controllingDrone.controller).Hold());
                         break;
                 }
             }
