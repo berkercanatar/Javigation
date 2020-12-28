@@ -16,6 +16,8 @@ We dont just formation so in swarm, our drones should we together according to l
 
 I am doing slider for confirmation of tasks. For any misclick, it is important to have a criteria to start action and go commandchain. 
 
+We created a connected drone panel for user to select each drones seperately. Also, if 3 drones are connected, user can swarm them by selecting type. After selected, if user want use an drone, it can be used easily from panel and map. Also, if leader is selected with swarm, user can only control leader and followers comes behind it. In this panel, user also can see velocity, battery and arm proporties of each. When a drone is selected, telemetry panel is also updated.
+
 
 ### ~ date ~
 Together with Berker, Turgut and Furkan, we researched to create the command chain of the keys. We have edited the commandchain due to the difficulties that can occur with sudden inputs. In the coding part, I helped research and apply methods. Also, in GUI part, i gave some ideas and helped them.
