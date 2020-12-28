@@ -34,7 +34,7 @@ public class Swarm {
     DroneConnection leader;
     private int velocity;
     private Telemetry.Position leaderPosition;
-    Formation formation;
+    public static Formation formation;
     Leader lead;
     Follower follow1;
     Follower follow2;
@@ -72,6 +72,7 @@ public class Swarm {
         }
 
     }
+
 
     public void flyTogether(DroneConnection l) {
 

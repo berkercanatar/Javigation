@@ -237,8 +237,10 @@ public class GUIManager {
         swamContextMenu.setForeground(Color.black);
         JMenuItem swarmHorizontal = new JMenuItem("Swarm - Horizontal Formation");
         JMenuItem swarmTriangle = new JMenuItem("Swarm - Triangle Formation");
+        JMenuItem swarmChange = new JMenuItem("Swarm - Change Formation");
         swamContextMenu.add(swarmHorizontal);
         swamContextMenu.add(swarmTriangle);
+        swamContextMenu.add(swarmChange);
 
         swarmHorizontal.addActionListener(e -> {
             new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
@@ -246,6 +248,13 @@ public class GUIManager {
 
         swarmTriangle.addActionListener(e -> {
             new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.TRIANGLE, false);
+        });
+
+        swarmChange.addActionListener(e ->{
+            if ( Swarm.formation.format == Formation.FormationType.HORIZONTAL )
+                new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.TRIANGLE, false);
+            else if ( Swarm.formation.format == Formation.FormationType.TRIANGLE )
+                new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
         });
 
 
