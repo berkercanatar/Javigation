@@ -27,4 +27,24 @@ Update DroneControlPanel
 Create DronePanelButton classs 
 Add Map function
 
+### ~ 20.12.2020-26.12.2020 ~
+Updates on DroneControlPanel 
+Create StateMachine 
+Update CommandChain and DroneConnection after state machine
+Add manual control velocities, default state machine and move Control… …
+Create AutopilotControlPanel for manual controlling purposes
+Update GUIManager and MainForm classes for adding AutopilotControlPan… …
+
+Update AutopilotControlPanelButton class for adding listeners for new… …
+Update AutopilotControlPanel, add button for mission_pause and missio… …
+Update State Machine , add RTL state and add(fixed) conditions for st… 
+
+### ~ 27.12.2020-28.12.2020 ~
+Update GUIManager and TabController to add TelemetryPanel
+Create TelemetryPanel.java
+Create TelemetryComponent.java
+pdated classes, add default_color to Statics.java, update DroneTelem… …
+Added telemetry panel icons
+
+To test the aplication, 2 days is alocated for test flights. Test Flights was conducted in Bilkent University campus
 ****
