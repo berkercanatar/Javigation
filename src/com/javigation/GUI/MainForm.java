@@ -30,8 +30,8 @@ public class MainForm extends JFrame {
         System.setProperty("sun.java2d.opengl", "true");
 
         boolean isDebugging = Utils.runningFromIntelliJ();
-        //if (!isDebugging) //Skip splash screen when debugging
-        //  new SplashScreen();
+        if (!isDebugging) //Skip splash screen when debugging
+            new SplashScreen();
 
         CheckLocalFolder();
         if (Platform.isWindows())
