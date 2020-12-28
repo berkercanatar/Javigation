@@ -53,7 +53,7 @@ public abstract class MapClickListener extends MouseAdapter {
             int x = bounds.x + evt.getX();
             int y = bounds.y + evt.getY();
             Point pixelCoordinates = new Point(x, y);
-            mapClicked(button,viewer.getTileFactory().pixelToGeo(pixelCoordinates, viewer.getZoom()));
+            mapClicked(button,viewer.getTileFactory().pixelToGeo(pixelCoordinates, viewer.getZoom()), evt);
         }
     }
 
@@ -63,5 +63,5 @@ public abstract class MapClickListener extends MouseAdapter {
      * 
      * @param location The {@link GeoPosition} of the click event
      */
-    public abstract void mapClicked(MouseButton mouseButton,GeoPosition location);
+    public abstract void mapClicked(MouseButton mouseButton,GeoPosition location, MouseEvent e);
 }

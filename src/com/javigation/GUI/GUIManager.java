@@ -246,9 +246,17 @@ public class GUIManager {
         Thread tileCleanerThread = new Thread(tileCleaner);
         tileCleanerThread.start();
 
+        JPopupMenu swamContextMenu = new JPopupMenu();
+        swamContextMenu.setBackground(GUIManager.COLOR_BLUE);
+        swamContextMenu.setForeground(Color.black);
+        JMenuItem swarmHorizontal = new JMenuItem("Swarm - Horizontal Formation");
+        JMenuItem swarmTriangle = new JMenuItem("Swarm - Triangle Formation");
+        swamContextMenu.add(swarmHorizontal);
+        swamContextMenu.add(swarmTriangle);
+
         mapViewer.addMouseListener(new MapClickListener(mapViewer) {
             @Override
-            public void mapClicked(MouseButton mouseButton, GeoPosition location) {
+            public void mapClicked(MouseButton mouseButton, GeoPosition location, MouseEvent e) {
                 switch (mouseButton){
                     case LEFT:
                         System.out.print("LEFT:");
