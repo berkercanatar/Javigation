@@ -51,17 +51,17 @@ public class AutopilotControlPanel extends JPanel {
                 new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.MISSION_ABORT, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanAbortMission()));
         add(mission_abort);
 
-        JButton hold = new AutopilotControlPanelButton(this,
-                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.HOLD, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanHold()));
-        add(hold);
-
-        add(new JSeparator(JSeparator.HORIZONTAL));
+        //add(new JSeparator(JSeparator.HORIZONTAL));
 
         MissionUploadButton upload_mission = new MissionUploadButton(this);
         JButton plan_mission = new MissionPlanButton(this, upload_mission);
         add(plan_mission);
 
         add(upload_mission);
+
+        JButton hold = new AutopilotControlPanelButton(this,
+                new AutopilotControlPanelButton.ButtonFunction(Command.CommandType.HOLD, () -> DroneControlPanel.controllingDrone.controller.stateMachine.CanHold()));
+        add(hold);
     }
 
     public void OnStateChanged(StateMachine.StateTypes changedType, boolean isAdded) {

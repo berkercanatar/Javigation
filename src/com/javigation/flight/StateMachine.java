@@ -201,7 +201,9 @@ public class StateMachine {
         return
                 yes(
                         StateTypes.PREFLIGHTCHECK_PASS,
-                        StateTypes.MISSION_UPLOADED
+                        StateTypes.MISSION_UPLOADED,
+                        StateTypes.IN_AIR,
+                        StateTypes.ARMED
                 ) &&
                 no(
                         StateTypes.FAILSAFE_ENABLED,
