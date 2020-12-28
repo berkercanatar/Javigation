@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -685,9 +686,9 @@ public class JXMapKit extends JPanel
     private WaypointPainter<Waypoint> addressLocationPainter = new WaypointPainter<Waypoint>()
     {
         @Override
-        public Set<Waypoint> getWaypoints()
+        public ArrayList<Waypoint> getWaypoints()
         {
-            Set<Waypoint> set = new HashSet<Waypoint>();
+            ArrayList<Waypoint> set = new ArrayList<>();
             if (getAddressLocation() != null)
             {
                 set.add(new DefaultWaypoint(getAddressLocation()));

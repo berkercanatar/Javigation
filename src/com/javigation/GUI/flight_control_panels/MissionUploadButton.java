@@ -2,7 +2,10 @@ package com.javigation.GUI.flight_control_panels;
 
 import com.javigation.GUI.RoundedBorder;
 import com.javigation.Utils;
+import com.javigation.flight.CommandChain;
 import com.javigation.flight.FlightMission;
+import com.javigation.flight.StateMachine;
+import io.mavsdk.mission.Mission;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -12,6 +15,7 @@ import java.awt.event.MouseEvent;
 
 public class MissionUploadButton extends JButton {
 
+    public static MissionUploadButton INSTANCE;
     public boolean IsPlanning = false;
     private AutopilotControlPanel autopilotControlPanel;
 
@@ -20,6 +24,7 @@ public class MissionUploadButton extends JButton {
     private Border redBorder, blackBorder;
 
     public MissionUploadButton(AutopilotControlPanel autopilotControlPanel) {
+        INSTANCE = this;
         setFocusPainted(false);
         setRolloverEnabled(false);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -48,21 +53,24 @@ public class MissionUploadButton extends JButton {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                IsPlanning = !IsPlanning;
-                if (IsPlanning) {
-
+                if (canUploadMission()) {
+                    CommandChain.Create(DroneControlPanel.controllingDrone.controller).UploadMission(new Mission.MissionPlan(FlightMission.MissionItems)).Perform();
                 }
                 resetSizeIcon();
             }
         });
     }
 
-    private void resetSizeIcon() {
+    public void resetSizeIcon() {
         setPreferredSize( new Dimension( getIcon().getIconWidth() + 10,
                 getIcon().getIconHeight() + 10));
-        setBorder( FlightMission.Mission == null ? redBorder : blackBorder );
+        setBorder( canUploadMission() ? blackBorder : redBorder );
         setMinimumSize( getPreferredSize() );
         setMaximumSize( getPreferredSize() );
+    }
+
+    private boolean canUploadMission() {
+        return FlightMission.MissionItems.size() > 0 && DroneControlPanel.controllingDrone != null && DroneControlPanel.controllingDrone.isDroneConnected && !DroneControlPanel.controllingDrone.controller.stateMachine.CheckState(StateMachine.StateTypes.MISSON_RUNNING);
     }
 
 }

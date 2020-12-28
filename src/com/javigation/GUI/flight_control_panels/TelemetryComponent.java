@@ -34,7 +34,7 @@ public class TelemetryComponent extends JPanel {
 
     public TelemetryComponent(String text, TelemetryPanel.TelemType telemType , Function<DroneController, DroneTelemetry> function, String unit) {
         this.unit = unit;
-        setPreferredSize( new Dimension(telemType == TelemetryPanel.TelemType.MODE ? 350 : 170, 30));
+        setPreferredSize( new Dimension(telemType == TelemetryPanel.TelemType.MODE ? 250 : 170, 30));
         setLayout(new FlowLayout(FlowLayout.LEFT, 3, 0));
         Utils.info(telemType.name());
         JLabel labelHeader = new JLabel((text != null ? text + ":" : ""), new ImageIcon(TelemetryComponent.class.getClassLoader().

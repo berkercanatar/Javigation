@@ -1,31 +1,59 @@
 package com.javigation.GUI.popup;
 
 import com.javigation.GUI.Containers;
+import com.javigation.GUI.RoundedBorder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class PopupManager {
 
-    JWindow popup;
-    private float alpha = 0f;
-    private long start = -1;
-    private long runtime = 2000;
+
 
     private static JLabel messageLabel;
+    private static JPanel panel;
+
 
     public static void setup() {
         //CREATE POPUP PANEL or COMPONENT
 
+        panel = new JPanel();
         messageLabel = new JLabel();
-        //messageLabel.setFont();
+        messageLabel.setVerticalAlignment(SwingConstants.TOP);
+        messageLabel.setHorizontalAlignment( SwingConstants.CENTER );
+        panel.setPreferredSize(new Dimension(800, 74));
+        messageLabel.setPreferredSize( new Dimension( 600, 30));
+        panel.add( messageLabel);
+        panel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Containers.popupContainer.setVisible(false);
+            }
 
-        Containers.popupContainer.add(messageLabel);
+            @Override
+            public void mousePressed(MouseEvent e) { }
 
-        Containers.popupContainer.add(new JButton());
+            @Override
+            public void mouseReleased(MouseEvent e) { }
+
+            @Override
+            public void mouseEntered(MouseEvent e) { }
+
+            @Override
+            public void mouseExited(MouseEvent e) { }
+        });
+
+        Containers.popupContainer.setBackground( panel.getBackground() );
+        //panel.setBorder( new RoundedBorder( panel.getBackground(), 2, 10 ) );
+
+        Containers.popupContainer.add(panel);
+        //Containers.popupContainer.setBorder( new RoundedBorder( panel.getBackground(), 1, 10));
         Containers.popupContainer.setVisible(false);
+
     }
 
     public enum PopupType {
@@ -35,62 +63,53 @@ public class PopupManager {
         SUCCESS
     }
 
-
-    public PopupManager(String message, PopupType type){
-
-        popup = new JWindow();
-        Color color = getType(type);
-        Color colorText = getContrastColor( color );
-
-        popup.setBackground(color);
-
-
-        JPanel pnl = new JPanel(){
-            @Override
-            protected void paintComponent(Graphics g) {
-
-                g.setColor( colorText );
-                g.drawString( message, 30, 25);
-
-            }
-        };
-        pnl.setPreferredSize( new Dimension(1000, 50));
-        popup.add( pnl );
-        popup.setLocation(450, 100);
-        popup.pack();
-
-        showIt();
-
-
-    }
-
     public static void showAlert(String message){
-        //new PopupManager( message, PopupType.WARNING);
 
-        //SET BACKGROUNDS
+        panel.setBackground( getColor( PopupType.WARNING ) );
+        messageLabel.setForeground( getContrastColor( panel.getBackground() ));
+        messageLabel.setFont(new Font("TimesRoman", Font.ITALIC, 20));
+        Containers.popupContainer.setBackground( panel.getBackground() );
         messageLabel.setText(message);
-        Containers.popupContainer.setVisible(true);
         //START TIMER
+        showIt();
     }
 
     public static void showError(String message){
-        new PopupManager( message, PopupType.ERROR);
+        panel.setBackground( getColor( PopupType.ERROR ) );
+        messageLabel.setForeground( getContrastColor( panel.getBackground() ));
+        messageLabel.setFont( new Font("TimesRoman", Font.BOLD, 20) );
+        Containers.popupContainer.setBackground( panel.getBackground() );
+        messageLabel.setText(message);
+        //START TIMER
+        showIt();
     }
 
     public static void showInfo(String message){
-        new PopupManager( message, PopupType.INFO);
+        panel.setBackground( getColor( PopupType.INFO ) );
+        messageLabel.setForeground( getContrastColor( panel.getBackground() ));
+        messageLabel.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+        Containers.popupContainer.setBackground( panel.getBackground() );
+        messageLabel.setText(message);
+        //START TIMER
+        showIt();
     }
 
-    public static void showComplete(String message){
-        new PopupManager( message, PopupType.SUCCESS);
+    public static void showSuccess(String message){
+        panel.setBackground( getColor( PopupType.SUCCESS ) );
+        messageLabel.setForeground( getContrastColor( panel.getBackground() ));
+        Containers.popupContainer.setBackground( panel.getBackground() );
+        messageLabel.setFont(new Font("TimesRoman", Font.ITALIC, 15));
+        messageLabel.setText(message);
+        //START TIMER
+        showIt();
     }
 
-    private void showIt() {
-        popup.setVisible(true);
+    private static void showIt() {
+        Containers.popupContainer.setVisible(true);
 
-        Timer t = new Timer(1000, e -> {
-            if ( ((Timer) e.getSource()).getDelay() == 1000) {
-                popup.setVisible(false);
+        Timer t = new Timer(5000, e -> {
+            if ( ((Timer) e.getSource()).getDelay() == 5000) {
+                Containers.popupContainer.setVisible(false);
                 ((Timer) e.getSource()).stop();
             }
         });
@@ -98,12 +117,12 @@ public class PopupManager {
         t.start();
     }
 
-    private Color getContrastColor(Color color) {
+    private static Color getContrastColor(Color color) {
         double y = (299 * color.getRed() + 587 * color.getGreen() + 114 * color.getBlue()) / 1000;
         return y >= 128 ? Color.black : Color.white;
     }
 
-    private Color getType(PopupType type) {
+    private static Color getColor(PopupType type) {
 
         Color color = switch (type) {
             case ERROR -> Color.red;
