@@ -75,6 +75,9 @@ public class TabController extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
+                    if (pnl == tabGuiSettings)
+                        return;
+
                     if( pnl==tabCameraView){
                         GUIManager.vc.getParent().remove(GUIManager.vc);
                         tabCameraView.add(GUIManager.vc);

@@ -68,8 +68,6 @@ public class MavSDKServer  {
                 String line;
                 while ((line = in.readLine()) != null) {
                     System.out.println(line);
-                    if( !connection.isDroneConnected)
-                        DroneConnection.onDroneConnected(connection);
                     if (line.contains("Server set to listen"))
                         connection.onServerInitialized();
                     else if (line.contains("Discovered"))

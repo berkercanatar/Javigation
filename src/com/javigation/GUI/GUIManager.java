@@ -237,10 +237,10 @@ public class GUIManager {
         swamContextMenu.setForeground(Color.black);
         JMenuItem swarmHorizontal = new JMenuItem("Swarm - Horizontal Formation");
         JMenuItem swarmTriangle = new JMenuItem("Swarm - Triangle Formation");
-        JMenuItem swarmChange = new JMenuItem("Swarm - Change Formation");
+        JMenuItem swarmCancel = new JMenuItem("Fly independently");
         swamContextMenu.add(swarmHorizontal);
         swamContextMenu.add(swarmTriangle);
-        swamContextMenu.add(swarmChange);
+        swamContextMenu.add(swarmCancel);
 
         swarmHorizontal.addActionListener(e -> {
             new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
@@ -250,11 +250,8 @@ public class GUIManager {
             new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.TRIANGLE, false);
         });
 
-        swarmChange.addActionListener(e ->{
-            if ( Swarm.formation.format == Formation.FormationType.HORIZONTAL )
-                new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.TRIANGLE, false);
-            else if ( Swarm.formation.format == Formation.FormationType.TRIANGLE )
-                new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
+        swarmCancel.addActionListener(e ->{
+            Swarm.flyIndependently();
         });
 
 
@@ -276,7 +273,16 @@ public class GUIManager {
                         if ( FlightMission.IsPlanning ) {
                             FlightMission.RemoveLastWaypoint();
                         } else {
-                            swamContextMenu.show(e.getComponent(), e.getX(), e.getY());
+                            int selectedDroneCount = 0;
+                            for (Component comp : Containers.connectedDronesContainer.getComponents()) {
+                                if (comp instanceof ConnectedDronePanel) {
+                                    ConnectedDronePanel cdp = (ConnectedDronePanel) comp;
+                                    if (cdp.box.isSelected())
+                                        selectedDroneCount += 1;
+                                }
+                            }
+                            if (selectedDroneCount == 3)
+                                swamContextMenu.show(e.getComponent(), e.getX(), e.getY());
                         }
                         //Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
                         //Slider.launchSlider("Takeoff", CommandChain.Create());

@@ -32,8 +32,8 @@ public class TutorialPanel extends JPanel {
         helpTab2 = new JPanel();
         CameraTutorial camTutorial = new CameraTutorial();
 
-        tabbedPane.addTab("Connect to the drone", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/javigation.png")),helpTab1);
-        tabbedPane.addTab("Get ready for take-off",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/dronesettings.png")),helpTab2);
+        //tabbedPane.addTab("Connect to the drone", new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/javigation.png")),helpTab1);
+        //tabbedPane.addTab("Get ready for take-off",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/dronesettings.png")),helpTab2);
         tabbedPane.addTab("Learn to fly",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/flightplan.png")),controlPanelTutorial);
         tabbedPane.addTab("Manage the camera",new ImageIcon(GUIManager.class.getClassLoader().getResource("images/tabIcons/camera.png")),camTutorial);
         tabbedPane.setFont(new Font( "Tahoma", Font.BOLD, 16 ));
