@@ -1,5 +1,7 @@
 package com.javigation.drone_link;
 
+import com.javigation.GUI.ConnectedDronePanel;
+import com.javigation.GUI.Containers;
 import com.javigation.GUI.GUIManager;
 import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.Utils;
@@ -95,6 +97,7 @@ public class DroneConnection implements MavSDKServerReadyListener {
         connection.controller.Telemetry.SubscribeForTelemetry();
         GUIManager.dronePainter.addDrone(connection.controller);
         java.lang.System.out.println("CONNECTED " + connection.MavlinkPort);
+        Containers.connectedDronesContainer.add(new ConnectedDronePanel(connection));
 
         if (DroneControlPanel.controllingDrone == null)
             DroneControlPanel.controllingDrone = connection;

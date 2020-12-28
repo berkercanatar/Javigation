@@ -2,6 +2,7 @@ package com.javigation.GUI;
 
 import com.javigation.Statics;
 import com.javigation.Utils;
+import com.javigation.drone_link.DroneConnection;
 import org.freedesktop.gstreamer.swing.GstVideoComponent;
 import org.jxmapviewer.JXMapViewer;
 
@@ -54,7 +55,7 @@ public class Containers {
                                 comp.setBounds(getWidth() / 2 - 400,20, 800,75);
                                 break;
                             case "ConnectedDronesContainer":
-                                comp.setBounds(20,getHeight() / 2 - 250, 200,500);
+                                comp.setBounds(20,getHeight() / 2 - 300, 220,600);
                                 break;
                             case "SliderContainer":
                                 comp.setBounds(getWidth() / 2 - 200,getHeight() - 130, 400,110);
@@ -94,8 +95,13 @@ public class Containers {
         MainContainer.add(sliderContainer, JLayeredPane.POPUP_LAYER);
 
         connectedDronesContainer = new JPanel();
+        connectedDronesContainer.setLayout(new BoxLayout(connectedDronesContainer, BoxLayout.Y_AXIS));
         connectedDronesContainer.setName("ConnectedDronesContainer");
-        MainContainer.add(connectedDronesContainer, JLayeredPane.POPUP_LAYER);
+        connectedDronesContainer.setMaximumSize(new Dimension(220, 600));
+        connectedDronesContainer.setBackground(ConnectedDronePanel.MAIN_COLOR);
+        final JScrollPane sp = new JScrollPane(connectedDronesContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.setName("ConnectedDronesContainer");
+        MainContainer.add(sp, JLayeredPane.POPUP_LAYER);
 
         previewOverlay = new JPanel();
         previewOverlay.setAlignmentX(1);
