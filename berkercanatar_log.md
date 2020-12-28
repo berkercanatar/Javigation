@@ -5,8 +5,8 @@
 
 On this page I will keep a weekly record of what I have done for the CS102 group project. This page will be submitted together with the rest of the repository, in partial fulfillment of the CS102 course requirements.
 
-2020-12-28, work done: Merge pull request #24 from berkercanatar/formation-dev
-2020-12-28, work done: COMPLETE
+2020-12-28, work done: Merge pull request #24 from berkercanatar/formation-dev<br>
+2020-12-28, work done: COMPLETE<br>
 2020-12-28, work done: Swarm implementation
 2020-12-28, work done: Merge pull request #23 from berkercanatar/connecteddrones-dev
 2020-12-28, work done: Merge branch 'master' into connecteddrones-dev
