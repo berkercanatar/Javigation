@@ -23,6 +23,7 @@ import static com.javigation.Statics.JAVIGATION_FOLDER;
 
 public class MainForm extends JFrame {
 
+    public static MainForm INSTANCE;
 
     public static void main(String[] args) {
 
@@ -139,9 +140,10 @@ public class MainForm extends JFrame {
 
     public MainForm() {
         super("Javigation");
+        INSTANCE = this;
         GUIManager.setupGUI(this);
 
-        DroneConnection.Get(14540);
+        //DroneConnection.Get(14540);
     }
 
 }

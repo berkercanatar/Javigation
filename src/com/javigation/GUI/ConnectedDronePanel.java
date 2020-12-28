@@ -1,24 +1,28 @@
 package com.javigation.GUI;
 
+import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.GUI.map.DronePainter;
 import com.javigation.drone_link.DroneConnection;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ConnectedDronePanel extends JPanel {
     DroneConnection connection;
     BufferedImage arm,battery,velocity;
-    boolean isArmed;
-    float batteryValue;
-    double horizontalSpeed;
-    private static final Color MAIN_COLOR = new Color(21, 53, 68);
+    public static final Color MAIN_COLOR = new Color(21, 53, 68);
     BufferedImage droneIcon;
     JCheckBox box;
     GridBagConstraints gbc = new GridBagConstraints();
@@ -26,30 +30,46 @@ public class ConnectedDronePanel extends JPanel {
 
 
     public ConnectedDronePanel(DroneConnection connection){
-        this.connection = DroneConnection.Get();
-        this.setPreferredSize(new Dimension(200,200));
+        this.connection = connection;
+        this.setPreferredSize(new Dimension(200,150));
+        setMaximumSize(getPreferredSize());
         this.setBackground(MAIN_COLOR);
-        isArmed = connection.controller.Telemetry.Armed;
-        batteryValue = connection.controller.Telemetry.Battery.getRemainingPercent();
-        horizontalSpeed = (double) connection.controller.Telemetry.HorizontalSpeed();
 
         int iconNumber = GUIManager.dronePainter.drones.get(connection.controller);
         droneIcon = DronePainter.droneIcons.get(iconNumber);
         box = new JCheckBox();
         box.setPreferredSize(new Dimension(25,25));
-        setLayout(new BorderLayout(0,35 ));
-        box.setLocation(140,110);
-        add(box, BorderLayout.EAST);
+        box.setBounds(160,110,25,25);
+        add(box);
 
-
+        Border border = new LineBorder(Color.ORANGE, 4, true);
+        setBorder(border);
         
         try{
             arm = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/telemetry/arm.png").getPath()));
             battery = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/telemetry/battery_level.png").getPath()));
             velocity = ImageIO.read( new File(GUIManager.class.getClassLoader().getResource("images/telemetry/horizontal_speed.png").getPath()));
-
         } catch (IOException e){
+            e.printStackTrace();
         }
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                DroneControlPanel.controllingDrone = connection;
+            }
+        });
+
+        java.util.Timer updateTimer = new Timer();
+
+        TimerTask updateTask = new TimerTask() {
+            @Override
+            public void run() {
+                repaint();
+            }
+        };
+
+        updateTimer.schedule(updateTask, 0, 500);
 
 
     }
@@ -57,14 +77,18 @@ public class ConnectedDronePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(droneIcon, 65, 30,null);
-        g.drawImage(arm,10, 110,null );
-        g.drawImage(battery, 50, 110, null);
-        g.drawImage(velocity, 90, 110, null);
-        g.setColor(Color.WHITE);
-        g.setFont(new Font( "Tahoma", Font.BOLD, 10 ));
-        g.drawString("" +isArmed, 10, 143);
-        g.drawString("%"+ batteryValue*100, 45, 143);
-        g.drawString(new DecimalFormat("##.##").format(horizontalSpeed), 92, 143);
+        try {
+            setBackground(DroneControlPanel.controllingDrone == connection ? GUIManager.COLOR_PURPLE : MAIN_COLOR);
+            g.drawImage(droneIcon, 65, 30, null);
+            g.drawImage(arm, 10, 110, null);
+            g.drawImage(battery, 88, 110, null);
+            g.drawImage(velocity, 160, 110, null);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Tahoma", Font.BOLD, 10));
+            g.setColor(connection.controller.Telemetry.Armed ? Color.GREEN : Color.RED);
+            g.drawString(connection.controller.Telemetry.Armed ? "ARMED" : "DISARMED", 10, 143);
+            g.drawString(Math.round(100 * connection.controller.Telemetry.Battery.getRemainingPercent()) + "%", 85, 143);
+            g.drawString(Math.round(connection.controller.Telemetry.HorizontalSpeed()) + " m/s", 155, 143);
+        } catch (NullPointerException ex) {}
     }
 }

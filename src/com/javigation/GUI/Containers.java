@@ -54,7 +54,7 @@ public class Containers {
                                 comp.setBounds(getWidth() / 2 - 400,20, 800,75);
                                 break;
                             case "ConnectedDronesContainer":
-                                comp.setBounds(20,getHeight() / 2 - 250, 200,500);
+                                comp.setBounds(20,getHeight() / 2 - 300, 220,600);
                                 break;
                         }
                     }
@@ -86,9 +86,14 @@ public class Containers {
         popupContainer.setName("PopupContainer");
         MainContainer.add(popupContainer, JLayeredPane.POPUP_LAYER);
 
-        connectedDronesContainer = new JPanel(new BorderLayout());
+        connectedDronesContainer = new JPanel();
+        connectedDronesContainer.setLayout(new BoxLayout(connectedDronesContainer, BoxLayout.Y_AXIS));
         connectedDronesContainer.setName("ConnectedDronesContainer");
-        MainContainer.add(connectedDronesContainer, JLayeredPane.POPUP_LAYER);
+        connectedDronesContainer.setMaximumSize(new Dimension(220, 600));
+        connectedDronesContainer.setBackground(ConnectedDronePanel.MAIN_COLOR);
+        final JScrollPane sp = new JScrollPane(connectedDronesContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.setName("ConnectedDronesContainer");
+        MainContainer.add(sp, JLayeredPane.POPUP_LAYER);
 
         previewOverlay = new JPanel();
         previewOverlay.setAlignmentX(1);
