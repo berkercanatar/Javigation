@@ -1,0 +1,6 @@
+~Turgut Alp Edis~
+While starting this project, I was thinking how hard can be for us. It was hard to do but at the end, we can handle it.
+I learned a lot of new methods, libraries, configurations. For instance, I learned MAVSdk library and how to implement it to the project.
+Besides, I learned new type of variables in Java which I never used before. The only thing I disliked about the project work can be not sleeping efficiently.
+However, it is totally worth to do not sleep after what we achieved. The most difficult job is to learn totally new classes as well as the math formulas. We needed to calculate coordinates to formulize the swarm algorithm.
+If I started again this project, I totally start the project a little bit early. I spent 50 hours for this project to implement new classes and functions. Lastly, I am happy and proud of what we achieved together.
