@@ -5,266 +5,147 @@
 
 On this page I will keep a weekly record of what I have done for the CS102 group project. This page will be submitted together with the rest of the repository, in partial fulfillment of the CS102 course requirements.
 
-commit b1ac9ad509777557fce62769628db81781e948f4
-Merge: 27f0717 da9d283
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Thu Dec 17 04:22:34 2020 +0300
-
-    Merge pull request #2 from berkercanatar/controlpanel-dev
-
-    Create DroneControlPanelButton class, update ControlPanelButton class, add  Map method to Utils class
-
-commit 3d4a275bf928c932cf33964df981260d8bc9c8e7
-Merge: 3e9c324 4f3cd61
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 21:13:14 2020 +0300
-
-    Merge pull request #1 from berkercanatar/swarmcontrol-dev
-
-    Create SwarmControlPanel.java
-
-commit 4f3cd61ae8e1674e5bf05d1a776387b8ec97a8ee
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 21:10:30 2020 +0300
-
-    Create SwarmControlPanel.java
-
-commit 6d24830ba4352cf4ec6f798c8173b6a5ae2c35fe (origin/formation-dev, formation-dev)
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 20:51:38 2020 +0300
-
-    Remove unnecessary imports
-
-commit da7b83e29c8522b24c735a2e57ef7d143a09d340
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 20:48:44 2020 +0300
-
-    Add custom panel shape
-
-commit 8613c27b32ee87a07ed41c4aaea78c2ad3ccbcf2
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 20:48:18 2020 +0300
-
-    Update GUIManager.java
-
-commit 2ea39c5b0ae236628a81587a3683fa8a42e9f8b3
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 20:48:09 2020 +0300
-
-    Update RoundedBorder to draw custom background
-
-commit 235eee18305ed59ded76f319f7e77f821d2d3f97
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 02:52:35 2020 +0300
-
-    Fix location of DroneControlPanel
-
-commit cec7e86918f6247654c46e5951b7af8af96ff8ee
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 02:51:01 2020 +0300
-
-    Update drone control features
-
-commit 10bb927e5b50ad6c5ce07e3ae40faac888ac2b2a
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 02:49:56 2020 +0300
-
-    GUI Updates
-
-commit 04f6239ccef7a029e6cfed4491f84662420c2537
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 02:24:17 2020 +0300
-
-    Add utils that find elements in given ArrayList
-
-commit b8c3b4a98ea4e4f74d38208e4154125255d89f3c
-:
-Date:   Fri Dec 11 20:48:09 2020 +0300
-
-    Update RoundedBorder to draw custom background
-
-commit 235eee18305ed59ded76f319f7e77f821d2d3f97
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 02:52:35 2020 +0300
-
-    Fix location of DroneControlPanel
-
-commit cec7e86918f6247654c46e5951b7af8af96ff8ee
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 02:51:01 2020 +0300
-
-    Update drone control features
-
-commit 10bb927e5b50ad6c5ce07e3ae40faac888ac2b2a
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 02:49:56 2020 +0300
-
-    GUI Updates
-
-commit 04f6239ccef7a029e6cfed4491f84662420c2537
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 02:24:17 2020 +0300
-
-    Add utils that find elements in given ArrayList
-
-commit b8c3b4a98ea4e4f74d38208e4154125255d89f3c
-Author: berkercanatar <berkercanatar@gmail.com>
-Date:   Fri Dec 11 02:23:19 2020 +0300
-
-    Add linux version of MAVSDK
-
-commit fe18b02c73263fd6e2f0507fc9c62c188fed93c4
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Mon Dec 7 02:32:19 2020 +0300
-
-    GStreamer implementation
-
-commit 02933d635b597aacf359691577593041e00c2f25
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Mon Dec 7 02:32:07 2020 +0300
-
-    Add new tab icons
-
-commit 9099d5c75f70d1801ef25cffefcb3e6397f37770
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Dec 6 02:40:25 2020 +0300
-
-    Update .gitignore
-
-commit 805396823f472ae5057c8f5be385585f2252065c
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Dec 6 02:40:12 2020 +0300
-
-    Move GUI creater to another class, add app icon
-
-commit bfa679697f9df43d613e9cd642e6204907342f1d
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Dec 6 02:39:42 2020 +0300
-
-    Add Tab Controller
-
-commit 62430625b6da7da0b98d0eabcbecc200671ac13f
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Dec 6 02:39:26 2020 +0300
-
-    Add Route Painter and Flight Mission
-
-commit 5ea28cd111612ba0c93e65b54f0aec708c91fd65
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Dec 6 02:39:09 2020 +0300
-
-    Add drone icons and drawer
-
-commit ec5084eaa613058a285ef22209e104980b90fe3b
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Dec 6 02:38:24 2020 +0300
-
-    Add gstreamer library dependency
-
-commit 8236a44917f11e1a6a6a85641506505240d9f940
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Dec 6 02:38:08 2020 +0300
-
-    Add gstreamer library
-
-commit 7bd917332b8a7660fe44f63647f0224bffb280f2
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Dec 6 02:37:42 2020 +0300
-
-    Mavsdk Server update
-
-commit 688615286c997d97492f428863adc00d9894987f
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Dec 6 02:37:20 2020 +0300
-
-    Update map icons
-
-commit 13816623fcf9cd4458786171192ce8c6b9ce94c9
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 07:00:58 2020 +0300
-
-    DroneController sample
-
-commit 7f6e6681fa8c24417778d19e65013d257e9d3751
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 05:50:10 2020 +0300
-
-    Add MAVSDK library to project files
-
-commit a712d664ae87d571615e2775300204c2034353a9
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 05:49:16 2020 +0300
-
-    Add MAVSDK binary and some notes
-
-commit e7b3d4f58aa7e250e27e9bdd4f5962f45351e9d1
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 05:27:08 2020 +0300
-
-    Add MAVSDK library to project
-
-commit c816369a260e65d22a3bb39027bffb4b7e77af84
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 01:47:07 2020 +0300
-
-    Implement memory management
-
-commit 012c9e56aea48b5cfd609573873f6de16054c57c
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 01:46:47 2020 +0300
-
-    Add listener functionality to distinguish right and left clicks
-
-commit f5d729dacb94128040c8d52d9c49791765c721c7
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 01:46:16 2020 +0300
-
-    Fix zoom in Bing Map provider
-
-commit 55bafd7142d654a58d93141ba1f936d3a2413e1e
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 01:45:37 2020 +0300
-
-    Code cleanup
-
-commit 0938441b9c8a5b520fdf90af117fd3f92c1a27fb
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 01:45:21 2020 +0300
-
-    Fix MAX zoom in OSM provider
-
-commit e9da0eb403183c8f15e54196f9d65111d15cbdb0
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 01:45:05 2020 +0300
-
-    Fix zoom in Google Map provider
-
-commit 92518f74e9d6d5f3724f0d3db1ba2712e10c5595
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Sun Nov 22 01:44:27 2020 +0300
-
-    Add TileCleaner that manages memory cleaning
-
-commit 6b98693f3930cc6c24ce699b14ae3fc464d23537
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Fri Nov 20 20:14:08 2020 +0300
-
-    MapView implemented
-
-commit 47e1dd0b551f82d58d1dfe95c65a70b8b93a53e5
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Fri Nov 20 16:40:19 2020 +0300
-
-    Add Terrain, Satellite and Hybrid tiles in MapProvider
-
-commit 5b213449e1e7e1213742c94a19ffc2a02e74cc7c
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Fri Nov 20 01:59:16 2020 +0300
-
-    Add function to generate tile URL from lat, lon for specific zoom level
-
-commit c1a34f8a8b0f0211e80fab1d4cda43a18dfc3c30
-Author: Berker Canatar <berker.canatar@ug.bilkent.edu.tr>
-Date:   Fri Nov 20 01:35:40 2020 +0300
-
-    Initial commit
+2020-12-28, work done: Merge pull request #24 from berkercanatar/formation-dev
+2020-12-28, work done: COMPLETE
+2020-12-28, work done: Swarm implementation
+2020-12-28, work done: Merge pull request #23 from berkercanatar/connecteddrones-dev
+2020-12-28, work done: Merge branch 'master' into connecteddrones-dev
+2020-12-28, work done: Minor improvements
+2020-12-28, work done: Connected Drone panels implementation
+2020-12-28, work done: Fİx mission start state conditions
+2020-12-28, work done: Merging and combining all the works done at branches
+2020-12-28, work done: Merge pull request #20 from berkercanatar/Slider
+2020-12-28, work done: Merge branch 'master' into Slider
+2020-12-28, work done: Merge pull request #21 from berkercanatar/popupscreen-dev
+2020-12-28, work done: Merge pull request #22 from berkercanatar/flightplan-dev
+2020-12-28, work done: Flight mission planning implementation completed!!
+2020-12-28, work done: Merge pull request #19 from berkercanatar/help-page
+2020-12-28, work done: Update TabController.java
+2020-12-28, work done: Popup code base improvement
+2020-12-28, work done: Slider code base
+2020-12-28, work done: Merge pull request #17 from berkercanatar/popupscreen-dev
+2020-12-28, work done: Merge branch 'master' into popupscreen-dev
+2020-12-28, work done: Merge pull request #16 from berkercanatar/Slider
+2020-12-28, work done: Merge branch 'master' into Slider
+2020-12-27, work done: Minor improvement
+2020-12-27, work done: Add missing icons
+2020-12-27, work done: Minor improvement
+2020-12-27, work done: Update AutopilotControlPanel.java
+2020-12-27, work done: Merge pull request #14 from berkercanatar/telemetry-dev
+2020-12-27, work done: Telemetry panel + initial flight mission planning implementation
+2020-12-27, work done: Implement telemetry panel
+2020-12-27, work done: Add pitch icon
+2020-12-27, work done: Add buttons for new commands
+2020-12-27, work done: Add new states and conditions
+2020-12-27, work done: Draw red border on command buttons when function is not available
+2020-12-27, work done: Improve swarm flight
+2020-12-26, work done: Swarm implementation
+2020-12-26, work done: Merge branch 'master' of https://github.com/berkercanatar/Javigation
+2020-12-26, work done: Merge pull request #13 from berkercanatar/formation-dev
+2020-12-26, work done: Merge pull request #12 from berkercanatar/formation-dev
+2020-12-26, work done: Receive connection from 3 drones
+2020-12-26, work done: Fix connection issue
+2020-12-26, work done: Merge pull request #10 from berkercanatar/popupscreen-dev
+2020-12-26, work done: Merge pull request #11 from berkercanatar/flightplan-dev
+2020-12-26, work done: Improve connectivity
+2020-12-26, work done: Activate HOLD mode when drone is not being controlled manually and has very low linear speed by deactivating OFFBOARD mode
+2020-12-26, work done: Add manual position control. Clicking on map now navigates the drone to the clicked location at same altitude.
+2020-12-26, work done: Add function to find bearing
+2020-12-26, work done: Add HOLD mode, add heading control to GoTo command
+2020-12-26, work done: Add manual control state, fix click passthrough from overlapping panels to underlying map
+2020-12-26, work done: Merge pull request #9 from berkercanatar/controlpanel-dev
+2020-12-26, work done: Update button functions when event triggered, instead of checking with timer at fixed interval. Add RTL button.
+2020-12-26, work done: Add new states, improved conflict detecting mechanism
+2020-12-26, work done: Listen for any state changes of drone
+2020-12-26, work done: Create StateChangedListener.java
+2020-12-25, work done: Move DroneConnection, change references accordingly
+2020-12-25, work done: Change MAVSDK-Server output redirection target from System.err to System.out
+2020-12-25, work done: Add feautre to show heading value on the map, i.e. rotating drone icons on the map
+2020-12-25, work done: Do telemetry subscriptions ad Drone Controller class
+2020-12-25, work done: Optimize map drawing FPS
+2020-12-25, work done: Add method for rotating images
+2020-12-25, work done: Fix issue caused by blocking first, implement status checking using state machine
+2020-12-25, work done: Add fields for Armed and InAir statuses
+2020-12-25, work done: Subscribe and listen for changes in armed, preflight check, in air statuses and store variables in Telemetry class
+2020-12-25, work done: Check for conflicts in state machine, add string representation of current state machine
+2020-12-25, work done: Merge pull request #8 from berkercanatar/controlpanel-dev
+2020-12-25, work done: Update Drone Controller
+2020-12-25, work done: Add Offboard control for manual controls
+2020-12-24, work done: Update DronePainter.java
+2020-12-24, work done: Automatically start painting the drone when connected
+2020-12-24, work done: Fix painter and control button background
+2020-12-24, work done: Fix README.md
+2020-12-24, work done: Merge pull request #7 from berkercanatar/formation-dev
+2020-12-24, work done: Improve control panel buttons. Improved visuals (alignment, background border etc.)
+2020-12-24, work done: Fix issue about trying to paint drone even though it is not connected
+2020-12-24, work done: Update drone control panel with better alignment
+2020-12-24, work done: Create ControlStickButtons.java
+2020-12-24, work done: Make connection and isDroneConnected variables public in order to check if drone is connected before painting its icon on the map
+2020-12-24, work done: Make containers background transparent
+2020-12-24, work done: Enable hardware accelerated graphics drawing
+2020-12-24, work done: Fix wrong naming in pitch icons
+2020-12-23, work done: Merge pull request #6 from berkercanatar/controlpanel-dev
+2020-12-22, work done: Fix location of control panel
+2020-12-22, work done: Switch between camera and map view
+2020-12-21, work done: Update README.md
+2020-12-22, work done: Merge pull request #4 from berkercanatar/splashscreen
+2020-12-22, work done: Update README.md
+2020-12-22, work done: Draw drone icon on the map in real time according to the position telemetry value from mavlink packets
+2020-12-22, work done: Subscribe for telemetry, dynamic MavSDK port
+2020-12-22, work done: Subscribe for position telemetry value of connected drones and update in a local object
+2020-12-22, work done: Add map FPS control
+2020-12-22, work done: Skip splash screen when debugging
+2020-12-22, work done: Add lastpainttime in order to manage FPS of the map
+2020-12-19, work done: Fix issue with loading control panel icons
+2020-12-19, work done: Fix imports
+2020-12-19, work done: Minor fix on control panel
+2020-12-19, work done: Update .gitignore
+2020-12-19, work done: Move gstreamer files to video folder
+2020-12-18, work done: Add flight mission feature base
+2020-12-18, work done: Add class to plan simple mission with single line
+2020-12-18, work done: Define all commands
+2020-12-17, work done: Move log files to personal-logs branch
+2020-12-17, work done: Add functionality to automatically download, install and setup GStreamer-1.18.2
+2020-12-17, work done: Create Statics.java
+2020-12-17, work done: Add class that downloads gstreamer automatically
+2020-12-17, work done: Add JNA-Platform library to project to get access to native OS functions
+2020-12-17, work done: Merge branch 'master' of https://github.com/berkercanatar/Javigation
+2020-12-17, work done: Add log for berkercanatar
+2020-12-17, work done: Merge pull request #2 from berkercanatar/controlpanel-dev
+2020-12-11, work done: Merge pull request #1 from berkercanatar/swarmcontrol-dev
+2020-12-11, work done: Create SwarmControlPanel.java
+2020-12-11, work done: Remove unnecessary imports
+2020-12-11, work done: Add custom panel shape
+2020-12-11, work done: Update GUIManager.java
+2020-12-11, work done: Update RoundedBorder to draw custom background
+2020-12-11, work done: Fix location of DroneControlPanel
+2020-12-11, work done: Update drone control features
+2020-12-11, work done: GUI Updates
+2020-12-11, work done: Add utils that find elements in given ArrayList
+2020-12-11, work done: Add linux version of MAVSDK
+2020-12-07, work done: GStreamer implementation
+2020-12-07, work done: Add new tab icons
+2020-12-06, work done: Update .gitignore
+2020-12-06, work done: Move GUI creater to another class, add app icon
+2020-12-06, work done: Add Tab Controller
+2020-12-06, work done: Add Route Painter and Flight Mission
+2020-12-06, work done: Add drone icons and drawer
+2020-12-06, work done: Add gstreamer library dependency
+2020-12-06, work done: Add gstreamer library
+2020-12-06, work done: Mavsdk Server update
+2020-12-06, work done: Update map icons
+2020-11-22, work done: DroneController sample
+2020-11-22, work done: Add MAVSDK library to project files
+2020-11-22, work done: Add MAVSDK binary and some notes
+2020-11-22, work done: Add MAVSDK library to project
+2020-11-22, work done: Implement memory management
+2020-11-22, work done: Add listener functionality to distinguish right and left clicks
+2020-11-22, work done: Fix zoom in Bing Map provider
+2020-11-22, work done: Code cleanup
+2020-11-22, work done: Fix MAX zoom in OSM provider
+2020-11-22, work done: Fix zoom in Google Map provider
+2020-11-22, work done: Add TileCleaner that manages memory cleaning
+2020-11-20, work done: MapView implemented
+2020-11-20, work done: Add Terrain, Satellite and Hybrid tiles in MapProvider
+2020-11-20, work done: Add function to generate tile URL from lat, lon for specific zoom level
+2020-11-20, work done: Initial commit
