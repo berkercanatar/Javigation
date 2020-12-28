@@ -1,33 +1,59 @@
 package com.javigation.GUI.popup;
 
 import com.javigation.GUI.Containers;
+import com.javigation.GUI.RoundedBorder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class PopupManager {
 
 
-    private float alpha = 0f;
-    private long start = -1;
-    private long runtime = 2000;
 
     private static JLabel messageLabel;
     private static JPanel panel;
 
+
     public static void setup() {
         //CREATE POPUP PANEL or COMPONENT
+
         panel = new JPanel();
         messageLabel = new JLabel();
         messageLabel.setVerticalAlignment(SwingConstants.TOP);
-        panel.setLayout( new BorderLayout() );
-        panel.setPreferredSize(new Dimension(800, 100));
-        panel.add( messageLabel, BorderLayout.WEST );
+        messageLabel.setHorizontalAlignment( SwingConstants.CENTER );
+        panel.setPreferredSize(new Dimension(800, 74));
+        messageLabel.setPreferredSize( new Dimension( 600, 30));
+        panel.add( messageLabel);
+        panel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Containers.popupContainer.setVisible(false);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) { }
+
+            @Override
+            public void mouseReleased(MouseEvent e) { }
+
+            @Override
+            public void mouseEntered(MouseEvent e) { }
+
+            @Override
+            public void mouseExited(MouseEvent e) { }
+        });
+
         Containers.popupContainer.setBackground( panel.getBackground() );
+        //panel.setBorder( new RoundedBorder( panel.getBackground(), 2, 10 ) );
+
         Containers.popupContainer.add(panel);
+        //Containers.popupContainer.setBorder( new RoundedBorder( panel.getBackground(), 1, 10));
         Containers.popupContainer.setVisible(false);
+
     }
 
     public enum PopupType {
@@ -72,7 +98,7 @@ public class PopupManager {
         panel.setBackground( getColor( PopupType.SUCCESS ) );
         messageLabel.setForeground( getContrastColor( panel.getBackground() ));
         Containers.popupContainer.setBackground( panel.getBackground() );
-        messageLabel.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+        messageLabel.setFont(new Font("TimesRoman", Font.ITALIC, 15));
         messageLabel.setText(message);
         //START TIMER
         showIt();
@@ -81,8 +107,8 @@ public class PopupManager {
     private static void showIt() {
         Containers.popupContainer.setVisible(true);
 
-        Timer t = new Timer(1000, e -> {
-            if ( ((Timer) e.getSource()).getDelay() == 1000) {
+        Timer t = new Timer(5000, e -> {
+            if ( ((Timer) e.getSource()).getDelay() == 5000) {
                 Containers.popupContainer.setVisible(false);
                 ((Timer) e.getSource()).stop();
             }

@@ -260,7 +260,7 @@ public class GUIManager {
                     case RIGHT:
                         System.out.print("RIGHT:");
                         //Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
-                        PopupManager.showError("Test Popup");
+                        PopupManager.showInfo("Test");
                         //Slider.launchSlider("Takeoff", CommandChain.Create());
                         break;
                 }
