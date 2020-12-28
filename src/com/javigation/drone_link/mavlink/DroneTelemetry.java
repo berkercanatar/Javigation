@@ -2,6 +2,7 @@ package com.javigation.drone_link.mavlink;
 
 import com.javigation.GUI.flight_control_panels.AutopilotControlPanel;
 import com.javigation.GUI.flight_control_panels.DroneControlPanel;
+import com.javigation.GUI.flight_control_panels.MissionUploadButton;
 import com.javigation.Utils;
 import com.javigation.drone_link.DroneConnection;
 import com.javigation.flight.CommandChain;
@@ -9,6 +10,7 @@ import com.javigation.flight.DroneController;
 import com.javigation.flight.StateChangedListener;
 import com.javigation.flight.StateMachine;
 import io.mavsdk.System;
+import io.mavsdk.mission.Mission;
 import io.mavsdk.telemetry.Telemetry;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -19,6 +21,7 @@ public class DroneTelemetry implements StateChangedListener {
     private DroneController controller;
     private System drone;
     private StateMachine stateMachine;
+    private Mission.MissionProgress MissionProgress;
 
     public DroneTelemetry(DroneConnection connection) {
         this.connection = connection;
@@ -106,7 +109,13 @@ public class DroneTelemetry implements StateChangedListener {
                     case HOLD:
                         stateMachine.SetState(StateMachine.StateTypes.HOLD);
                         break;
+                    case MISSION:
+                        stateMachine.SetState(StateMachine.StateTypes.MISSON_RUNNING);
+                        break;
                 }
+
+                if (FlightMode != Telemetry.FlightMode.MISSION)
+                    controller.stateMachine.ClearState(StateMachine.StateTypes.MISSON_RUNNING);
             }
         });
 
@@ -153,12 +162,22 @@ public class DroneTelemetry implements StateChangedListener {
             Home = home;
         });
 
+        drone.getMission().getMissionProgress().subscribe( missionProgress -> {
+            MissionProgress = missionProgress;
+            if (MissionProgress.getCurrent() == MissionProgress.getTotal()) {
+                CommandChain.Create(controller).Hold().Perform();
+            }
+        });
+
 
     }
 
     @Override
     public void OnStateChanged(StateMachine.StateTypes changedType, boolean isAdded) {
         AutopilotControlPanel.INSTANCE.OnStateChanged(changedType, isAdded);
+
+        if(changedType == StateMachine.StateTypes.MISSON_RUNNING)
+            MissionUploadButton.INSTANCE.resetSizeIcon();
     }
 
     @Override

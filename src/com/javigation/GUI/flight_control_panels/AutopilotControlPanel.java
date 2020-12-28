@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class AutopilotControlPanel extends JPanel {
 
     private static final int PANEL_WIDTH = 180;
-    private static final int PANEL_HEIGHT = 350;
+    private static final int PANEL_HEIGHT = 320;
 
     public static AutopilotControlPanel INSTANCE;
 
