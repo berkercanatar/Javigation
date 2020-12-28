@@ -2,6 +2,7 @@ package com.javigation.GUI;
 
 import com.javigation.Statics;
 import com.javigation.Utils;
+import com.javigation.drone_link.DroneConnection;
 import org.freedesktop.gstreamer.swing.GstVideoComponent;
 import org.jxmapviewer.JXMapViewer;
 
@@ -85,7 +86,7 @@ public class Containers {
         popupContainer.setName("PopupContainer");
         MainContainer.add(popupContainer, JLayeredPane.POPUP_LAYER);
 
-        connectedDronesContainer = new JPanel();
+        connectedDronesContainer = new JPanel(new BorderLayout());
         connectedDronesContainer.setName("ConnectedDronesContainer");
         MainContainer.add(connectedDronesContainer, JLayeredPane.POPUP_LAYER);
 

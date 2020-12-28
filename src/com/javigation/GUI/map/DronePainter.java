@@ -17,10 +17,10 @@ import javax.imageio.ImageIO;
 
 public class DronePainter extends AbstractPainter<JXMapViewer>
 {
-    private final Map<DroneController, Integer> drones = new HashMap<DroneController, Integer>();
+    public final Map<DroneController, Integer> drones = new HashMap<DroneController, Integer>();
 
     private static final int ICON_COUNT = 8;
-    private static final List<BufferedImage> droneIcons = new ArrayList<BufferedImage>();
+    public static final List<BufferedImage> droneIcons = new ArrayList<BufferedImage>();
     public DronePainter()
     {
         if ( droneIcons.size() == 0 )
