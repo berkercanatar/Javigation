@@ -98,6 +98,9 @@ public class AutopilotControlPanelButton extends JButton{
                         if(activeType.check())
                             CommandChain.Create(DroneControlPanel.controllingDrone.controller).RTL().Perform();
                         break;
+                    case MISSION_START:
+                        if(activeType.check())
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionStart().Perform();
                     case MISSION_PAUSE:
                         if(activeType.check())
                             CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionPause().Perform();
@@ -107,6 +110,8 @@ public class AutopilotControlPanelButton extends JButton{
                             CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionResume().Perform();
                         break;
                     case MISSION_ABORT:
+                        if(activeType.check())
+                            CommandChain.Create(DroneControlPanel.controllingDrone.controller).MissionAbort().Perform();
                         break;
                     case HOLD:
                         if(activeType.check())

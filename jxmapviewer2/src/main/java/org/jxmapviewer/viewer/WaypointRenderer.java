@@ -27,6 +27,6 @@ public interface WaypointRenderer<W>
      * @param map the map
      * @param waypoint the waypoint
      */
-    public void paintWaypoint(Graphics2D g, JXMapViewer map, W waypoint);
+    public void paintWaypoint(Graphics2D g, JXMapViewer map, W waypoint, String text);
     
 }

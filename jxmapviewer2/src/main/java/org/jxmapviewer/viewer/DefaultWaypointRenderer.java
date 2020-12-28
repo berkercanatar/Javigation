@@ -9,7 +9,7 @@
 
 package org.jxmapviewer.viewer;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
@@ -45,7 +45,7 @@ public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint>
     }
 
     @Override
-    public void paintWaypoint(Graphics2D g, JXMapViewer map, Waypoint w)
+    public void paintWaypoint(Graphics2D g, JXMapViewer map, Waypoint w, String text)
     {
         if (img == null)
             return;
@@ -56,5 +56,7 @@ public class DefaultWaypointRenderer implements WaypointRenderer<Waypoint>
         int y = (int)point.getY() -img.getHeight();
         
         g.drawImage(img, x, y, null);
+        g.setFont(new Font("Tahoma", Font.BOLD, 16));
+        g.drawString(text, x + 32, y);
     }
 }

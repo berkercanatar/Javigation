@@ -1,6 +1,7 @@
 package com.javigation.flight;
 
 import com.javigation.Utils;
+import io.mavsdk.mission.Mission;
 
 import java.util.ArrayList;
 
@@ -112,6 +113,16 @@ public class CommandChain {
 
     public CommandChain Hold() {
         CommandList.add(new Command(Command.CommandType.HOLD));
+        return this;
+    }
+
+    public CommandChain UploadMission(Mission.MissionPlan missionPlan) {
+        CommandList.add(new Command(Command.CommandType.MISSION_UPLOAD).withArg("mission", missionPlan));
+        return this;
+    }
+
+    public CommandChain MissionStart() {
+        CommandList.add(new Command(Command.CommandType.MISSION_START));
         return this;
     }
 }
