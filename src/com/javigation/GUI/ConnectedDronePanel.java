@@ -1,8 +1,11 @@
 package com.javigation.GUI;
 
+import com.javigation.GUI.flight_control_panels.AutopilotControlPanel;
+import com.javigation.GUI.flight_control_panels.AutopilotControlPanelButton;
 import com.javigation.GUI.flight_control_panels.DroneControlPanel;
 import com.javigation.GUI.map.DronePainter;
 import com.javigation.drone_link.DroneConnection;
+import com.javigation.flight.StateMachine;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -57,6 +60,7 @@ public class ConnectedDronePanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 DroneControlPanel.controllingDrone = connection;
+                AutopilotControlPanel.INSTANCE.OnStateChanged(StateMachine.StateTypes.DUMMY, true);
             }
         });
 

@@ -9,6 +9,7 @@ import com.javigation.GUI.map.TileCleaner;
 import com.javigation.GUI.popup.PopupManager;
 import com.javigation.GUI.popup.Slider;
 import com.javigation.Statics;
+import com.javigation.drone_link.DroneConnection;
 import com.javigation.flight.*;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
@@ -239,6 +240,15 @@ public class GUIManager {
         swamContextMenu.add(swarmHorizontal);
         swamContextMenu.add(swarmTriangle);
 
+        swarmHorizontal.addActionListener(e -> {
+            new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
+        });
+
+        swarmTriangle.addActionListener(e -> {
+            new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.TRIANGLE, false);
+        });
+
+
         mapViewer.addMouseListener(new MapClickListener(mapViewer) {
             @Override
             public void mapClicked(MouseButton mouseButton, GeoPosition location, MouseEvent e) {
@@ -256,6 +266,8 @@ public class GUIManager {
                         System.out.print("RIGHT:");
                         if ( FlightMission.IsPlanning ) {
                             FlightMission.RemoveLastWaypoint();
+                        } else {
+                            swamContextMenu.show(e.getComponent(), e.getX(), e.getY());
                         }
                         //Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
                         //Slider.launchSlider("Takeoff", CommandChain.Create());

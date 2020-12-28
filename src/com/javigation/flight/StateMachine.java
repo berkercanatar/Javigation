@@ -35,7 +35,8 @@ public class StateMachine {
         LANDING,
         FOLLOWER,
         LEADER,
-        RTL_RUNNING
+        RTL_RUNNING,
+        DUMMY
     }
 
     public StateMachine(DroneController controller) {
