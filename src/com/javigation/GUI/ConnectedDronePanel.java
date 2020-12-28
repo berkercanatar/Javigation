@@ -13,6 +13,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -27,7 +29,7 @@ public class ConnectedDronePanel extends JPanel {
     BufferedImage arm,battery,velocity;
     public static final Color MAIN_COLOR = new Color(21, 53, 68);
     BufferedImage droneIcon;
-    JCheckBox box;
+    public JCheckBox box;
     GridBagConstraints gbc = new GridBagConstraints();
 
 
@@ -59,8 +61,10 @@ public class ConnectedDronePanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                DroneControlPanel.controllingDrone = connection;
-                AutopilotControlPanel.INSTANCE.OnStateChanged(StateMachine.StateTypes.DUMMY, true);
+                if (DroneControlPanel.controllingDrone != connection && !connection.controller.stateMachine.CheckState(StateMachine.StateTypes.FOLLOWER)) {
+                    DroneControlPanel.controllingDrone = connection;
+                    AutopilotControlPanel.INSTANCE.OnStateChanged(StateMachine.StateTypes.DUMMY, true);
+                }
             }
         });
 
@@ -93,6 +97,13 @@ public class ConnectedDronePanel extends JPanel {
             g.drawString(connection.controller.Telemetry.Armed ? "ARMED" : "DISARMED", 10, 143);
             g.drawString(Math.round(100 * connection.controller.Telemetry.Battery.getRemainingPercent()) + "%", 85, 143);
             g.drawString(Math.round(connection.controller.Telemetry.HorizontalSpeed()) + " m/s", 155, 143);
+            g.setFont(new Font("Tahoma", Font.BOLD, 16));
+            g.setColor(Color.yellow);
+            if ( connection.controller.stateMachine.CheckState(StateMachine.StateTypes.LEADER)) {
+                g.drawString("L", 140, 50);
+            } else if (connection.controller.stateMachine.CheckState(StateMachine.StateTypes.FOLLOWER)) {
+                g.drawString("F", 140, 50);
+            }
         } catch (NullPointerException ex) {}
     }
 }

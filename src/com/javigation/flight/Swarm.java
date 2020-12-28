@@ -32,15 +32,17 @@ public class Swarm {
     DroneConnection drone2;
     DroneConnection drone3;
     DroneConnection leader;
-    private int velocity;
-    private Telemetry.Position leaderPosition;
-    Formation formation;
+    public static Formation formation;
     Leader lead;
     Follower follow1;
     Follower follow2;
-    CommandChain leadCommand;
+    public static Swarm ActiveSwarm;
+    private Timer swarmTimer;
+
 
     public Swarm(DroneConnection drone, DroneConnection drone2, DroneConnection drone3, Formation.FormationType format, boolean isLeaderSelected) {
+        flyIndependently();
+        ActiveSwarm = this;
         this.drone = drone;
         this.drone2 = drone2;
         this.drone3 = drone3;
@@ -73,11 +75,12 @@ public class Swarm {
 
     }
 
+
     public void flyTogether(DroneConnection l) {
 
         DroneControlPanel.controllingDrone = lead.getDrone();
 
-        Timer swarmTimer = new Timer();
+        swarmTimer = new Timer();
 
         lead.getDrone().controller.stateMachine.SetState(StateMachine.StateTypes.LEADER);
         follow1.getDrone().controller.stateMachine.SetState(StateMachine.StateTypes.FOLLOWER);
@@ -99,12 +102,18 @@ public class Swarm {
 
         swarmTimer.schedule(swarmUpdateTask, 0, 150);
 
-
     }
 
 
-    private void updatePosition() {
-
+    public static void flyIndependently() {
+        if (ActiveSwarm != null && ActiveSwarm.swarmTimer != null) {
+            ActiveSwarm.swarmTimer.cancel();
+            ActiveSwarm.swarmTimer.purge();
+            ActiveSwarm.lead.getDrone().controller.stateMachine.ClearState(StateMachine.StateTypes.LEADER);
+            ActiveSwarm.follow1.getDrone().controller.stateMachine.ClearState(StateMachine.StateTypes.FOLLOWER);
+            ActiveSwarm.follow2.getDrone().controller.stateMachine.ClearState(StateMachine.StateTypes.FOLLOWER);
+            ActiveSwarm = null;
+        }
     }
 
 }
