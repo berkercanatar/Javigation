@@ -1,7 +1,9 @@
 package com.javigation.GUI.flight_control_panels;
 
+import com.javigation.GUI.GUIManager;
 import com.javigation.GUI.RoundedBorder;
 import com.javigation.Utils;
+import com.javigation.flight.FlightMission;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -10,8 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MissionPlanButton extends JButton {
-
-    public boolean IsPlanning = false;
     private AutopilotControlPanel autopilotControlPanel;
     private MissionUploadButton missionUploadButton;
 
@@ -48,9 +48,12 @@ public class MissionPlanButton extends JButton {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                IsPlanning = !IsPlanning;
-                if (IsPlanning) {
-
+                FlightMission.IsPlanning = !FlightMission.IsPlanning;
+                if (FlightMission.IsPlanning)
+                    FlightMission.drawMissionWaypoints();
+                else {
+                    GUIManager.missionWaypointPainter.waypoints.clear();
+                    GUIManager.missionRoutePainter.track.clear();
                 }
                 resetSizeIcon();
             }
@@ -58,10 +61,10 @@ public class MissionPlanButton extends JButton {
     }
 
     private void resetSizeIcon() {
-        setIcon( IsPlanning ? donePlanMissionIcon : planMissionIcon );
+        setIcon( FlightMission.IsPlanning ? donePlanMissionIcon : planMissionIcon );
         setPreferredSize( new Dimension( getIcon().getIconWidth() + 10,
                 getIcon().getIconHeight() + 10));
-        setBorder( IsPlanning ? greenBorder : yellowBorder );
+        setBorder( FlightMission.IsPlanning ? greenBorder : yellowBorder );
         setMinimumSize( getPreferredSize() );
         setMaximumSize( getPreferredSize() );
     }

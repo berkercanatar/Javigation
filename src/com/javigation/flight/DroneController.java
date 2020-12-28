@@ -1,10 +1,12 @@
 package com.javigation.flight;
 
 import com.javigation.GUI.GUIManager;
+import com.javigation.GUI.popup.PopupManager;
 import com.javigation.Utils;
 import com.javigation.drone_link.DroneConnection;
 import com.javigation.drone_link.mavlink.DroneTelemetry;
 import io.mavsdk.System;
+import io.mavsdk.offboard.Offboard;
 import io.mavsdk.telemetry.Telemetry;
 import io.reactivex.Completable;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -77,9 +79,30 @@ public class DroneController {
                     if (Telemetry.FlightMode == io.mavsdk.telemetry.Telemetry.FlightMode.OFFBOARD)
                         commandStack = commandStack.andThen(drone.getOffboard().stop());
                     else
-                        commandStack = commandStack.andThen(drone.getAction().gotoLocation(Telemetry.Position.getLatitudeDeg(), Telemetry.Position.getLongitudeDeg(), Telemetry.Position.getAbsoluteAltitudeM(), Telemetry.Attitude.getYawDeg()));
-                    Utils.info("SET HOLD MODE");
+                        commandStack = commandStack.andThen(drone.getOffboard().setVelocityBody( new Offboard.VelocityBodyYawspeed(0f, 0f, 0f ,0f) ).andThen(drone.getOffboard().start()).andThen(drone.getOffboard().stop()));
+                     break;
+                case MISSION_UPLOAD:
+                    commandStack = commandStack.andThen(drone.getMission().uploadMission(cmd.getArg("mission"))).doOnComplete(() -> {
+                        connection.controller.stateMachine.SetState(StateMachine.StateTypes.MISSION_UPLOADED);
+                        PopupManager.showSuccess("Mission uploaded!");
+                    });
                     break;
+                case MISSION_START, MISSION_RESUME:
+                    commandStack = commandStack.andThen(drone.getMission().startMission()).delay(1, TimeUnit.SECONDS).andThen(drone.getMission().startMission());
+                    break;
+                case MISSION_PAUSE:
+                    commandStack = commandStack.andThen(drone.getMission().pauseMission()).doOnComplete(() -> connection.controller.stateMachine.SetState(StateMachine.StateTypes.MISSION_PAUSED));
+                    break;
+                case MISSION_ABORT:
+                    if (connection.controller.Telemetry.FlightMode == io.mavsdk.telemetry.Telemetry.FlightMode.MISSION)
+                        commandStack = commandStack.andThen(drone.getMission().pauseMission());
+                    commandStack = commandStack.andThen(drone.getMission().clearMission()).doOnComplete( () -> {
+                        FlightMission.RemoveAllWaypoints();
+                        PopupManager.showAlert("MISSION ABORTED!");
+                        connection.controller.stateMachine.ClearState(StateMachine.StateTypes.MISSON_RUNNING);
+                        connection.controller.stateMachine.ClearState(StateMachine.StateTypes.MISSION_PAUSED);
+                        connection.controller.stateMachine.ClearState(StateMachine.StateTypes.MISSION_UPLOADED);
+                    } );
             }
         }
         commandStack.subscribe();

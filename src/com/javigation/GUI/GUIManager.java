@@ -9,8 +9,6 @@ import com.javigation.GUI.map.TileCleaner;
 import com.javigation.GUI.popup.PopupManager;
 import com.javigation.GUI.popup.Slider;
 import com.javigation.Statics;
-import com.javigation.Utils;
-import com.javigation.drone_link.DroneConnection;
 import com.javigation.flight.*;
 import org.freedesktop.gstreamer.Bin;
 import org.freedesktop.gstreamer.Gst;
@@ -38,7 +36,8 @@ public class GUIManager {
 
     public static JXMapViewer mapViewer;
     private static List<DefaultTileFactory> mapFactories;
-    private static WaypointPainter<Waypoint> waypointPainter;
+    public static WaypointPainter<Waypoint> missionWaypointPainter;
+    public static RoutePainter missionRoutePainter;
     public static TabController tabControl;
     private static JPanel panelMain = new JPanel();
     public static DronePainter dronePainter;
@@ -48,7 +47,6 @@ public class GUIManager {
     public static final Color COLOR_TRANSPARENT = new Color(0,0,0,0);
 
     public static Containers containers;
-
 
     public static void setupGUI(JFrame gui) {
         gui.setIconImage(new ImageIcon(GUIManager.class.getClassLoader().getResource("images/javigation.png")).getImage());
@@ -148,36 +146,9 @@ public class GUIManager {
 
     }
 
-    private static void setupSliderPanel() { //TODO: SLIDER
-        //Slider sliderPanel = new SliderPanel();
-        JPanel sliderPanel = new JPanel();
-
-        sliderPanel.setPreferredSize(new Dimension(400,100)); //SHOULD BE IN THE CONSTRUCTOR OF SLIDER CLASS
-
-        GridBagConstraints gc = new GridBagConstraints();
-        gc.anchor = GridBagConstraints.SOUTH;
-        gc.weightx = 1.0;
-        gc.weighty = 1.0;
-        gc.gridx = 1;
-        gc.gridy = 2;
-        int inset = 30;
-        gc.insets = new Insets(inset, inset, inset, inset);
-        mapViewer.add(sliderPanel, gc);
-    }
-
-    private static void setupMapControlPanel() {
-
-        DroneControlPanel pnl = new DroneControlPanel();
-
-        GridBagConstraints gc = new GridBagConstraints();
-        gc.anchor = GridBagConstraints.EAST;
-        gc.weightx = 1.0;
-        gc.weighty = 1.0;
-        gc.gridx = 1;
-        gc.gridy = 1;
-        int inset = 30;
-        gc.insets = new Insets(-600, inset, inset, inset);
-        mapViewer.add(pnl, gc);
+    private static void setupSliderPanel() {
+        Slider sliderPanel = new Slider();
+        Containers.sliderContainer.add(sliderPanel);
     }
 
     private static void setupMapAutopilotControlPanel() {
@@ -189,10 +160,24 @@ public class GUIManager {
         gc.weighty = 1.0;
         gc.gridx = 1;
         gc.gridy = 0;
-        int inset = 30;
-        gc.insets = new Insets(20, inset, inset, inset);
+        int inset = 20;
+        gc.insets = new Insets(inset, inset, inset, inset);
         mapViewer.add(pnl, gc);
 
+    }
+    private static void setupMapControlPanel() {
+
+        DroneControlPanel pnl = new DroneControlPanel();
+
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.anchor = GridBagConstraints.EAST;
+        gc.weightx = 1.0;
+        gc.weighty = 1;
+        gc.gridx = 1;
+        gc.gridy = 1;
+        int inset = 30;
+        gc.insets = new Insets(-615, inset, inset, inset);
+        mapViewer.add(pnl, gc);
     }
 
     public static GstVideoComponent vc;
@@ -260,15 +245,19 @@ public class GUIManager {
                 switch (mouseButton){
                     case LEFT:
                         System.out.print("LEFT:");
-                        if (DroneControlPanel.controllingDrone != null) {
+                        if ( FlightMission.IsPlanning ) {
+                            FlightMission.AddWaypoint(location);
+                        } else if (DroneControlPanel.controllingDrone != null) {
                             DroneController controller = DroneControlPanel.controllingDrone.controller;
                             CommandChain.Create(controller).GoTo(location.getLatitude(), location.getLongitude(), controller.stateMachine.CheckState(StateMachine.StateTypes.LEADER)).Perform();
                         }
                         break;
                     case RIGHT:
                         System.out.print("RIGHT:");
+                        if ( FlightMission.IsPlanning ) {
+                            FlightMission.RemoveLastWaypoint();
+                        }
                         //Swarm swarm1 = new Swarm(DroneConnection.Get(14540), DroneConnection.Get(14541), DroneConnection.Get(14542), Formation.FormationType.HORIZONTAL, false);
-                        PopupManager.showError("Test Popup");
                         //Slider.launchSlider("Takeoff", CommandChain.Create());
                         break;
                 }
@@ -276,20 +265,13 @@ public class GUIManager {
             }
         });
 
-        GeoPosition odeon1 = new GeoPosition(39.874259, 32.752582);
-        GeoPosition odeon2 = new GeoPosition(39.87455175245056,32.7525320649147);
+        missionRoutePainter = new RoutePainter();
 
-        List<GeoPosition> track = Arrays.asList(odeon1, odeon2);
-        RoutePainter routePainter = new RoutePainter(track);
-
-        Set<Waypoint> waypoints = new HashSet<Waypoint>(Arrays.asList(new DefaultWaypoint(odeon1), new DefaultWaypoint(odeon2)));
-
-        waypointPainter = new WaypointPainter<Waypoint>();
-        waypointPainter.setWaypoints(waypoints);
+        missionWaypointPainter = new WaypointPainter<Waypoint>();
 
         dronePainter = new DronePainter();
 
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(routePainter, waypointPainter, dronePainter);
+        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(missionRoutePainter, missionWaypointPainter, dronePainter);
         mapViewer.setOverlayPainter(painter);
 
         mapViewer.setLayout(new GridBagLayout());

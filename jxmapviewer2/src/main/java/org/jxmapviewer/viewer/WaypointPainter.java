@@ -11,6 +11,7 @@ package org.jxmapviewer.viewer;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +28,7 @@ import org.jxmapviewer.painter.AbstractPainter;
 public class WaypointPainter<W extends Waypoint> extends AbstractPainter<JXMapViewer>
 {
     private WaypointRenderer<? super W> renderer = new DefaultWaypointRenderer();
-    private Set<W> waypoints = new HashSet<W>();
+    public ArrayList<W> waypoints = new ArrayList<W>();
 
     /**
      * Creates a new instance of WaypointPainter
@@ -51,9 +52,9 @@ public class WaypointPainter<W extends Waypoint> extends AbstractPainter<JXMapVi
      * Gets the current set of waypoints to paint
      * @return a typed Set of Waypoints
      */
-    public Set<W> getWaypoints()
+    public ArrayList<W> getWaypoints()
     {
-        return Collections.unmodifiableSet(waypoints);
+        return waypoints;
     }
 
     /**
@@ -64,6 +65,11 @@ public class WaypointPainter<W extends Waypoint> extends AbstractPainter<JXMapVi
     {
         this.waypoints.clear();
         this.waypoints.addAll(waypoints);
+    }
+
+    public void addWaypoint(W waypoint)
+    {
+        this.waypoints.add(waypoint);
     }
 
     @Override
@@ -78,9 +84,8 @@ public class WaypointPainter<W extends Waypoint> extends AbstractPainter<JXMapVi
 
         g.translate(-viewportBounds.getX(), -viewportBounds.getY());
 
-        for (W w : getWaypoints())
-        {
-            renderer.paintWaypoint(g, map, w);
+        for (int i = 0; i < waypoints.size(); i++) {
+            renderer.paintWaypoint(g, map, waypoints.get(i), String.valueOf(i + 1));
         }
 
         g.translate(viewportBounds.getX(), viewportBounds.getY());

@@ -27,7 +27,14 @@ public class RoutePainter implements Painter<JXMapViewer>
     private Color color = Color.RED;
     private boolean antiAlias = true;
 
-    private List<GeoPosition> track;
+    public List<GeoPosition> track;
+
+    /**
+     * @param track the track
+     */
+    public RoutePainter() {
+        track = new ArrayList<GeoPosition>();
+    }
 
     /**
      * @param track the track
